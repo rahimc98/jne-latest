@@ -1,0 +1,49 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+{% if is_jne_about %}
+
+<section id="jne-about">
+    <section class="wrapper">
+        <div class="content">
+            <div class="left">
+                <div class="img-container">
+                    <img src="../../static/web/images/jne-about.png" alt="Image" />
+                </div>
+            </div>
+            <div class="right">
+                <h3>Jamia
+                    Nadwiyya
+                    Emblem</h3>
+                <p>The emblem of JNE is a pictorial representation of
+                    its holistic vision. It corresponds with the
+                    educational mission of Kerala Nadwathul
+                    Mujahideen (KNM), the founder organization of JNE.
+                    The lighthouse at the apex is a symbol of divine guidance
+                    that suggests the organizational commitment to
+                    "empowerment through education" and its optimism
+                    about the ultimate victory over all forces of darkness. The
+                    open book symbolizes the Quran that advocates
+                    knowledge acquisition. It serves as the foundation of all:
+                    institutional activities of JNE. The name Jamia Nadwiyya
+                    Edavanna is etched in English Alphabet on the periphery
+                    of a circle which represents the globe we live in. The
+                    Arabic calligraphy shows the linguistic and cultural
+                    orientation of the institution and the dissemination of
+                    Islamic values in a profound manner. This also manifests
+                    the close Indo-Saracen ties that prevailed in India for
+                    centuries. The open Holy Book contains the Quranic
+                    verse "I desire naught save reform so far as I am able". It
+                    implies that the extension of service to society is more
+                    important than any change brought out in the individual.
+                    JNE looks forward to a paradigm shift in the attitude
+                    towards society.
+                </p>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+{% endif %}
+{% endblock %}

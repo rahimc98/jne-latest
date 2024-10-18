@@ -1,0 +1,822 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    background: transparent;
+    font-weight: normal;
+    text-decoration: none;
+    outline: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+body {
+    font-family: "../fonts/poppinsregular";
+    font-size: 17px;
+    color: #000;
+    overflow-x: hidden;
+    min-width: 320px;
+    font-weight: 500;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+input,
+textarea,
+select {
+    font-family: "../fonts/poppinsregular";
+    font-weight: 500;
+}
+
+a {
+    color: #000;
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+p {
+    line-height: 1.3em;
+    font-size: 15px;
+    font-family: "montserratregular";
+    font-weight: 500;
+    color: #999;
+}
+
+.hidden {
+    display: none;
+}
+
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1350px;
+}
+
+.title-box {
+    margin-bottom: 20px;
+}
+
+.title-box h4 {
+    font-size: 25px;
+    font-family: "montserratsemibold";
+}
+
+.button a {
+    color: #fff;
+    background: blue;
+    padding: 10px;
+    border-radius: 35px;
+}
+
+.learn-button a {
+    background-color: #5bba64;
+    display: inline-block;
+    font-size: 14px;
+    padding: 14px 30px;
+    border-radius: 30px;
+    color: #fff;
+}
+
+.news-headlines {}
+
+.news-headlines .news-card {
+    display: flex;
+    border: 1px solid #99999942;
+    border-radius: 20px;
+}
+
+.news-headlines .news-card .img-box {}
+
+.news-headlines .news-card .img-box img {
+    aspect-ratio: 11/8;
+    flex-grow: 1;
+    object-fit: contain;
+    border-radius: 20px;
+    width: 274px;
+}
+
+.news-headlines .news-card .right-content {
+    margin-left: 7px;
+    padding: 7px;
+}
+
+.news-headlines .news-card .right-content .date {}
+
+.news-headlines .news-card .right-content .date span {
+    font-family: "montserratregular";
+    font-size: 14px;
+}
+
+.news-headlines .news-card .right-content .title {}
+
+.news-headlines .news-card .right-content .title h2 {
+    font-family: "montserratsemibold";
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.news-headlines .news-card .right-content .title h2 a {}
+
+.news-headlines .news-card .right-content .title p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5.5px);
+    position: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+header head-card {
+    position: absolute;
+    z-index: 2;
+    left: 242px;
+}
+
+header head-card div.logo {
+    width: 60px;
+}
+
+header head-card div.logo a {}
+
+header head-card div.logo a img {
+    width: 100%;
+    display: block;
+}
+
+header div.nav-bar {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header div.nav-bar ul {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+    position: absolute;
+    right: 223px;
+}
+
+header div.nav-bar ul div.spotlight {}
+
+header div.nav-bar ul li {
+    font-size: 16px;
+    color: #ffffff;
+    font-family: "montserratlight";
+}
+
+header div.nav-bar ul li a {
+    color: #fff;
+}
+
+header div.spotlight {
+    display: flex;
+    justify-content: center;
+    padding: 100px 0px;
+}
+
+header div.spotlight h4 {
+    color: #fff;
+    font-size: 35px;
+    font-family: "montserratsemibold";
+}
+
+#newslight {
+    padding: 70px 0px;
+}
+
+#newslight section.wrapper {}
+
+#newslight section.wrapper section.sub-news {
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+#newslight section.wrapper section.sub-news section.news-box {
+    width: 50%;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content span {
+    font-family: "montserratlight";
+    display: inline-block;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.card-content {
+    background: rgb(61 61 61 / 24%);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 25px;
+    width: 90%;
+    position: absolute;
+    bottom: 25px;
+    right: 30px;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content h2 {
+    font-family: "montserratsemibold";
+    font-size: 19px;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content div.news-img {
+    margin-bottom: 15px;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content div.news-img img {
+    aspect-ratio: 11/8;
+    flex-grow: 1;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content p {
+    color: #fff;
+}
+
+.news-headlines .news-card:first-child {
+    margin-bottom: 13px;
+}
+
+#newslight section.wrapper section.sub-news section.news-box div.news-content br {}
+
+#newslight section.wrapper section.sub-news section.news-box hr {
+    border-bottom: 1px solid #e1e1e1;
+    margin: 25px 0px;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines {
+    width: 48%;
+    margin-left: 15px;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines div.headline {
+    margin-top: 20px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines h4 {
+    font-family: "montserratsemibold";
+    font-size: 17px;
+    margin-bottom: 30px;
+    border-bottom: 4px solid #5bba64;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines div.headline span {
+    font-family: "montserratregular";
+    color: #888888;
+    display: inline-block;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines div.headline h2 {
+    font-family: "montserratsemibold";
+    margin-bottom: 10px;
+    font-size: 21px;
+}
+
+#newslight section.wrapper section.sub-news section.news-headlines div.headline p {
+    font-family: "montserratregular";
+    color: #888888;
+    margin-bottom: 15px;
+}
+
+#library {
+    padding: 0 0px 70px;
+}
+
+#library section.wrapper {}
+
+#library section.wrapper div.library-box {}
+
+#library section.wrapper div.library-box ul {
+    display: flex;
+    justify-content: start;
+}
+
+#library section.wrapper div.library-box ul li {
+    width: 23%;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    margin: 0 10px;
+}
+
+#library section.wrapper div.library-box ul li div.top-course {}
+
+#library section.wrapper div.library-box ul li div.top-course img {
+    aspect-ratio: 12/9;
+    flex-grow: 1;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+#library section.wrapper div.library-box ul li div.bottom-course {
+    padding: 7px;
+}
+
+#library section.wrapper div.library-box ul li div.bottom-course span {
+    margin-bottom: 5px;
+    font-size: 15px;
+    display: inline-block;
+    font-family: "montserratlight";
+}
+
+#library section.wrapper div.library-box ul li div.bottom-course h3 {
+    margin-bottom: 5px;
+    font-family: "montserratsemibold";
+}
+
+#library section.wrapper div.library-box ul li div.bottom-course a.more {
+    color: rgb(99, 71, 249);
+    font-family: "montserratlight";
+    font-size: 14px;
+}
+
+#library section.wrapper div.library-box ul li div.bottom-course p {
+    font-family: "montserratlight";
+    margin-bottom: 5px;
+}
+
+footer {
+    background: #161616;
+    padding: 70px 0 20px 0;
+}
+
+footer section.wrapper {}
+
+footer section.wrapper section.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+footer section.wrapper section.content div.news {
+    width: 24%;
+}
+
+footer section.wrapper section.content div.news h5 {
+    color: #fff;
+    font-family: "montserratsemibold";
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+footer section.wrapper section.content div.news p {
+    color: #ececec;
+    margin-bottom: 10px;
+}
+
+footer section.wrapper section.content div.news div.time {
+    display: flex;
+    align-items: center;
+}
+
+footer section.wrapper section.content div.news div.time div.clock-container {
+    width: 15px;
+    margin-right: 5px;
+}
+
+footer section.wrapper section.content div.news div.time div.clock-container img {}
+
+footer section.wrapper section.content div.news div.time p {
+    color: #ececec;
+    margin-bottom: 0;
+}
+
+footer section.wrapper section.content div.menu {}
+
+footer section.wrapper section.content div.menu h5 {
+    color: #fff;
+    font-family: "montserratsemibold";
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+footer section.wrapper section.content div.menu p a {
+    color: #ececec;
+    margin-bottom: 10px;
+}
+
+footer section.wrapper section.content div.info {}
+
+footer section.wrapper section.content div.info h5 {
+    color: #fff;
+    font-family: "montserratsemibold";
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+footer section.wrapper section.content div.info p a {
+    color: #ececec;
+    margin-bottom: 10px;
+}
+
+footer section.wrapper section.content div.about {
+    width: 24%;
+}
+
+footer section.wrapper section.content div.about h5 {
+    color: #fff;
+    font-family: "montserratsemibold";
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+footer section.wrapper section.content div.about p {
+    color: #ececec;
+    margin-bottom: 20px;
+}
+
+footer section.wrapper section.content div.about div.icons {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+footer section.wrapper section.content div.about div.icons div.icon {
+    padding: 5px;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    width: 29px;
+}
+
+footer section.wrapper section.content div.about div.icons div.icon img {
+    height: 16px;
+}
+
+footer div.bottom-line {
+    border-top: 1px solid #ffffff;
+}
+
+footer div.bottom-line div.details {}
+
+footer div.bottom-line div.details p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer div.bottom-line div.details p span {
+    color: #04a5ff;
+    margin-left: 5px;
+
+}
+
+#news-single {
+    padding: 80px 0;
+}
+
+#news-single .wrapper {}
+
+#news-single .wrapper .main-news {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#news-single .wrapper .main-news h3 {
+    font-family: "montserratsemibold";
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+#news-single .wrapper .main-news .date {}
+
+#news-single .wrapper .main-news .date small {
+    font-family: "montserratlight";
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+#news-single .wrapper .main-news .news-img {}
+
+#news-single .wrapper .main-news .news-img img {
+    aspect-ratio: 11/6;
+    flex-grow: 1;
+    object-fit: contain;
+    border-radius: 20px;
+}
+
+#news-single .wrapper .main-news p {
+    margin-top: 20px;
+}
+
+@media all and (max-width: 1280px) {
+    .news-headlines .news-card .right-content {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .news-headlines .news-card .img-box img {
+        width: 100%;
+    }
+
+    .news-headlines .news-card {
+        flex-direction: column;
+    }
+
+    header head-card {
+        left: 110px;
+    }
+
+    #library section.wrapper div.library-box ul li div.bottom-course {
+        padding: 10px;
+    }
+
+    footer section.wrapper section.content {
+        margin-bottom: 14px;
+    }
+}
+
+@media all and (max-width: 1080px) {
+    header div.nav-bar ul {
+        right: 176px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline {
+        width: 100%;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content h2 {
+        font-size: 25px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline h2 {
+        font-size: 23px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content p {
+        font-size: 17px;
+    }
+
+    #library section.wrapper div.library-box ul li div.bottom-course h3 {
+        font-size: 17px;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 26%;
+    }
+}
+
+@media all and (max-width: 980px) {
+    .news-headlines .news-card .img-box img {
+        aspect-ratio: 17/8;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content div.news-img img {
+        aspect-ratio: 16/8;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box {
+        width: 100%;
+    }
+
+    #newslight section.wrapper section.sub-news {
+        flex-wrap: wrap;
+    }
+
+    header head-card {
+        left: 61px;
+    }
+
+    header div.nav-bar ul {
+        width: 63%;
+        right: 75px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content h2 {
+        font-size: 23px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline h2 {
+        font-size: 20px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline p {
+        font-size: 13px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box {
+        width: 60%;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #newslight {
+        padding: 50px 0px 0px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content p {
+        font-size: 16px;
+    }
+
+    #library section.wrapper div.library-box ul {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    #library section.wrapper div.library-box ul li {
+        width: 40%;
+        margin-bottom: 25px;
+    }
+
+    #library {
+        padding: 40px 0px;
+    }
+
+    footer section.wrapper section.content {
+        flex-wrap: wrap;
+    }
+
+    footer section.wrapper section.content div.news {
+        width: 90%;
+        margin-bottom: 60px;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 39%;
+    }
+
+    footer section.wrapper section.content {
+        margin-bottom: 30px;
+    }
+}
+
+@media all and (max-width: 768px) {
+    header div.nav-bar ul {
+        display: none;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content p {
+        width: 93%;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content h2 {
+        font-size: 21px;
+        width: 94%;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline h2 {
+        font-size: 19px;
+    }
+
+    #library section.wrapper div.library-box ul li {
+        width: 45%;
+    }
+
+    #library section.wrapper div.library-box ul li div.bottom-course p {
+        font-size: 14px;
+    }
+
+    #library {
+        padding: 20px 0px;
+    }
+}
+
+@media all and (max-width: 640px) {
+    #news-single .wrapper .main-news {
+        width: 100%;
+    }
+
+    #news-single {
+        padding: 40px 0;
+    }
+
+    header head-card {
+        left: 24px;
+    }
+
+    header div.spotlight {
+        padding: 80px 0px;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines {
+        width: 100%;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box {
+        width: 100%;
+    }
+
+    #library section.wrapper div.library-box ul li div.bottom-course h3 {
+        font-size: 16px;
+    }
+
+    #library section.wrapper div.library-box ul li {
+        width: 45%;
+    }
+
+    #library section.wrapper div.library-box ul {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-headlines div.headline {
+        margin-top: 15px;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 100%;
+        margin-top: 48px;
+    }
+
+    footer section.wrapper section.content div.about div.icons {
+        width: 40%;
+    }
+
+    footer div.bottom-line div.details p {
+        font-size: 14px;
+    }
+
+    footer section.wrapper section.content div.info h5 {
+        margin-bottom: 18px;
+    }
+
+    footer section.wrapper section.content div.about h5 {
+        margin-bottom: 18px;
+    }
+}
+
+@media all and (max-width: 480px) {
+    .news-headlines .news-card .img-box img {
+        aspect-ratio: 12/8;
+    }
+
+    #newslight section.wrapper section.sub-news section.news-box div.news-content div.news-img img {
+        aspect-ratio: 9/8;
+    }
+
+    footer section.wrapper section.content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #newslight {
+        padding: 50px 0px;
+    }
+
+    #library section.wrapper div.library-box ul li {
+        width: 100%;
+    }
+
+    footer section.wrapper section.content div.news {
+        margin-bottom: 50px;
+    }
+
+    footer section.wrapper section.content div.about {
+        margin-top: 40px;
+    }
+
+    footer section.wrapper section.content div.about div.icons {
+        width: 50%;
+    }
+}
+
+@media all and (max-width: 360px) {
+    footer section.wrapper section.content div.news {
+        width: 95%;
+    }
+}
+
+@media all and (max-width: 320px) {}

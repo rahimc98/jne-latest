@@ -1,0 +1,10 @@
+{% for item in instances %}
+<li>
+    <h3>{{item.designation}}</h3>
+    <h5>{{item.location}}</h5>
+    <p>
+        {{item.description}}
+    </p>
+    <button>Apply Now</button>
+</li>
+{% endfor %}

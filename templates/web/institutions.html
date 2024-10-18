@@ -1,0 +1,58 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+{% if institution %}
+        <section id="institution">
+            <section class="wrapper">
+                <div class="title-box">
+                    <h4>Institutions</h4>
+                </div>
+                {% for item in institution %}
+                    <div class="institute-cards">
+                        <div class="institution-card">
+                            <div class="left-card">
+                                <div class="left-img-box">
+                                    <img src="{{item.image.url}}" alt="Image" />
+                                </div>
+                            </div>
+                            <div class="right-card">
+                                <div class="top-box">
+                                    <div class="left-box">
+                                        <img src="{% static 'web/images/jne-small-logo.png' %}" alt="Image" />
+                                    </div>
+                                    <div class="right-box">
+                                        <h5>{{item.name}}</h5>
+                                        <div class="pin">
+                                            <div class="pin-img">
+                                                <img src="{% static 'web/images/icons/pin-imgg.svg' %}" alt="image" />
+                                            </div>
+                                            <span>{{item.location}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="miidle-box">
+                                    <p>
+                                        {{item.content}}
+                                    </p>
+                                    <button class="learn-button">
+                                        <a href="{% url 'web:institution_single' slug=item.slug %}">Learn More</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- <div class="view-more">
+                    <a href="{% url 'web:institution' %}">
+                        <span>View More</span>
+                        <view-img>
+                            <img src="{% static 'web/images/icons/view-button.svg' %}" alt="icon" />
+                        </view-img>
+                    </a>
+                </div> -->
+            </section>
+        </section>
+        {% endif %}
+        <!--#institution>-->
+{% endblock %}

@@ -1,0 +1,314 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+        {% if spotlight %}
+        <section id="home">
+            <section class="main-slider">
+                {% for item in spotlight %}
+                <section class="spotlight" style="background-image: url({{item.image.url}})">
+                    <section class="wrapper">
+                        <div class="main-box">
+                            <div class="main-content">
+                                <h2>{{item.title}}</h2>
+                                <p>
+                                    {{item.description}}
+                                </p>
+                                <button class="learn-button">
+                                    <a href="#about">Learn More</a>
+                                </button>
+                            </div>
+
+                            <div class="main-bar">
+                                <div class="admission">
+                                    {% if item.admission_year %}
+                                        <h5>Admissions Open {{item.admission_year}}</h5>
+                                    {% endif %}
+                                </div>
+                                <div class="connect">
+                                    {% if item.brochure %}
+                                        <a target="_blank" href="{{item.brochure.url}}" download>Download Brochure</a>
+                                    {% endif %}
+                                    <a target="_blank" href="https://wa.me/{{item.whatsapp_number}}">Chat With Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                {% endfor %}
+            </section>
+        </section>
+        {% endif %}
+        <!--#home>-->
+
+        <div id="achievments">
+            <div class="wrapper">
+                <div class="main-card">
+                    <ul>
+                        <li>
+                            <img src="{% static 'web/images/achievments/1.svg' %}" alt="Image">
+                            <h5>Member <br>  of FUIW</h5>
+                        </li>
+                        <li>
+                            <img src="{% static 'web/images/achievments/2.svg' %}" alt="Image">
+                            <h5>15 + <br> Institutions</h5>
+                        </li>
+                        <li>
+                            <img src="{% static 'web/images/achievments/3.svg' %}" alt="Image">
+                            <h5>160 + <br> Faculties  </h5>
+                        </li>
+                        <li>
+                            <img src="{% static 'web/images/achievments/4.svg' %}" alt="Image">
+                            <h5>Peaceful <br> Campus</h5>
+                        </li>
+                        <li>
+                            <img src="{% static 'web/images/achievments/5.svg' %}" alt="">
+                            <h5>59 Years <br> Legacy</h5>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if about_us %}
+        <section id="about">
+            <section class="wrapper">
+                <div class="title-box">
+                    <h4>About Us</h4>
+                </div>
+                <div class="content-box">
+                    <div class="content-img">
+                        <img src="{% static 'web/images/icons/double-quote.svg' %}" alt="image" />
+                    </div>
+                    <p>
+                        {{about_us.description}}
+                    </p>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+        <!--#about>-->
+
+        <!-- {% if institution %}
+        <section id="institution">
+            <section class="wrapper">
+                <div class="title-box">
+                    <h4>Institutions</h4>
+                </div>
+                {% for item in institution %}
+                    <div class="institute-cards">
+                        <div class="institution-card">
+                            <div class="left-card">
+                                <div class="left-img-box">
+                                    <img src="{{item.image.url}}" alt="Image" />
+                                </div>
+                            </div>
+                            <div class="right-card">
+                                <div class="top-box">
+                                    <div class="left-box">
+                                        <img src="{% static 'web/images/jne-small-logo.png' %}" alt="Image" />
+                                    </div>
+                                    <div class="right-box">
+                                        <h5>{{item.name}}</h5>
+                                        <div class="pin">
+                                            <div class="pin-img">
+                                                <img src="{% static 'web/images/icons/pin-imgg.svg' %}" alt="image" />
+                                            </div>
+                                            <span>{{item.location}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="miidle-box">
+                                    <p>
+                                        {{item.content}}
+                                    </p>
+                                    <button class="learn-button">
+                                        <a href="{% url 'web:institution_single' slug=item.slug %}">Learn More</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="view-more">
+                    <a href="{% url 'web:institution' %}">
+                        <span>View More</span>
+                        <view-img>
+                            <img src="{% static 'web/images/icons/view-button.svg' %}" alt="icon" />
+                        </view-img>
+                    </a>
+                </div>
+            </section>
+        </section>
+        {% endif %} -->
+        <!--#institution>-->
+
+        {% if gallery %}
+        <section id="gallery">
+            <section class="wrapper">
+                <div class="header-box">
+                    <div class="title-box">
+                        <h4>Gallery</h4>
+                    </div>
+                    <div class="view-box">
+                        <a href="{% url 'web:gallery' %}">
+                            <span>View More</span>
+                            <view-img>
+                                <img src="{% static 'web/images/icons/view-button.svg' %}" alt="icon" />
+                            </view-img>
+                        </a>
+                    </div>
+                </div>
+                <div class="top-gallery">
+                    <ul>
+                        <li class="items" data-pk="{{all}}">
+                            <span>All</span>
+                            <hr />
+                        </li>
+                        <!-- {% for item in institution %}
+                            <li class="items active" data-pk="{{item.pk}}">
+                                <span>{{item.name}}</span>
+                                <hr />
+                            </li>
+                        {% endfor %} -->
+                    </ul>
+                </div>
+                <div id="gallery-box" class="image-content">
+                    <ul>
+                        {% for item in gallery %}
+                        <!-- <a href="{{item.image.url}}" data-lightbox="models" data-title="{{item.institution.name}}"> -->
+                        <li>
+                            <div class="gallery-img">
+                                <img src="{{item.image.url}}" alt="Image" />
+                            </div>
+                            <div class="gallery-content">
+                                <h5>{{item.institution.name}}</h5>
+                                <div class="gallery-location">
+                                    <div class="location-img">
+                                        <img src="{% static 'web/images/icons/grey-location.svg' %}" alt="" />
+                                    </div>
+                                    <span>{{item.institution.location}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    <!-- </a> -->
+                        {% endfor %}
+                    </ul>
+                </div>
+             </section>
+        </section>
+        {% endif %}
+        <!--#gallery>-->
+
+        {% if news %}
+        <section id="newsfeed">
+            <section class="wrapper">
+                <div class="header-box">
+                    <div class="title-box">
+                        <h4>News Feed</h4>
+                    </div>
+                    <div class="view-box">
+                        <a href="{% url 'web:news' %}">
+                            <span>View More</span>
+                            <view-img>
+                                <img src="{% static 'web/images/icons/view-button.svg' %}" alt="icon" />
+                            </view-img>
+                        </a>
+                    </div>
+                </div>
+                <div class="newsfeed-card">
+                    <ul>
+                        {% for item in news %}
+                        <li>
+                            <div class="newsfeed-img">
+                                <img src="{{item.image.url}}" alt="Image" />
+                            </div>
+                            <h4>{{item.title}}</h4>
+                            <p>
+                                {{item.content}}
+                            </p>
+                            <div class="bottom-card">
+                                <div class="newsfeed-date">
+                                    <div class="date-img">
+                                        <img src="{% static 'web/images//icons/calendar-img.svg' %}" alt="Image" />
+                                    </div>
+                                    <span>{{item.date}}</span>
+                                </div>
+                                <div class="read-more">
+                                    <a href="{% url 'web:news_single' pk=item.pk  %}"
+                                        >Read More
+                                        <div class="readmore-img">
+                                            <img src="{% static 'web/images/icons/read-more.svg' %}" alt="Image" />
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+        <!--#newsfeed>-->
+
+        {% if testimonials %}
+        <section id="testimonial">
+            <section class="wrapper">
+                <div class="top-testimonaial">
+                    <div class="title-box">
+                        <h4>Testimonials</h4>
+                    </div>
+                </div>
+                <ul class="testimonial-slider-box">
+                    {% for item in testimonials %}
+                    <li>
+                        <div class="top"></div>
+                        <div class="bottom">
+                            <div class="avatar-icon">
+                                <img src="{{item.image.url}}" alt="image" />
+                            </div>
+                            <div class="quote-img">
+                                <img src="{% static 'web/images/icons/green-quote.svg' %}" alt="image" />
+                            </div>
+                            <p>
+                                {{item.description}}
+                            </p>
+                            <h6>{{item.name}}</h6>
+                            
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <!-- <div class="slider-ripple">
+                    <img src="{% static 'web/images/slider-ripple.png' %}" alt="images" />
+                </div> -->
+            </section>
+        </section>
+        {% endif %}
+        <!--#testimonial>-->
+        
+{% endblock %}
+
+{% block static %}
+    <script>
+        var selector = '#gallery section.wrapper div.top-gallery ul li';
+
+        $("#gallery section.wrapper div.top-gallery ul li").on("click", function () {
+        let institution_pk = $(this).attr("data-pk");
+        $(selector).removeClass('active');
+        $(this).addClass('active');
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'web:get_gallery' %}",
+            dataType: "json",
+            data: {institution_pk:institution_pk},
+            success: function (data) {
+                var html_content = data["html_content"];
+                $("#gallery section.wrapper #gallery-box ul").html(html_content);
+            },
+            error: function (data) {},
+        });
+        });
+    </script>
+{% endblock %}

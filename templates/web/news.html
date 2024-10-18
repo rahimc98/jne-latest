@@ -1,0 +1,72 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+    {% if latest_three %}
+        <section id="newslight">
+            <section class="wrapper">
+                <section class="sub-news">
+                    <section class="news-box">
+                        {% for item in latest_three %}
+                            {% if forloop.first %}
+                            <div class="news-content">
+                                <div class="card-content">
+                                    <span>{{item.date}}</span>
+                                    <h2>{{item.title}}</h2>
+                                    <p>
+                                        {{item.content}}
+                                    </p>
+                                </div>
+                                <div class="news-img">
+                                    <img src="{{item.image.url}}" alt="Image" />
+                                </div>
+                            </div>
+                    </section>
+                    <section class="news-headlines">
+                        {% else %}
+                        <div class="news-card">
+                            <div class="img-box">
+                                <img src="{{item.image.url}}" alt="">
+                            </div>
+                            <div class="right-content">
+                                <div class="date">
+                                    <span>{{item.date}}</span>
+                                </div>
+                                <div class="title">
+                                    <h2><a href="{% url 'web:news' %}">{{item.title}}</a></h2>
+                                    <p>
+                                        {{item.content}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </section>
+                </section>
+            </section>
+        </section>
+        <section id="library">
+            <section class="wrapper">
+                <div class="library-box">
+                    <ul>
+                        {% for item in news %}
+                        <li>
+                            <div class="top-course">
+                                <img src="{{item.image.url}}" alt="Image" />
+                            </div>
+                            <div class="bottom-course">
+                                <span>{{item.date}}</span>
+                                <h3><a href="{% url 'web:news_single' pk=item.pk  %}">{{item.title}}</a></h3>
+                                <p>By {{item.reporter}}</p>
+                                <a class="more" href="{% url 'web:news_single' pk=item.pk  %}">Read More</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </section>
+    {% endif %}
+{% endblock %}
+
+

@@ -1,0 +1,104 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'web/css/about.css' %}" />
+
+        {% if about_us %}
+        <section id="about-us">
+            <section class="wrapper">
+
+                <div class="sub-container">
+                    <div class="about-left">
+                        <div class="ripple-img">
+                            <img src="{% static 'web/images/ripple.png' %}" alt="image" />
+                        </div>
+                        <div>
+                            <h3>{{about_us.title}}</h3>
+                            <p>
+                                {{about_us.description}}
+                            </p>
+                            <button class="learn-button">
+                                <a href="#team">Explore</a>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="about-right">
+                        <div class="about-top">
+                            <h3>Our Vision</h3>
+                            <p>
+                                {{about_us.our_vision}}
+                            </p>
+                        </div>
+                        <div class="about-bottom">
+                            <h3>Our Mission</h3>
+                            <p>
+                                {{about_us.our_mission}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+        <!--#aboutus>-->
+
+        {% if team %}
+        <section id="team">
+            <section class="wrapper">
+                <div class="team-topbox">
+                    <div class="title-box">
+                        <h4>Management Team</h4>
+                    </div>
+                    <p>
+                        {{about_us.team_description|default:''}}
+                    </p>
+                </div>
+                <ul>
+                    {% for item in team %}
+                    <li>
+                        <div class="team-imgbox">
+                            <img src="{{item.image.url}}" alt="Image" />
+                        </div>
+                        <div class="team-content">
+                            <h2>{{item.name}}</h2>
+                            <h5>{{item.designation}}</h5>
+                            <!-- <p>“{{item.description}}</p> -->
+                            <!-- <div class="social-icons">
+                                {% if item.instagram_url %}
+                                <div class="social-img">
+                                    <a href="{{item.instagram_url}}">
+                                        <img src="{% static 'web/images/icons/insta-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.facebook_url %}
+                                <div class="social-img">
+                                    <a href="{{item.facebook_url}}">
+                                        <img src="{% static 'web/images//icons/fb-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.twitter_url %}
+                                <div class="social-img">
+                                    <a href="{{item.twitter_url}}">
+                                        <img src="{% static 'web/images/icons/twitter-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.linkedin_url %}
+                                <div class="social-img">
+                                    <a href="{{item.linkedin_url}}">
+                                        <img src="{% static 'web/images/icons/li-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div> -->
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </section>
+        {% endif %}
+        <!--#team>-->
+{% endblock %}

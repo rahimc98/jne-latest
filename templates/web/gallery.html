@@ -1,0 +1,74 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+
+{% if gallery %}
+        <section id="gallery">
+            <section class="wrapper">
+                <div class="header-box">
+                    <div class="title-box">
+                        <h4>Gallery</h4>
+                    </div>
+                </div>
+                <div class="top-gallery category-card">
+                    <ul>
+                        <li class="items" data-pk="{{all}}">
+                            <span>All</span>
+                        </li>
+                        {% for item in institution %}
+                            <li class="items active" data-pk="{{item.pk}}">
+                                <span>{{item.name}}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div id="gallery-box" class="image-content">
+                    <ul>
+                        {% for item in gallery %}
+                        <!-- <a href="{{item.image.url}}" data-lightbox="models" data-title="{{item.institution.name}}"> -->
+                        <li>
+                            <div class="gallery-img">
+                                <img src="{{item.image.url}}" alt="Image" />
+                            </div>
+                            <div class="gallery-content">
+                                <h5>{{item.institution.name}}</h5>
+                                <div class="gallery-location">
+                                    
+                                    <span>{{item.institution.location}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    <!-- </a> -->
+                        {% endfor %}
+                    </ul>
+                </div>
+             </section>
+        </section>
+        {% endif %}
+        <!--#gallery>-->
+
+{% endblock %}
+
+{% block static %}
+    <script>
+        var selector = '#gallery section.wrapper div.top-gallery ul li';
+
+        $("#gallery section.wrapper div.top-gallery ul li").on("click", function () {
+        let institution_pk = $(this).attr("data-pk");
+        $(selector).removeClass('active');
+        $(this).addClass('active');
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'web:get_gallery' %}",
+            dataType: "json",
+            data: {institution_pk:institution_pk},
+            success: function (data) {
+                var html_content = data["html_content"];
+                $("#gallery section.wrapper #gallery-box ul").html(html_content);
+            },
+            error: function (data) {},
+        });
+        });
+    </script>
+{% endblock %}

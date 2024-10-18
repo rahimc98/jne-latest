@@ -1,0 +1,195 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'web/css/doa.css' %}" />
+        {% if department %}
+        <section id="about">
+            <section class="wrapper">
+                <div class="title-box">
+                    <h4>About Us</h4>
+                </div>
+                <div class="content-box">
+                    <div class="content-img">
+                        <img src="{% static 'web/images/icons/double-quote.svg' %}" alt="image" />
+                    </div>
+                    <p>
+                        {{department.description}}
+                    </p>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+
+        {% if faculties %}
+        <section id="team">
+            <section class="wrapper">
+                <div class="team-topbox">
+                    <div class="title-box">
+                        <h4>Department Faculties</h4>
+                    </div>
+                    <p>
+                        In an era , when Muslim community along with other marginalized backward
+                        communities continued to exist in illiteracy and ignorance, Jamia Nadwiyya
+                        laid its foundation in 1964 by Kerala Nadvathul Mujahideen (KNM).
+                    </p>
+                </div>
+                <ul>
+                    {% for item in faculties %}
+                    <li>
+                        <div class="team-imgbox">
+                            <img src="{{item.image.url}}" alt="Image" />
+                        </div>
+                        <div class="team-content">
+                            <h2>{{item.name}}</h2>
+                            <h5>{{item.designation}}</h5>
+                            <!-- <div class="social-icons">
+                                {% if item.instagram_url %}
+                                <div class="social-img">
+                                    <a href="{{item.instagram_url}}">
+                                        <img src="{% static 'web/images/icons/insta-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.facebook_url %}
+                                <div class="social-img">
+                                    <a href="{{item.facebook_url}}">
+                                        <img src="{% static 'web/images//icons/fb-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.twitter_url %}
+                                <div class="social-img">
+                                    <a href="{{item.twitter_url}}">
+                                        <img src="{% static 'web/images/icons/twitter-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if item.linkedin_url %}
+                                <div class="social-img">
+                                    <a href="{{item.linkedin_url}}">
+                                        <img src="{% static 'web/images/icons/li-color.svg' %}" alt="Icon" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div> -->
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </section>
+        {% endif %}
+
+        {% if facilities %}
+        <section id="facilities">
+            <section class="wrapper">
+                <div class="team-topbox">
+                    <div class="title-box">
+                        <h4>Facilities</h4>
+                    </div>
+                    <p>
+                        In an era , when Muslim community along with other marginalized backward
+                        communities continued to exist in illiteracy and ignorance , Jamia Nadwiyya
+                        laid its foundation.
+                    </p>
+                </div>
+                <div class="gallery-box">
+                    <ul>
+                        {% for item in facilities %}
+                        <li>
+                            <div class="gallery-img">
+                                <img src="{% static 'web/images/computer.png' %}" alt="Image" />
+                            </div>
+                            <div class="gallery-content">
+                                <h4>{{item.name}}</h4>
+                                <p>{{item.description}}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+
+        <!-- {% if activities %} -->
+        <section id="activity">
+            <section class="wrapper">
+                <div class="top-container">
+                    <div class="title-box">
+                        <h4>Activities</h4>
+                    </div>
+                </div>
+                <div class="activity-container">
+                    <ul class="activity-slider">
+                        {% for item in activities %}
+                        <li>
+                            <div class="top-activity">
+                                <img src="{{item.image.url}}" alt="Image" />
+                                <span>90 /10 / 2020</span>
+                            </div>
+                            <div class="bottom-activity">
+                                <h3>{{item.name}}</h3>
+                                <p>
+                                    {{item.description}}
+                                </p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="slider-button">
+                    <div class="slider-img">
+                        <img src="{% static 'web/images/slider-ripple.png' %}" alt="Image" />
+                    </div>
+                </div>
+            </section>
+        </section>
+        <!-- {% endif %} -->
+
+        {% if department_contact %}
+        <section id="contact-us">
+            <section class="wrapper">
+                <div class="top-box">
+                    <div class="title-box">
+                        <h4>Contact Us</h4>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <ul>
+                        <li>
+                            <div class="top-contact">
+                                <img src="{% static 'web/images/icons/mail.svg' %}" alt="Image" />
+                            </div>
+                            <div class="bottom-contact">
+                                <p>{{department_contact.email}}</p>
+                                {% if second_email %}
+                                    <p>{{department_contact.second_email}}</p>
+                                {% endif %}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="top-contact">
+                                <img src="{% static 'web/images/icons/number.svg' %}" alt="Image" />
+                            </div>
+                            <div class="bottom-contact">
+                                <p>{{department_contact.phone}}</p>
+                                {% if second_phone %}
+                                    <p>{{department_contact.second_phone}}</p>
+                                {% endif %}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="top-contact">
+                                <img src="{% static 'web/images/icons/locationns.svg' %}" alt="Image" />
+                            </div>
+                            <div class="bottom-contact">
+                                <p>{{department_contact.location}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+    <div id="news-single">
+        <div class="wrapper">
+            {% if news %}
+            <div class="main-news">
+                <h3>{{news.title}}
+                </h3>
+                <div class="date">
+                    <small>{{news.date}}</small>
+                </div>
+                <div class="news-img">
+                    <img src="{{news.image.url}}" alt="Image">
+                </div>
+                <p>
+                    {{news.content}}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

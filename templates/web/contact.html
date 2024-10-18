@@ -1,0 +1,61 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+    <section id="contact">
+        <section class="wrapper">
+            <div class="contact-section">
+                <div class="contact-left">
+                    <h3>Contact Us</h3>
+                    <p>
+                        Tempus quam et faucibus pulvinar. Gravida risus tempus ut ac feugiat nulla 
+                        massa mi ullamcorper.
+                    </p>
+                    <form action="{% url 'web:save_message' %}"  enctype="multipart/form-data" class="ajax redirect" method="post">
+                        {% csrf_token %}
+                        <div class="input-container">
+                            {{contact_form.name}}
+                        </div>
+                        <div class="input-container">
+                            {{contact_form.phone}}
+                        </div>
+                        <div class="input-container">
+                            {{contact_form.email}}
+                        </div>
+                        <div class="input-container">
+                            {{contact_form.message}}
+                        </div>
+                        <div class="submit-button">
+                            <button type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="contact-right">
+                    <div class="contact-content">
+                        <div class="contact-square">
+                            <img src="{% static 'web/images/icons/green-box.svg' %}" alt="Image" />
+                        </div>
+                        <h2>Info</h2>
+                        <div class="info-box">
+                            <div class="info-img">
+                                <img src="{% static 'web/images/icons/mail.svg' %}" alt="Mail" />
+                            </div>
+                            <p><a href="mailto:{{contact_us.email}}">{{contact_us.email}}</a> </p>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-img">
+                                <img src="{% static 'web/images/icons/number.svg' %}" alt="Number" />
+                            </div>
+                            <p><a href="tel:{{contact_us.phone}}"> {{contact_us.phone}}</a> </p>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-img">
+                                <img src="{% static 'web/images/icons/locationns.svg' %}" alt="Location" />
+                            </div>
+                            <p>{{contact_us.location}} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

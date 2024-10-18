@@ -1,0 +1,290 @@
+{% extends "web/base.html"%}
+{% load static %}
+
+{% block content %}
+    {% if career %}
+        <section id="career">
+            <section class="wrapper">
+                <div class="career-top">
+                    <div class="title-box">
+                        <h4>Latest Jobs</h4>
+                    </div>
+                    <div class="time">
+                        <span class="active" data-job_type="5" >   Full Time </span>
+                        <span data-job_type="10" > Part Time</span>
+                    </div>
+                </div>
+                <div class="career-bottom">
+                    <ul>
+                        {% for item in career %}
+                        <li class="career">
+                            <div class="career-content">
+                                <h3 class="designation-name" data-val="{{item.designation}}">{{item.designation}}</h3>
+                                <h5>{{item.location}}</h5>
+                                <p>
+                                    {{item.description}}
+                                </p>
+                            </div>
+                            <button data-url="{% url 'web:job_apply' slug=item.pk %}" class="modal-toggle">Apply Now</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            <div class="modal">
+                <div class="modal-overlay modal-toggle"></div>
+                <div class="modal-wrapper modal-transition">
+                    <div class="modal-content">
+                        <div class="career-name">
+                            <h4></h4>
+                        </div>
+                        <form action="" enctype="multipart/form-data" class="ajax redirect apply-job" method="post">
+                            {% csrf_token %}
+                            <p>
+                                <label for="">Full Name</label>
+                                {{apply_form.name}}
+                            </p>
+                            <p>
+                                <label for="">Phone Number</label>
+                                {{apply_form.phone}}
+                            </p>
+                            <p>
+                                <label for="">E-Mail</label>
+                                {{apply_form.email}}
+                            </p>
+                            <p>
+                                <label class="filelabel">
+                                    <span class="title">
+                                        Upload CV
+                                    </span>
+                                    <!-- <input class="FileUpload1 FileInput" name="booking_attachment" type="file"/> -->
+                                    {{apply_form.cv}}
+                                </label>
+                            </p>
+                            <p>
+                                <button class="popup-submit" type="submit">SUBMIT</button>
+                            </p>
+                        </form>
+                      </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
+
+{% block static %}
+<style>
+    .career-name h4{
+        font-size: 25px;
+    font-family: "montserratregular";
+    margin-bottom: 10px;
+    font-weight: 800;
+
+    }
+    .FileUpload1{
+        display: none;
+    }
+    .modal-wrapper {
+  position: absolute;
+  z-index: 9999;
+  top: 6em;
+  left: 50%;
+  width: 32em;
+  margin-left: -16em;
+  background-color: #fff;
+  box-shadow: 0 0 1.5em hsla(0, 0%, 0%, 0.35);
+}
+
+.modal-transition {
+  transition: all 0.3s 0.12s;
+  transform: translateY(-10%);
+  opacity: 0;
+}
+
+.modal.is-visible .modal-transition {
+  transform: translateY(0);
+  opacity: 1;
+  border-radius: 10px;
+}
+    .modal-overlay {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: hsla(0, 0%, 0%, 0.5);
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.3s, opacity 0.3s;
+}
+
+.modal.is-visible .modal-overlay {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+    .modal {
+    position: absolute;
+    z-index: 10000; /* 1 */
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.modal.is-visible {
+    visibility: visible;
+}
+    .popup-submit{
+        background-color: #5BBA64;
+        border-radius: 35px;
+        color: #fff;
+        font-size: 16px;
+        text-align: center;
+        padding: 11px 20px;
+    }
+    .filelabel {
+    width: 120px;
+    background: #DDDDDD;
+    border-radius: 35px;
+    display: block;
+    padding: 5px;
+    transition: border 300ms ease;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+}
+.filelabel i {
+    display: block;
+    font-size: 30px;
+    padding-bottom: 5px;
+}
+.filelabel i,
+.filelabel .title {
+  color: grey;
+  transition: 200ms color;
+}
+
+.filelabel:hover i,
+.filelabel:hover .title {
+  color: #1665c4;
+}
+#FileInput{
+    display:none;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    padding: 40px;
+    border: 1px solid #888;
+    border-radius: 5px;
+}
+.modal-content  form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.modal-content  form input::placeholder{
+    color: #000;
+    font-family: "montserratregular";
+    font-size: 15px;
+}
+.modal-content  form input{
+    border-bottom: 1px solid #999;
+    padding-bottom: 6px;
+    width: 100%;
+    font-family: "montserratregular";
+}
+.modal-content  form label{
+    margin-bottom: 7px;
+    display: block;
+    font-size: 14px;
+}
+.modal-content  form p{
+    margin-bottom: 17px;
+    width: 48%;
+}
+.modal-content  form p:last-child{
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.modal-content  form p:nth-child(2n){
+    margin-right: 10px;
+}
+
+.modal-content  form p:nth-child(3){
+    width: 49%;
+}
+.modal-content  form p:nth-child(4){
+    width: 100%;
+}
+.modal-content  form p:nth-child(5){
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+</style>
+<script>
+    $('.modal-toggle').on('click', function(e){
+        e.preventDefault();
+        $('.modal').toggleClass('is-visible');
+
+        url = $(this).attr('data-url');
+        designation = $(this).parent().find('.designation-name').html()
+
+        $('.modal .modal-content form.apply-job').attr('action', url);
+        $('.modal .modal-content .career-name h4').html(designation)
+    });
+
+
+    var selector = '#career section.wrapper div.career-top div.time span';
+
+    $("#career section.wrapper div.career-top div.time span").on("click", function () {
+        let job_type = $(this).attr("data-job_type");
+        $(selector).removeClass('active');
+        $(this).addClass('active');
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'web:get_careers' %}",
+            dataType: "json",
+            data: {job_type:job_type},
+            success: function (data) {
+                var html_content = data["html_content"];
+                $("#career section.wrapper div.career-bottom ul").html(html_content);
+            },
+            error: function (data) {},
+        });
+    });
+</script>
+{% endblock %}
+
+
+
+
+

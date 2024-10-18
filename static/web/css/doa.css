@@ -1,0 +1,966 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    background: transparent;
+    font-weight: normal;
+    text-decoration: none;
+    outline: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+body {
+    font-family: "../fonts/poppinsregular";
+    font-size: 17px;
+    color: #000;
+    overflow-x: hidden;
+    min-width: 320px;
+    font-weight: 500;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+input,
+textarea,
+select {
+    font-family: "../fonts/poppinsregular";
+    font-weight: 500;
+}
+
+a {
+    color: #000;
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+p {
+    line-height: 1.3em;
+    font-size: 15px;
+    font-family: "montserratregular";
+    font-weight: 500;
+    color: #999;
+}
+
+.hidden {
+    display: none;
+}
+
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1350px;
+}
+
+.title-box {
+    margin-bottom: 20px;
+}
+
+.title-box h4 {
+    font-size: 25px;
+    font-family: "montserratsemibold";
+}
+
+.button a {
+    color: #fff;
+    background: blue;
+    padding: 10px;
+    border-radius: 35px;
+}
+
+.learn-button a {
+    background-color: #5bba64;
+    display: inline-block;
+    font-size: 14px;
+    padding: 14px 30px;
+    border-radius: 30px;
+    color: #fff;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5.5px);
+    position: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+header head-card {
+    position: absolute;
+    z-index: 2;
+    left: 242px;
+}
+
+header head-card div.logo {
+    width: 60px;
+}
+
+header head-card div.logo a {}
+
+header head-card div.logo a img {
+    width: 100%;
+    display: block;
+}
+
+header div.nav-bar {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header div.nav-bar ul.screen-menu {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+    position: absolute;
+    right: 223px;
+}
+
+#menu-icon {
+    display: none;
+    width: 35px;
+}
+
+.active {
+    display: block !important;
+}
+
+#menu-icon img {
+    width: 100%;
+    display: block;
+}
+
+#mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0px;
+    background: #fff;
+    padding: 30px;
+    z-index: 2;
+    bottom: 0;
+    display: none;
+    /* width: 225px; */
+    width: 90%;
+    padding-top: 55px;
+    transition: all 0.4s ease-in;
+}
+
+#mobile-menu ul {}
+
+#mobile-menu ul li {
+    margin-bottom: 25px;
+    font-family: "montserratregular";
+}
+
+#mobile-menu ul li:hover {
+    opacity: 0.5;
+}
+
+#mobile-menu ul li a {}
+
+span.close {
+    position: absolute;
+    right: 23px;
+    top: 18px;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+span.close img {
+    display: block;
+    width: 100%;
+}
+
+#overlay {
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    display: none;
+}
+
+nav.active {
+    right: 0;
+}
+
+header div.nav-bar ul li {
+    font-size: 16px;
+    color: #ffffff;
+    font-family: "montserratlight";
+}
+
+header div.nav-bar ul li a {
+    color: #fff;
+}
+
+header div.spotlight {
+    display: flex;
+    justify-content: center;
+    padding: 100px 0px;
+}
+
+header div.spotlight h4 {
+    color: #fff;
+    font-size: 35px;
+    font-family: "montserratsemibold";
+}
+
+#about {
+    padding: 70px 0px 0;
+    position: relative;
+}
+
+#about section.wrapper {}
+
+#about div.title-box {}
+
+#about div.title-box h4 {
+    text-align: center;
+}
+
+#about div.content-box {
+    padding: 35px 0px;
+    margin: 0 auto;
+    background: #fafffa;
+    border-width: 1px 0px;
+    border-style: dashed;
+    border-color: #409047;
+}
+
+#about div.content-box .content-img {
+    position: absolute;
+    width: 15px;
+    top: 139px;
+    left: 252px;
+}
+
+#about div.content-box .content-img img {
+    width: 100%;
+    display: block;
+}
+
+#about div.content-box p {
+    font-family: "montserratregular";
+    font-size: 15px;
+    color: #888888;
+    /* width: 63%; */
+    text-align: center;
+    margin: 0 auto;
+}
+
+#team {
+    padding: 140px 0px;
+}
+
+#team section.wrapper {}
+
+#team section.wrapper div.team-topbox {
+    margin-bottom: 40px;
+}
+
+#team section.wrapper div.team-topbox div.title-box {}
+
+#team section.wrapper div.team-topbox div.title-box h4 {
+    text-align: center;
+}
+
+#team section.wrapper div.team-topbox p {
+    font-size: 17px;
+    font-family: "montserratregular";
+    text-align: center;
+    width: 78%;
+    margin: 0 auto;
+}
+
+#team section.wrapper ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 90px;
+}
+
+#team section.wrapper ul li {
+    position: relative;
+    width: 24%;
+    margin: 0 10px;
+}
+
+#team section.wrapper ul li div.team-imgbox {
+    width: 120px;
+    border-radius: 50%;
+    z-index: 1;
+    left: 27%;
+    top: 67px;
+    overflow: hidden;
+    position: absolute;
+}
+
+#team section.wrapper ul li div.team-imgbox img {
+    z-index: 3;
+    aspect-ratio: 7/7;
+    flex-grow: 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#team section.wrapper ul li div.team-content {
+    border-radius: 14px;
+    background: #f9f9f9;
+    padding: 65px 7px 30px;
+    flex-direction: column;
+    justify-content: start;
+    bottom: -130px;
+    width: 100%;
+    display: flex;
+}
+
+#team section.wrapper ul li div.team-content:hover {
+    background: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+#team section.wrapper ul li div.team-content:hover div.social-icons div.social-img img {
+    filter: revert;
+}
+
+#team section.wrapper ul li div.team-content h2 {
+    font-family: "montserratsemibold";
+    font-size: 17px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+#team section.wrapper ul li div.team-content h5 {
+    font-family: "montserratregular";
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
+#team section.wrapper ul li div.team-content div.social-icons {
+    width: 65%;
+    display: flex;
+    gap: 15px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+#team section.wrapper ul li div.team-content div.social-icons div.social-img {
+    width: 25%;
+}
+
+#team section.wrapper ul li div.team-content div.social-icons div.social-img img {
+    filter: grayscale(1);
+}
+
+#facilities {
+    padding: 100px 0px;
+}
+
+#facilities section.wrapper {}
+
+#facilities section.wrapper div.team-topbox {}
+
+#facilities section.wrapper div.team-topbox div.title-box {}
+
+#facilities section.wrapper div.team-topbox div.title-box h4 {
+    text-align: center;
+}
+
+#facilities section.wrapper div.team-topbox p {
+    font-size: 17px;
+    font-family: "montserratregular";
+    text-align: center;
+    width: 78%;
+    margin: 0 auto;
+}
+
+#facilities section.wrapper div.gallery-box {
+    margin-top: 40px;
+}
+
+#facilities section.wrapper div.gallery-box ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* grid-template-columns: repeat(auto-fit, minmax(250px, 3fr)); */
+    /* gap: 10px; */
+    grid-gap: 30px;
+}
+
+#facilities section.wrapper div.gallery-box ul li {
+    cursor: pointer;
+    width: 30%;
+    position: relative;
+    box-shadow: -2px 4px 7px 0px #d9d9d9;
+    border-radius: 10px;
+}
+
+#facilities section.wrapper div.gallery-box ul li div.gallery-img {
+    width: 100%;
+    border-radius: 24px;
+}
+
+#facilities section.wrapper div.gallery-box ul li div.gallery-img img {
+    aspect-ratio: 7/5;
+    flex-grow: 1;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#facilities section.wrapper div.gallery-box ul li div.gallery-content {
+    padding: 0px 24px;
+    width: 100%;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /* display: none; */
+}
+
+#facilities section.wrapper div.gallery-box ul li:hover div.gallery-content {
+    height: 42%;
+    opacity: 1;
+    display: block;
+    transition: 0.2s all ease;
+}
+
+/* #facilities section.wrapper div.gallery-box ul li:hover div.gallery-content div.gallery-search {
+    position: absolute;
+    bottom: 121px;
+    width: 56px;
+    left: 150px;
+} */
+
+#facilities section.wrapper div.gallery-box ul li div.gallery-content h4 {
+    font-family: "montserratsemibold";
+    margin-bottom: 3px;
+    padding-top: 15px;
+    text-align: center;
+    font-size: 15px;
+    color: #232323;
+}
+
+#facilities section.wrapper div.gallery-box ul li div.gallery-content p {
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+#activity {
+    padding: 70px 0px;
+}
+
+#activity section.wrapper {}
+
+#activity section.wrapper div.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+#activity section.wrapper div.top-container div.title-box {
+    margin-bottom: 0;
+}
+
+#activity section.wrapper div.top-container div.title-box h4 {}
+
+#activity section.wrapper div.top-container div.arrow-slider {
+    display: flex;
+    gap: 10px;
+}
+
+#activity section.wrapper div.top-container div.arrow-slider div.slider-arrowright {
+    width: 42px;
+    background-color: #5bba64;
+    border-radius: 50px;
+    padding: 12px;
+}
+
+#activity section.wrapper div.top-container div.arrow-slider div.slider-arrowright img {}
+
+#activity section.wrapper div.top-container div.arrow-slider div.slider-arrowleft {
+    width: 42px;
+    background-color: #5bba64;
+    border-radius: 50px;
+    padding: 12px;
+}
+
+#activity section.wrapper div.top-container div.arrow-slider div.slider-arrowleft img {}
+
+#activity section.wrapper div.activity-container {
+    margin-top: 25px;
+}
+
+#activity section.wrapper div.activity-container ul {
+    display: flex;
+    justify-content: start;
+}
+
+#activity section.wrapper div.activity-container ul li {
+    width: calc(33% - 20px);
+    margin: 0 10px 20px;
+    padding: 8px 8px 9px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 24px;
+}
+
+#activity section.wrapper div.activity-container ul li div.top-activity {
+    position: relative;
+}
+
+#activity section.wrapper div.activity-container ul li div.top-activity span {
+    color: #fff;
+    position: absolute;
+    display: inline-block;
+    bottom: 6px;
+    left: 15px;
+    background: #05020245;
+    padding: 6px 13px;
+    border-radius: 7px;
+}
+
+#activity section.wrapper div.activity-container ul li div.top-activity img {
+    aspect-ratio: 5/5;
+    flex-grow: 1;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#activity section.wrapper div.activity-container ul li div.bottom-activity {}
+
+#activity section.wrapper div.activity-container ul li div.bottom-activity h3 {
+    margin: 10px 0px;
+    font-family: "montserratsemibold";
+    font-size: 18px;
+}
+
+#activity section.wrapper div.activity-container ul li div.bottom-activity p {
+    font-size: 17px;
+}
+
+#activity section.wrapper div.slider-button {
+    /* display: flex; */
+    justify-content: center;
+    margin-top: 30px;
+    display: none;
+}
+
+#activity section.wrapper div.slider-button div.slider-img {
+    width: 5%;
+}
+
+#activity section.wrapper div.slider-button div.slider-img img {}
+
+#contact-us {
+    padding: 70px 0px;
+    background: url(../images/contact-dob.png);
+    position: relative;
+    background-repeat: no-repeat;
+    background-color: salmon;
+    background-size: cover;
+}
+
+#contact-us section.wrapper {}
+
+#contact-us div.top-box {}
+
+#contact-us div.top-box div.title-box {
+    text-align: center;
+}
+
+#contact-us div.top-box div.title-box h4 {
+    color: #fff;
+}
+
+#contact-us div.contact-info {}
+
+#contact-us div.contact-info ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+#contact-us div.contact-info ul li {
+    background: #f9f9f9;
+    width: 30%;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12.5px);
+    border-radius: 24px;
+}
+
+#contact-us div.contact-info ul li div.top-contact {
+    width: 60px;
+    padding: 20px;
+    background: #5bba64;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+#contact-us div.contact-info ul li div.top-contact img {}
+
+#contact-us div.contact-info ul li div.bottom-contact {
+    margin-top: 7%;
+    overflow: hidden;
+}
+
+#contact-us div.contact-info ul li div.bottom-contact p {
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+
+@media all and (max-width: 1280px) {
+    header head-card {
+        left: 156px;
+    }
+
+    header div.nav-bar ul {
+        width: 60%;
+        right: 80px;
+    }
+
+    #about div.content-box .content-img {
+        position: absolute;
+        width: 15px;
+        top: 139px;
+        left: 267px;
+    }
+
+    footer section.wrapper section.content {
+        margin-bottom: 14px;
+    }
+}
+
+@media all and (max-width: 1080px) {
+    header div.nav-bar ul li {
+        font-size: 14px;
+    }
+
+    header head-card {
+        left: 142px;
+    }
+
+    section.spotlight section.wrapper div.main-bar {
+        bottom: 67px;
+        width: 80%;
+    }
+
+    header div.nav-bar ul.screen-menu {
+        right: 160px;
+    }
+
+    #about div.content-box p {
+        width: 80%;
+    }
+
+    #about div.content-box .content-img {
+        left: 177px;
+    }
+
+    #team {
+        padding: 50px 0px;
+    }
+
+    #team section.wrapper div.team-topbox p {
+        width: 85%;
+    }
+
+    #activity section.wrapper div.activity-container ul li div.bottom-activity p {
+        font-size: 16px;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 26%;
+    }
+}
+
+@media all and (max-width: 980px) {
+    #facilities section.wrapper div.gallery-box ul li {
+        width: 45%;
+    }
+
+    header head-card div.logo {
+        width: 90px;
+    }
+
+    header head-card {
+        left: 75px;
+    }
+
+    header div.nav-bar ul.screen-menu {
+        width: 60%;
+        right: 95px;
+    }
+
+    #about div.content-box p {
+        width: 97%;
+    }
+
+    #about div.content-box .content-img {
+        left: 83px;
+    }
+
+    #team section.wrapper div.team-topbox p {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    #team section.wrapper ul {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    #team section.wrapper li {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    #team section.wrapper ul li {
+        width: 42%;
+        margin-top: 100px;
+    }
+
+    #team section.wrapper ul li div.team-imgbox {
+        width: 132px;
+        left: 24%;
+        top: -45%;
+    }
+
+    #activity section.wrapper div.top-container div.arrow-slider div.slider-arrowright {
+        width: 37px;
+        height: 37px;
+    }
+
+    #activity section.wrapper div.top-container div.arrow-slider div.slider-arrowleft {
+        width: 37px;
+        height: 37px;
+    }
+
+    #contact-us div.contact-info ul li {
+        width: 32%;
+        height: 150px;
+        padding: 7px;
+    }
+
+    #contact-us div.contact-info ul li div.bottom-contact p {
+        font-size: 13px;
+    }
+
+    #facilities section.wrapper div.gallery-box ul li:hover div.gallery-content {
+        height: 20%;
+    }
+
+    footer section.wrapper section.content div.news {
+        width: 90%;
+        margin-bottom: 60px;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 39%;
+    }
+
+    footer section.wrapper section.content {
+        margin-bottom: 30px;
+    }
+
+    #contact-us div.contact-info ul li div.top-contact {
+        width: 51px;
+        padding: 17px;
+    }
+}
+
+@media all and (max-width: 768px) {
+    header head-card {
+        left: 47px;
+    }
+
+    header div.nav-bar {
+        position: relative;
+        justify-content: flex-end;
+        padding-right: 20px;
+    }
+
+    header div.nav-bar ul {
+        width: 70%;
+        right: 32px;
+    }
+
+    header div.nav-bar ul.screen-menu {
+        display: none;
+    }
+
+    #menu-icon {
+        display: block;
+    }
+
+    header nav.menu {
+        display: none;
+    }
+
+    #team section.wrapper ul li {
+        margin-top: 230px;
+    }
+
+    #team section.wrapper ul {
+        margin-top: 40px;
+    }
+}
+
+@media all and (max-width: 640px) {
+    header div.nav-bar {
+        display: none;
+    }
+
+    header head-card {
+        left: 27px;
+    }
+
+    #contact-us div.contact-info ul {
+        flex-wrap: wrap;
+    }
+
+    #contact-us div.contact-info ul li {
+        width: 60%;
+        margin: 0 auto;
+        margin-bottom: 15px;
+    }
+
+    #about div.content-box .content-img {
+        left: 52px;
+    }
+
+    #team section.wrapper ul li div.team-imgbox {
+        width: 132px;
+        left: 27%;
+    }
+
+    #team section.wrapper ul li {
+        width: 76%;
+    }
+
+    #facilities section.wrapper div.gallery-box ul li:hover div.gallery-content {
+        height: 25%;
+    }
+
+    #facilities section.wrapper div.team-topbox p {
+        width: 100%;
+    }
+
+    footer section.wrapper section.content div.about {
+        width: 100%;
+        margin-top: 48px;
+    }
+
+    footer section.wrapper section.content div.about div.icons {
+        width: 40%;
+    }
+
+    footer div.bottom-line div.details p {
+        font-size: 14px;
+    }
+
+    footer section.wrapper section.content div.info h5 {
+        margin-bottom: 18px;
+    }
+
+    footer section.wrapper section.content div.about h5 {
+        margin-bottom: 18px;
+    }
+}
+
+@media all and (max-width: 480px) {
+    header head-card {
+        left: 24px;
+    }
+
+    header div.spotlight {
+        padding: 80px 0px;
+    }
+
+    footer section.wrapper section.content {
+        flex-wrap: wrap;
+    }
+
+    header div.spotlight h4 {
+        font-size: 25px;
+    }
+
+    #contact-us div.contact-info ul li {
+        width: 80%;
+    }
+
+    footer section.wrapper section.content div.news {
+        margin-bottom: 50px;
+    }
+
+    footer section.wrapper section.content div.about {
+        margin-top: 40px;
+    }
+
+    footer section.wrapper section.content div.about div.icons {
+        width: 50%;
+    }
+
+    section.spotlight section.wrapper div.main-bar {
+        bottom: 27px;
+        width: 100%;
+    }
+
+    #facilities section.wrapper div.gallery-box ul li {
+        width: 85%;
+        margin: 0 auto;
+    }
+
+}
+
+@media all and (max-width: 360px) {
+    #team section.wrapper ul li div.team-imgbox {
+        left: 15%;
+    }
+
+    footer section.wrapper section.content div.news {
+        width: 95%;
+    }
+
+    #facilities section.wrapper div.gallery-box ul li:hover div.gallery-content {
+        height: 30%;
+    }
+}
+
+@media all and (max-width: 321px) {}

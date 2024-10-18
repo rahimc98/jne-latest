@@ -1,0 +1,22 @@
+{% load static %}
+{% if gallery %}
+    {% for item in gallery %}
+        <li>
+            <div class="gallery-img">
+                <img src="{{item.image.url}}" alt="Image" />
+            </div>
+            <div class="gallery-content">
+                <h5>{{item.institution.name}}</h5>
+                <div class="gallery-location">
+                    <div class="location-img">
+                        <img src="{% static 'web/images/icons/grey-location.svg' %}" alt="" />
+                    </div>
+                    <span>{{item.institution.location}}</span>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+
+{% else %}
+    <p>No Images</p>
+    {% endif %}

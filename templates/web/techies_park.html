@@ -1,0 +1,376 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block content %}
+    {% if is_techies_park %}
+    <div class="spotlight techies-main">
+        <h4>
+            {% if page_name %}
+            {{page_name}}
+            {% else %}
+            {{title}}
+            {% endif %}
+        </h4>
+    </div>
+
+    <section id="facility-about">
+        <section class="wrapper">
+          <div class="about-container">
+            <div class="about-left">
+              <div class="top-tittle">
+                <h4>About Talrop</h4>
+              </div>
+              <p>
+                Techies Park is one of the business initiative by Talrop that serves
+                as a community hub, being built in every assembly constituency of
+                Kerala. Talrop focuses on Education, Technology, Jobs and
+                Entrepreneurship to build a strong startup ecosystem in Kerala.
+                Techies Parks is dedicated to achieving multiple goals including
+                bridging the gap between industry and academy, fostering more
+                entrepreneurship within the state, ensuring that technology is
+                accessible in every corner of the state, creating numerous job
+                opportunities, and attracting foreign investment from abroad. Each
+                Techies Park is built by spending Rupees 1 Crore in every assembly
+                constituencies.
+              </p>
+            </div>
+            <div class="about-right">
+              <div class="img-container">
+                <img src="../../static/web/images/facilities/about.png" alt="Image" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--Wrapper > End-->
+      </section>
+      <!--#Facility-about > End-->
+      
+      <section id="objective">
+        <section class="wrapper">
+          <!-- ReadMore-Box -->
+          <div class="container">
+            <div class="left-card">
+                <div class="number-box">
+                    <h1>01</h1>
+                </div>
+            </div>
+            <div class="right-card">
+                <input type="checkbox" id="check" />
+                <p>
+                    The students from Jamia Nadwiyya campus who joined Techies Park were highly skilled and possessed a deep understanding of the local culture and challenges faced by startups in Kerala. Talrop succeeded in training engineers from this arabic college by teaching them coding alongside their regular studies.
+                </p>
+                <!-- <div class="content">
+                  <p>
+                    by teaching them coding alongside their regular studies.
+                  </p>
+                </div> -->
+                <!-- <label for="check">Read more</label> -->
+            </div>
+          </div>
+          <!--ReadMore > Box End-->
+          <div class="container">
+            <div class="left-card">
+                <div class="number-box">
+                    <h1>02</h1>
+                </div>
+            </div>
+            <div class="right-card">
+                <input type="checkbox" id="check" />
+                <p>
+                    The Techies Park offers a unique blend of programmes including industrial visits, workshops and technology awareness programmes for students, ICT training programme for teachers, cyber awareness programme for parents, e-literacy programme for locals and digital marketing programme for entrepreneurs.
+                </p>
+                <!-- <div class="content">
+                  <p>
+                  </p>
+                </div>
+                <label for="check">Read more</label> -->
+            </div>
+          </div>
+          <div class="container">
+            <div class="left-card">
+                <div class="number-box">
+                    <h1>03</h1>
+                </div>
+            </div>
+            <div class="right-card">
+                <input type="checkbox" id="check" />
+                <p>
+                    Talrop has embarked on a mission that is set to transform Kerala's technological landscape. With a vision to build 140 Techies Parks by the end of 2025, Talrop is committed to changing the entire future of the state and put an end to its rising unemployment rate. These Techies Parks are not only significant for its economic impact.
+                </p>
+                <!-- <div class="content">
+                  <p>
+                    
+                  </p>
+                </div>
+                <label for="check">Read more</label> -->
+            </div>
+          </div>
+        </section>
+      </section>
+      
+      <section id="Teams">
+        <section class="wrapper">
+          <div class="title">
+            <h4>Team Talrop</h4>
+          </div>
+          <ul class="all-team">
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/safeer.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Safeer Najumudeen</h3>
+                <span>Founder and CEO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="https://www.linkedin.com/in/safeerpangode/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/Jhones.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Jhons Joseph</h3>
+                <span>Director and coo</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="http://linkedin.com/in/jonesjoseph/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img src="../../static//web/images/facilities/anas.png" alt="Image" />
+              </div>
+              <div class="details">
+                <h3>Anas Abdul Gafoor</h3>
+                <span>Founder and CFO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="https://www.linkedin.com/in/anas-abdul-gafoor-ab258535/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/ajees.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Ajeesh Satheeshan</h3>
+                <span>Director and CMO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="http://linkedin.com/in/ajeesh-satheesan/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/shameer.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Shameer Khan</h3>
+                <span>Founder and CAO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="https://www.linkedin.com/in/shameerkhanhs/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/sobir.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Sobir Najumudeen</h3>
+                <span>Founder and CTO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="https://www.linkedin.com/in/sobirpangode/">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+      
+            <li>
+              <div class="img-container">
+                <img
+                  src="../../static//web/images/facilities/afifa.png"
+                  alt="Image"
+                />
+              </div>
+              <div class="details">
+                <h3>Afifa Salim</h3>
+                <span>Director and CHRO</span>
+              </div>
+              <div class="social">
+                <a target="_blank" href="https://www.linkedin.com/in/afifasalim">
+                  <img
+                    src="../../static/web/images/facilities/linkdin.png"
+                    alt="Instagram"
+                  />
+                  <p>| &nbsp; Linkedin Profile</p>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </section>
+      
+      <section id="facility">
+        <section class="wrapper">
+          <div class="container">
+            <div class="left">
+              <div class="img-container">
+                <img
+                  src="../../static/web/images/facilities/facility1.jpg"
+                  alt="Images"
+                />
+              </div>
+            </div>
+            <div class="right">
+              <p>
+                The Techies Park in Jamia Nadwiyya campus was established in 2018 with
+                the aim of bridging the industry-academic gap and providing the
+                students of the college with the knowledge and tools they need to have
+                a successful career. The BCA students of Jamia Nadwiyya campus spend
+                half their day in college and the other half at Techies Park, which
+                enables them to apply their knowledge into practice by using the
+                facilities provided. With the help of Talrop and its Techies Park,
+                Jamia Nadwiyya campus has become a hub for nurturing aspiring
+                engineers.
+              </p>
+            </div>
+          </div>
+          <div class="container">
+            <div class="right">
+              <p>
+                The Techies Park in Jamia Nadwiyya campus was established in 2018 with
+                the aim of bridging the industry-academic gap and providing the
+                students of the college with the knowledge and tools they need to have
+                a successful career. The BCA students of Jamia Nadwiyya campus spend
+                half their day in college and the other half at Techies Park, which
+                enables them to apply their knowledge into practice by using the
+                facilities provided. With the help of Talrop and its Techies Park,
+                Jamia Nadwiyya campus has become a hub for nurturing aspiring
+                engineers.
+              </p>
+            </div>
+            <div class="left">
+              <div class="img-container">
+                <img
+                  src="../../static/web/images/facilities/facility3.jpg"
+                  alt="Images"
+                />
+              </div>
+            </div>
+            
+          </div>
+        </section>
+      </section>
+
+      <div id="facilities">
+        <div class="wrapper">
+            <div class="top-facilities">
+                <div class="title-box">
+                    <h4>Facilities</h4>
+                </div>
+            </div>
+            <ul class="facility-slider-box">
+                <li>
+                    <div class="gallery-img">
+                        <img src="../../static/web/images/facilities/facility1.jpg" alt="Image" />
+                    </div>
+                    <div class="gallery-content">
+                        <h4>Working Area</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="gallery-img">
+                        <img src="../../static/web/images/facilities/facility2.jpg" alt="Image" />
+                    </div>
+                    <div class="gallery-content">
+                        <h4>Working Area</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="gallery-img">
+                        <img src="../../static/web/images/facilities/facility3.jpg" alt="Image" />
+                    </div>
+                    <div class="gallery-content">
+                        <h4>Working Area</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="gallery-img">
+                        <img src="../../static/web/images/facilities/facility4.jpg" alt="Image" />
+                    </div>
+                    <div class="gallery-content">
+                        <h4>Working Area</h4>
+                    </div>
+                </li>
+                <li>
+                  <div class="gallery-img">
+                      <img src="../../static/web/images/facilities/facility4.jpg" alt="Image" />
+                  </div>
+                  <div class="gallery-content">
+                      <h4>Working Area</h4>
+                  </div>
+              </li>
+              </ul>
+        </div>
+      </div>
+      <!--#testimonial>-->
+      
+    {% endif %}
+{% endblock %}
