@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		<meta charset="utf-8" />
+		<title>Halticket Ticket</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+		<style type="text/css">
+			@page {
+				size: 297mm 210mm;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: 'Open Sans', sans-serif;
+				padding: 0;
+				margin: 0;
+				font-size: 22px;
+				font-weight: 700;
+				color: black;
+				box-sizing: border-box;
+			}
+
+			p {
+				padding: 0;
+				margin: 0;
+			}
+
+			.card {
+				background-image: url("{% static 'web/images/HALLTICKET.png'%}");
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center;
+				width: 1150px;
+				height: 1610px;
+				max-width: 100%;
+				min-height: 100%;
+				position: relative;
+				border: 1px dotted;
+			}
+			.reg_no {
+				position: absolute;
+				top: 11.22%;
+				left: 75%;
+				word-wrap: normal;
+			}
+			.exam {
+				position: absolute;
+				top: 19.5%;
+				left: 5%;
+				right: 5%;
+				text-align: center;
+				word-wrap: normal;
+			}
+			.center {
+				position: absolute;
+				top: 23.2%;
+				left: 35%;
+				width: 80%;
+				font-weight: 600;
+				font-size: 16px;
+				word-wrap: normal;
+			}
+			.name {
+				position: absolute;
+				top: 26.3%;
+				left: 35%;
+				width: 80%;
+				font-weight: 600;
+				font-size: 16px;
+				word-wrap: normal;
+			}
+			.dob {
+				position: absolute;
+				top: 29.3%;
+				left: 35%;
+				width: 80%;
+				font-weight: 600;
+				font-size: 16px;
+				word-wrap: normal;
+			}
+			.table{
+				position: absolute;
+				top: 34.3%;
+				left: 7%;
+				width: 86%;
+				font-weight: 600;
+				font-size: 16px;
+				word-wrap: normal;
+			}
+			.table table {
+				border-collapse: collapse;
+				width: 100%;
+				border-top: 1px solid;
+
+			}
+			.table table th,td{
+				border-bottom: 1px solid;
+				padding: 14px 8px ;
+			}
+			.text-center{
+				text-align: center;
+			}
+			.text-left{
+				text-align: center;
+			}
+			.width-20{
+				width: 20%;
+			}
+			.width-15{
+				width: 15%;
+			}
+			.width-80{
+				width: 65%;
+			}
+
+		</style>
+	</head>
+	<body>
+		{% for item in items %}
+		<div class="card">
+			<p class="reg_no">{{item.student.reg_no}}</p>
+			<p class="exam">{{item.exam.name}}</p>
+			<p class="center">{{item.student.course.college}}</p>
+			<p class="name">{{item.student.name}}</p>
+			<p class="dob">{{item.student.dob|date:'d/m/Y'}}</p>
+			<div class="table">
+				<table>
+					
+					<tbody>
+						{% for i in item.exam.batch.get_subjects %}
+						<tr>
+							<!-- <td class="width-15">Paper 0{{forloop.counter}}</td> -->
+							<td class="width-80">{{i.name}}</td>
+							<td class="width-20" > <span style="color:rgb(142, 153, 164);font-size: 15px;font-weight: 200;">Signature</span></td>
+							
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			
+			
+		
+		</div>
+		{% endfor %}
+	</body>
+</html>

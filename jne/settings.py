@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "admin_interface",
     "colorfield",
+    "import_export",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "web",
+    'examination'
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
