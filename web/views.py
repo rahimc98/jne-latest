@@ -1,9 +1,11 @@
 import json
+from datetime import datetime
 
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from examination.models import GradingSystem, Student
 from web.functions import generate_form_errors
 
 from .forms import ContactForm, JobApplyForm
@@ -380,3 +382,53 @@ def job_apply(request, slug):
     return HttpResponse(
         json.dumps(response_data), content_type="application/javascript"
     )
+
+
+def exam_result(request):
+
+    context = {
+        "title": "Exam Result",
+        "is_exam_rsult": True,
+    }
+
+    return render(request, "web/exam_result.html", context)
+
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+
+def find_result(request):
+    hall_ticket = request.GET.get("hall_ticket")
+    dob = request.GET.get("dob")
+    response_data = {
+        "status": "false",
+        "is_data": False,
+    }
+
+    try:
+        # Fetch the student object
+        student = Student.objects.get(reg_no=hall_ticket, dob=dob)
+        is_data = True
+        name = student.name
+        reg_no = student.reg_no
+        program = student.course.name
+
+        # Fetch exam student data once
+        exam_student = student.get_exam_student()
+        sem = exam_student.exam.batch.name
+        
+        download_url = student.get_print_grade_card()
+        
+        # Prepare response data
+        response_data.update({
+            "status": "true",
+            "is_data": is_data,
+            "name": name or "",
+            "reg_no": reg_no or "",
+            "program": program or "",
+            "sem": sem or "",
+            "download_url": download_url
+        })
+        print('response_data=',response_data)
+    except ObjectDoesNotExist:
+        response_data["status"] = "false"
+    return JsonResponse(response_data)

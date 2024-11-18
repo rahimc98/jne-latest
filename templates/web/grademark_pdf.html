@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title> Grade Card</title>
+
+    <style>
+        @page { size: A4 landscape; }
+        body{
+            padding: 0px !important;
+            margin: 0px !important;
+            background-image: url("{% static 'web/pdf/grade_card-half.png'%}");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+        .card {
+            width: 992px;
+			height: 1228px;
+            max-width: 100%;
+            min-height: 100%;
+            position: relative;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px dotted;
+        }
+       
+        .exam{
+            position: absolute;
+            top: 38.2%;
+            left: 5%;
+            right: 5%;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .reg_no{
+            position: absolute;
+            top: 48.1%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .name{
+            position: absolute;
+            top: 50.4%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .program{
+            position: absolute;
+            top: 52.5%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .sem{
+            position: absolute;
+            top: 54.6%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        
+        .table{
+            position: absolute;
+            top: 57%;
+            left: 5.5%;
+            /* right: 5%; */
+            /* text-align: center; */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            width: 90% !important;
+        }
+        .table_2{
+            position: absolute;
+            top: 90%;
+            left: 5.5%;
+            width: 90% !important;
+       }
+       
+        th, td {
+            border: 2px solid #c9c3c3;
+            padding: 8.5px;
+            text-align: center;
+            /* background: #E1EAF1; */
+        }
+        th {
+            /* background-color: #D7D7D7; */
+            font-weight: 700;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="exam">{{exam}}</div>
+        <div class="reg_no">{{reg_no}}</div>
+        <div class="name">{{name}}</div>
+        <div class="program">{{program}}</div>
+        <div class="sem">{{sem}}</div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sl.No</th>
+                    <th>Course Title</th>
+                    <th>Credit</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                    <th>Grade Point</th>
+                    <th>Credit Point</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in mark_data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.subject}}</td>
+                    <td>{{i.credit}}</td>
+                    <td>{{i.mark}}</td>
+                    <td>{{i.grade}}</td>
+                    <td>{{i.grade_point}}</td>
+                    <td>{{i.credit_point}}</td>
+                    <td>{{i.stutus}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"> <b >Total</b> </td>
+                    <td> <b>{{total_credit}}</b> </td>
+                    <td colspan="3"></td>
+                    <td><b>{{total_credit_point}}</b></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table_2">
+            <thead>
+                <tr>
+                    <th >Semester Grade Point Average (SGPA)</th>
+                    <th >{{sgpa}}</th>
+                    <th >Overall Grade</th>
+                    <th>{{overall_grade}}</th>
+                </tr>
+                <tr>
+                    <th >Total No. of Working Days</th>
+                    <th>{{no_days}}</th>
+                    <th >No. of Days Present</th>
+                    <th>{{attentance}}</th>
+                </tr>
+            </thead>
+        </table>
+        
+    </div>
+
+</body>
+
+</html>

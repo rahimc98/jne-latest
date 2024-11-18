@@ -129,14 +129,11 @@
 			<p class="dob">{{item.student.dob|date:'d/m/Y'}}</p>
 			<div class="table">
 				<table>
-					
 					<tbody>
 						{% for i in item.exam.batch.get_subjects %}
 						<tr>
-							<!-- <td class="width-15">Paper 0{{forloop.counter}}</td> -->
 							<td class="width-80">{{i.name}}</td>
 							<td class="width-20" > <span style="color:rgb(142, 153, 164);font-size: 15px;font-weight: 200;">Signature</span></td>
-							
 						</tr>
 						{% endfor %}
 					</tbody>

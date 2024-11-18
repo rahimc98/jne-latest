@@ -31,7 +31,8 @@
 
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
-
+        {% block css %}
+        {% endblock %}
 
 
         <!-- slick -->
@@ -71,7 +72,7 @@
                         <li><a href="{% url 'web:career' %}">CAREERS</a></li>
                         <li><a href="{% url 'web:news' %}">NEWS</a></li>
                         <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
-                        <!-- <li><a href="{% url 'web:techies_park' %}">TECHIES PARK</a></li> -->
+                        <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
     
     
                     </ul>
@@ -112,6 +113,7 @@
                 <li><a href="{% url 'web:news' %}">NEWS</a></li>
                 <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
                 <li><a href="{% url 'web:techies_park' %}">TECHIES PARK</a></li>
+                <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
             </ul>
         </nav>
         {% if not is_index and not is_techies_park and not is_jne_about %}
@@ -155,6 +157,7 @@
                         <p> <a href="{% url 'web:institution' %}"> Institutions </a></p>
                         <p><a href="{% url 'web:techies_park' %}">Techies Park</a></p>
                         <p> <a href="{% url 'web:contact' %}"> Contact </a></p>
+                        <p> <a href="{% url 'web:exam_result' %}"> Results </a></p>
                     </div>
                     <div class="info">
                         <h5>Information</h5>
@@ -241,5 +244,7 @@
                 $('#id_slug').val(formatted_value);
     });
         </script>
+        {% block script %}
+        {% endblock %}
     </body>
 </html>

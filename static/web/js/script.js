@@ -58,13 +58,13 @@ $(document).ready(function () {
       equalcard("#career section.wrapper div.career-bottom ul li h3");
       
 
-    $(".main-slider").slick({
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: false,
-        autoplaySpeed: 4000,
-    }); 
+    // $(".main-slider").slick({
+    //     infinite: true,
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1,
+    //     autoplay: false,
+    //     autoplaySpeed: 4000,
+    // }); 
 
     
     function MySlickA() {

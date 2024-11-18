@@ -25,4 +25,6 @@ urlpatterns = [
     path("job-apply/<str:slug>/", views.job_apply, name="job_apply"),
     path("get-careers/", views.get_careers, name="get_careers"),
     path("get-gallery/", views.get_gallery, name="get_gallery"),
+    path("exam-result/", views.exam_result, name="exam_result"),
+    path("find-result/", views.find_result, name="find_result"),
 ]

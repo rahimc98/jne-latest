@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title> Grade Card</title>
+
+    <style>
+        @page { size: A4 landscape; }
+        body{
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        .card {
+            width: 992px;
+			height: 1404px;
+            max-width: 100%;
+            min-height: 100%;
+            position: relative;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px dotted;
+            background-image: url("{% static 'web/pdf/grade_card_full.png'%}");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+       
+        .exam{
+            position: absolute;
+            top: 24.5%;
+            left: 5%;
+            right: 5%;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .reg_no{
+            position: absolute;
+            top: 33.2%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .name{
+            position: absolute;
+            top: 35.2%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .program{
+            position: absolute;
+            top: 37.2%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .sem{
+            position: absolute;
+            top: 39.2%;
+            left: 24.5%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .sgpa{
+            position: absolute;
+            top: 72.3%;
+            left: 52%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .no_days{
+            position: absolute;
+            top: 77%;
+            left: 52%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .overall_grade{
+            position: absolute;
+            top: 72.3%;
+            left: 87%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .attentance{
+            position: absolute;
+            top: 77%;
+            left: 87%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .table{
+            position: absolute;
+            top: 42.7%;
+            left: 6%;
+            /* right: 5%; */
+            /* text-align: center; */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            width: 88% !important;
+        }
+       .table_2{
+            position: absolute;
+            top: 73%;
+            left: 6%;
+            width: 88% !important;
+       }
+        th, td {
+            border: 2px solid #c9c3c3;
+            padding: 8.5px;
+            text-align: center;
+            /* background: #E1EAF1; */
+        }
+        th {
+            /* background-color: #D7D7D7; */
+            font-weight: 700;
+        }
+        .text-left{
+            text-align: left;
+        }
+        .sighn{
+            position: absolute;
+            top: 84.5%;
+            left: 71%;
+        }
+    </style>
+</head>
+
+<body>
+    {% for item in items %}
+    <div class="card">
+        <div class="exam">{{item.exam}}</div>
+        <div class="reg_no">{{item.reg_no}}</div>
+        <div class="name">{{item.name}}</div>
+        <div class="program">{{item.program}}</div>
+        <div class="sem">{{item.sem}}</div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sl.No</th>
+                    <th>Course Title</th>
+                    <th style="max-width: 50px;">Credit</th>
+                    <th style="max-width: 50px;" >Marks</th>
+                    <th style="max-width: 50px;">Grade</th>
+                    <th style="max-width: 50px;">Grade Point</th>
+                    <th style="max-width: 50px;">Credit Point</th>
+                    <th style="max-width: 50px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in item.mark_data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td class="text-left">{{i.subject}}</td>
+                    <td>{{i.credit}}</td>
+                    <td>{{i.mark}}</td>
+                    <td>{{i.grade}}</td>
+                    <td>{{i.grade_point}}</td>
+                    <td>{{i.credit_point}}</td>
+                    <td>{{i.stutus}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"> <b >Total</b> </td>
+                    <td> <b>{{item.total_credit}}</b> </td>
+                    <td colspan="3"></td>
+                    <td><b>{{item.total_credit_point}}</b></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table_2">
+            <thead>
+                <tr>
+                    <th >Semester Grade Point Average (SGPA)</th>
+                    <th >{{item.sgpa}}</th>
+                    <th >Overall Grade</th>
+                    <th>{{item.overall_grade}}</th>
+                </tr>
+                <tr>
+                    <th >Total No. of Working Days</th>
+                    <th>{{item.no_days}}</th>
+                    <th >No. of Days Present</th>
+                    <th>{{item.attentance}}</th>
+                </tr>
+                <tr>
+                    <th style="height: 50px !important;">Signature of Class Teacher</th>
+                    <th style="min-width: 120px;"></th>
+                    <th style="height: 50px !important;">Signature of Parent</th>
+                    <th style="min-width: 120px;"></th>
+                </tr>
+            </thead>
+        </table>
+       <div class="sighn">
+        <img src="{% static 'web/pdf/sighn.jpeg' %}" style="max-width: 270px;" alt="controller-sighn">
+       </div>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

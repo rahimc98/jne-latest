@@ -22,6 +22,13 @@ def export_to_halticket(modeladmin, request, queryset):
     messages.success(request, f"{len(selected_ids)} objects selected.")
     return redirect('examination:halticket')
 
+def export_to_gradecard(modeladmin, request, queryset):
+    selected_ids = list(queryset.values_list('student__id', flat=True))
+    request.session['selected_ids'] = selected_ids
+    messages.success(request, f"{len(selected_ids)} objects selected.")
+    return redirect('examination:gradecard')
+
+
 class BaseAdmin(ImportExportModelAdmin):
     list_display = ("__str__","is_active")
     list_filter = ("is_active",)
@@ -39,6 +46,11 @@ class BaseAdmin(ImportExportModelAdmin):
 @admin.register(College)
 class CollegeAdmin(BaseAdmin):
     pass
+
+@admin.register(GradingSystem)
+class GradingSystemAdmin(BaseAdmin):
+    list_filter = ("interpretation",)
+    list_display = ("id","marks_range_from",'marks_range_to','grade','interpretation')
 
 
 @admin.register(Batch)
@@ -67,8 +79,14 @@ class StudentAdmin(BaseAdmin):
 @admin.register(Subject)
 class SubjectAdmin(BaseAdmin):
     list_filter = ("is_active",'batch')
-    list_display = ("id","batch",'name')
+    list_display = ("id","batch",'name','course_code','credit_score')
 
+
+@admin.register(ExamStudentMark)
+class ExamStudentMarkAdmin(BaseAdmin):
+    list_filter = ("is_active",'subject__batch','subject')
+    list_display = ("id","student",'subject','te_mark','ce_mark')
+    list_per_page = 500
 
 @admin.register(ExamStudent)
 class ExamStudentAdmin(BaseAdmin):
@@ -79,7 +97,9 @@ class ExamStudentAdmin(BaseAdmin):
         actions = super().get_actions(request)
         if request.user.is_superuser:
             actions['export_to_halticket'] = (export_to_halticket, 'export_to_halticket', 'Export to Hallticket')
+            actions['export_to_gradecard'] = (export_to_gradecard, 'export_to_gradecard', 'Export to Grade Card')
         else:
             # Remove actions for non-superusers
             actions.pop('export_to_halticket', None)
+            actions.pop('export_to_gradecard', None)
         return actions
