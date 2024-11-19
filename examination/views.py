@@ -26,7 +26,7 @@ class Halticket(PDFView):
 class GradeMarkPdfView(PDFView):
     template_name = "web/grademark_pdf.html"
     pdfkit_options = {
-        "page-height": 260,
+        "page-height": 297,
         "page-width": 210,
         "encoding": "UTF-8",
         "margin-top": "0",
@@ -111,7 +111,7 @@ class GradeMarkPdfView(PDFView):
         context["no_days"] = exam_student.no_of_days
         context["attentance"] = exam_student.attentence
         context["total_credit"] = round(total_credit, 2)
-        context["total_credit_point"] = round(total_credit_point, 2)
+        context["total_credit_point"] = total_credit_point
         context["sgpa"] = sgpa
         context['overall_grade'] = overall_grade
         context["mark_data"] = mark_data

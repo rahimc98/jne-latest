@@ -12,14 +12,14 @@
         body{
             padding: 0px !important;
             margin: 0px !important;
-            background-image: url("{% static 'web/pdf/grade_card-half.png'%}");
+            background-image: url("{% static 'web/pdf/grade_card_full.png'%}");
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
         }
         .card {
             width: 992px;
-			height: 1228px;
+			height: 1404px;
             max-width: 100%;
             min-height: 100%;
             position: relative;
@@ -30,7 +30,7 @@
        
         .exam{
             position: absolute;
-            top: 38.2%;
+            top: 24.5%;
             left: 5%;
             right: 5%;
             font-size: 20px;
@@ -39,7 +39,7 @@
         }
         .reg_no{
             position: absolute;
-            top: 48.1%;
+            top: 33%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -47,7 +47,7 @@
         }
         .name{
             position: absolute;
-            top: 50.4%;
+            top: 35%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -55,7 +55,7 @@
         }
         .program{
             position: absolute;
-            top: 52.5%;
+            top: 37%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -63,17 +63,32 @@
         }
         .sem{
             position: absolute;
-            top: 54.6%;
+            top: 39%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
             width: 60%;
         }
-        
+        .sgpa{
+            position: absolute;
+            top: 72.3%;
+            left: 52%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .overall_grade{
+            position: absolute;
+            top: 72.3%;
+            left: 87%;
+            font-size: 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
         .table{
             position: absolute;
-            top: 57%;
-            left: 5.5%;
+            top: 44%;
+            left: 6%;
             /* right: 5%; */
             /* text-align: center; */
             border-collapse: collapse;
@@ -83,8 +98,8 @@
         }
         .table_2{
             position: absolute;
-            top: 90%;
-            left: 5.5%;
+            top: 74%;
+            left: 6%;
             width: 90% !important;
        }
        
@@ -98,7 +113,14 @@
             /* background-color: #D7D7D7; */
             font-weight: 700;
         }
-        
+        .text-left{
+            text-align: left;
+        }
+        .sighn{
+            position: absolute;
+            top: 82.5%;
+            left: 70%;
+        }
 
     </style>
 </head>
@@ -116,19 +138,19 @@
                 <tr>
                     <th>Sl.No</th>
                     <th>Course Title</th>
-                    <th>Credit</th>
-                    <th>Marks</th>
-                    <th>Grade</th>
-                    <th>Grade Point</th>
-                    <th>Credit Point</th>
-                    <th>Status</th>
+                    <th style="max-width: 50px;">Credit</th>
+                    <th style="max-width: 50px;" >Marks</th>
+                    <th style="max-width: 50px;">Grade</th>
+                    <th style="max-width: 50px;">Grade Point</th>
+                    <th style="max-width: 50px;">Credit Point</th>
+                    <th style="max-width: 50px;">Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for i in mark_data %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{i.subject}}</td>
+                    <td class="text-left" style="padding-right: 0;">{{i.subject}}</td>
                     <td>{{i.credit}}</td>
                     <td>{{i.mark}}</td>
                     <td>{{i.grade}}</td>
@@ -154,15 +176,12 @@
                     <th >Overall Grade</th>
                     <th>{{overall_grade}}</th>
                 </tr>
-                <tr>
-                    <th >Total No. of Working Days</th>
-                    <th>{{no_days}}</th>
-                    <th >No. of Days Present</th>
-                    <th>{{attentance}}</th>
-                </tr>
+               
             </thead>
         </table>
-        
+        <div class="sighn">
+            <img src="{% static 'web/pdf/sighn.jpeg' %}" style="max-width: 300px;" alt="controller-sighn">
+           </div>
     </div>
 
 </body>
