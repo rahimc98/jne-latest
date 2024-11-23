@@ -1,0 +1,116 @@
+{% extends "web/base.html"%}
+{% load static %}
+{% block css %}
+<style>
+.py-5 {
+    padding-top: 2rem!important;
+    padding-bottom: 2rem!important;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: #212529;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+  --bs-table-active-color: #212529;
+  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  --bs-table-hover-color: #212529;
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  vertical-align: top;
+  border-collapse: separate;
+}
+
+.table > tbody {
+  vertical-align: inherit;
+}
+.table > thead {
+  vertical-align: bottom;
+}
+th, td {
+    border: 1px solid #212529;
+    padding: 8.5px;
+}
+th {
+    border: 1px solid #212529;
+    background: rgb(91, 186, 100) !important;
+    color: #fff;
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 575.98px) {
+  .table-responsive-sm {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 767.98px) {
+  .table-responsive-md {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 991.98px) {
+  .table-responsive-lg {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 1199.98px) {
+  .table-responsive-xl {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 1399.98px) {
+  .table-responsive-xxl {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+</style>
+
+{% endblock %}
+{% block content %}
+<section id="newslight">
+    <section class="wrapper panel">
+        <div class="row py-5">
+            <div class="col-md-12 table-responsive">
+                <table class="table datatable-custom table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>  
+                            <th>Name</th>                 
+                            <th>HallTicket No</th>
+                            <th>Course</th>              
+                            <th>College</th>              
+                            <th>Total Mark</th>              
+                            <th>SGPA</th>              
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in students %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td class="text-left" style="padding-right: 0;">{{i.student}}</td>
+                            <td>{{i.reg_no}}</td>
+                            <td>{{i.course}}</td>
+                            <td>{{i.college}}</td>
+                            <td>{{i.total_mark}}</td>
+                            <td>{{i.sgpa}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</section>
+{% include 'web/data_table.html' %}
+{% endblock %}
+
+

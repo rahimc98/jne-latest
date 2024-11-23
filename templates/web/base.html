@@ -73,8 +73,16 @@
                         <li><a href="{% url 'web:news' %}">NEWS</a></li>
                         <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
                         <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
-    
-    
+                        </li>
+                        <li class="dropdown-menu">
+                            <button class="menu-btn">Rank List <i class="fa-solid fa-caret-down"></i></button>
+                            <div class="menu-content">
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=pre_fadheela">Pre Fadheela</a>
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=UG">BA Fadheela</a>
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=PG">PG</a>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -114,6 +122,26 @@
                 <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
                 <li><a href="{% url 'web:techies_park' %}">TECHIES PARK</a></li>
                 <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
+                <li class="accordionCustom">
+                    <div class="accordionSingle">
+                        <div class="accordion">
+                            <div class="accordionTop">
+                                <div class="accordionTop">
+                                    <h4 >Rank List <i class="fa-solid fa-caret-down"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel accordion-content">
+                            <div>
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=pre_fadheela">Pre Fadheela</a>
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=UG">BA Fadheela</a>
+                                <a class="links-hidden" href="{% url 'web:rank_list' %}?type=PG">PG</a>
+                                
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
         {% if not is_index and not is_techies_park and not is_jne_about %}

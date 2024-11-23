@@ -55,13 +55,13 @@ class GradingSystemAdmin(BaseAdmin):
 
 @admin.register(Batch)
 class BatchAdmin(BaseAdmin):
-    list_filter = ("is_active",'course')
+    list_filter = ("is_active",'course','course__type')
     list_display = ("__str__","course",'name')
 
 @admin.register(Course)
 class CourseAdmin(BaseAdmin):
-    list_filter = ("is_active",'college')
-    list_display = ("id","college",'name')
+    list_filter = ("is_active",'college','type')
+    list_display = ("id","college",'name','code','type')
 
 
 @admin.register(Examination)
@@ -74,6 +74,7 @@ class ExaminationAdmin(BaseAdmin):
 class StudentAdmin(BaseAdmin):
     list_filter = ("is_active",'course')
     list_display = ("id","course",'reg_no','name','dob')
+    search_fields = ("reg_no","name")
 
 
 @admin.register(Subject)

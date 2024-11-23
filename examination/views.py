@@ -39,7 +39,7 @@ class GradeMarkPdfView(PDFView):
         context = super().get_context_data(*args, **kwargs)
         # Fetch the student object
         student = Student.objects.get(pk=self.kwargs['pk'])
-    
+
         # Fetch exam student data once
         exam_student = student.get_exam_student()
         marks = exam_student.get_exam_marks()
@@ -73,6 +73,7 @@ class GradeMarkPdfView(PDFView):
                     credit_point = '-'
                     grade_point = '-'
                     grade = '-'
+                    total_mark = te_mark
 
             mark_data.append({
                 "subject": mark.subject.name,
@@ -134,11 +135,14 @@ class GradeCard(PDFView):
         selected_ids = self.request.session.get('selected_ids', [])
         students = Student.objects.filter(id__in=selected_ids,is_active=True)
         items = []
+        student_scores = []
         for student in students:
             # Fetch exam student data once
             exam_student = student.get_exam_student()
             marks = exam_student.get_exam_marks()
-
+            is_women_college = True
+            if student.course.college.pk == 1:
+                is_women_college = False
             mark_data = []
 
             for mark in marks:
@@ -169,6 +173,7 @@ class GradeCard(PDFView):
                     credit_point = '-'
                     grade_point = '-'
                     grade = '-'
+                    total_mark = te_mark
 
                 mark_data.append({
                     "subject": mark.subject.name,
@@ -179,8 +184,11 @@ class GradeCard(PDFView):
                     'credit_point': credit_point,
                     'stutus':status
                 })
+               
             # Calculate total credits and credit points
             total_credit = sum(mark['credit'] for mark in mark_data)
+            
+            
             is_ok =True
             overall_grade = '-'
             sgpa = '-'
@@ -197,6 +205,11 @@ class GradeCard(PDFView):
                 ).first().grade
                 total_credit_point = round(total_credit_point, 2)
             # Prepare response data
+            student_scores.append({
+                    "student": student,
+                    "total_mark": sum(mark['mark'] for mark in mark_data),
+                    "sgpa": sgpa,
+                })
             data = {
                 "name": student.name,
                 "reg_no": student.reg_no,
@@ -209,8 +222,12 @@ class GradeCard(PDFView):
                 "total_credit_point": total_credit_point,
                 "sgpa": sgpa,
                 'overall_grade': overall_grade,
-                "mark_data": mark_data
+                "mark_data": mark_data,
+                'is_women_college':is_women_college
             }
             items.append(data)
+        # print('student_scores=',student_scores)
+        top_students = sorted(student_scores, key=lambda x: x["total_mark"], reverse=True)[:3]
+        print('top_students=',top_students)
         context["items"] = items
         return context

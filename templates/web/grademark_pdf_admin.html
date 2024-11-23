@@ -30,7 +30,7 @@
        
         .exam{
             position: absolute;
-            top: 24.5%;
+            top: 24.2%;
             left: 5%;
             right: 5%;
             font-size: 20px;
@@ -39,7 +39,7 @@
         }
         .reg_no{
             position: absolute;
-            top: 33.2%;
+            top: 32.8%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -47,7 +47,7 @@
         }
         .name{
             position: absolute;
-            top: 35.2%;
+            top: 34.7%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -55,7 +55,7 @@
         }
         .program{
             position: absolute;
-            top: 37.2%;
+            top: 36.7%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -63,7 +63,7 @@
         }
         .sem{
             position: absolute;
-            top: 39.2%;
+            top: 38.6%;
             left: 24.5%;
             font-size: 15px;
             font-weight: 600;
@@ -191,18 +191,21 @@
                     <th >Overall Grade</th>
                     <th>{{item.overall_grade}}</th>
                 </tr>
+                {% if item.is_women_college %}
                 <tr>
                     <th >Total No. of Working Days</th>
                     <th>{{item.no_days}}</th>
                     <th >No. of Days Present</th>
                     <th>{{item.attentance}}</th>
                 </tr>
+                
                 <tr>
                     <th style="height: 50px !important;">Signature of Class Teacher</th>
                     <th style="min-width: 120px;"></th>
                     <th style="height: 50px !important;">Signature of Parent</th>
                     <th style="min-width: 120px;"></th>
                 </tr>
+                {% endif %}
             </thead>
         </table>
        <div class="sighn">

@@ -1,11 +1,12 @@
 import json
-from datetime import datetime
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from examination.models import GradingSystem, Student
+from examination.models import Course, GradingSystem, Student
 from web.functions import generate_form_errors
 
 from .forms import ContactForm, JobApplyForm
@@ -393,8 +394,64 @@ def exam_result(request):
 
     return render(request, "web/exam_result.html", context)
 
-from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
+def rank_list(request):
+    type = request.GET.get("type")
+
+    students = Student.objects.filter(is_active=True,course__type=type)
+    student_scores = []
+    for student in students:
+        exam_student = student.get_exam_student()
+        marks = exam_student.get_exam_marks()
+        mark_data = []
+        
+        for mark in marks:
+            te_mark = 0
+            ce_mark = 0
+            total_mark = 0
+
+            if mark.te_mark == 'Ab':
+                te_mark = 0
+            elif mark.te_mark == 'C':
+                te_mark = 0
+            else:
+                te_mark = int(mark.te_mark)
+                ce_mark = int(mark.ce_mark)
+            total_mark = te_mark + ce_mark
+            credit = mark.subject.credit_score
+            grade_point = total_mark/10
+            credit_point = round(credit*grade_point,2)
+            mark_data.append({
+                    "mark": total_mark,
+                    "credit":credit,
+                    'credit_point': credit_point,
+                    'grade_point':grade_point,
+                })
+        total_credit = sum(mark['credit'] for mark in mark_data)
+        total_credit_point = sum(mark['credit_point'] for mark in mark_data)
+        sgpa = round(total_credit_point / total_credit, 2) if total_credit else 0
+        student_scores.append({
+            "student": student.name,
+            "reg_no": student.reg_no,
+            "course": student.course.name,
+            "college": student.course.college,
+            "total_mark": sum(mark['mark'] for mark in mark_data),
+            "sgpa": sgpa,
+        })
+    top_students = sorted(student_scores, key=lambda x: x["sgpa"], reverse=True)[:50]
+    
+    if type == 'pre_fadheela':
+        type = 'Pre Fadheela'
+    context = {
+        "title": str(type) + " Rank List",
+        "is_rank_list": True,
+        'students':top_students,
+
+    }
+
+    return render(request, "web/rank_list.html", context)
+
+
+
 
 def find_result(request):
     hall_ticket = request.GET.get("hall_ticket")

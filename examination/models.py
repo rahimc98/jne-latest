@@ -15,6 +15,7 @@ class Course(models.Model):
     college = models.ForeignKey(College,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
+    type = models.CharField(max_length=200,choices = (("pre_fadheela","pre_fadheela"),("UG","Under Graduate"),("PG","Post Graduate"),("Other","Other")),default='UG')
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -23,6 +24,8 @@ class Course(models.Model):
 
     def __str__(self):
         return f'{self.code}'
+    
+    
 
 
 

@@ -27,4 +27,5 @@ urlpatterns = [
     path("get-gallery/", views.get_gallery, name="get_gallery"),
     path("exam-result/", views.exam_result, name="exam_result"),
     path("find-result/", views.find_result, name="find_result"),
+    path("rank-list/", views.rank_list, name="rank_list"),
 ]
