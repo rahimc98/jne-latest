@@ -155,3 +155,17 @@ class GradingSystem(models.Model):
     def __str__(self):
         return f"{self.grade}"
     
+
+class ExamApply(models.Model):
+    student = models.ForeignKey(ExamStudent,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
+    exam_type = models.CharField(max_length=20,choices=(("Improvement","Improvement"),("Supplementary","Supplementary")))
+    amount = models.FloatField(default=200)
+    is_active = models.BooleanField(default=True) 
+    class Meta:
+        verbose_name = _("Exam Apply")
+        verbose_name_plural = _("Exam Applies")
+
+    def __str__(self):
+        return f'{self.student} - {self.subject} - {self.exam_type}'
+    

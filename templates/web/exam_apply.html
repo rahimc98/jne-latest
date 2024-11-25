@@ -1,0 +1,207 @@
+{% extends "web/base.html"%}
+
+{% load static %}
+
+{% block css %}
+<link href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+<!-- <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/css/base.css' %}" /> -->
+<style>
+    .table {
+  --bs-table-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: #212529;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+  --bs-table-active-color: #212529;
+  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  --bs-table-hover-color: #212529;
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  vertical-align: top;
+  border-collapse: collapse;
+}
+
+.table > tbody {
+  vertical-align: inherit;
+}
+.table > thead {
+  vertical-align: bottom;
+}
+th, td {
+    border: 1px solid #212529;
+    padding: 8.5px;
+}
+th {
+    border: 1px solid #212529;
+    background: rgb(91, 186, 100) !important;
+    color: #fff;
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 575.98px) {
+  .table-responsive-sm {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 767.98px) {
+  .table-responsive-md {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  th , td {
+    font-size: 13px;
+    padding: 3px !important;
+  }
+  .wrapper{
+    width:90%;
+  }
+  .card-body p {
+    font-size: 12px;
+  }
+}
+    .result_form {
+    background: #F9F9F9;
+    padding: 15px;
+    /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); */
+}
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+@media (min-width: 992px){
+.col-lg-8 {
+    flex: 0 0 auto;
+    width: 60%;
+}
+}
+@media (min-width: 992px){
+.col-lg-4 {
+    flex: 0 0 auto;
+    width: 40%;
+}
+}
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+</style>
+{% endblock %}
+{% block content %}
+        <section id="gallery">
+            <section class="wrapper">
+                <div class="result_form">
+                    <div class="card-title">
+                        <h2 style="padding-bottom:5px;color: black;">Instructions :</h2>  
+                    </div>
+                    <div class="card-body">
+                        
+                            <p style="color: black;padding-bottom:5px;">1. Fill out all required fields carefully.</p>
+                            <p style="color: black;padding-bottom:5px;">2. Select the subject(s) for which you are applying.</p>
+                            <p style="color: black;padding-bottom:5px;">3. Submit the form before the <strong style="font-weight: 700;"> application deadline: 26 November 2024 evening 04.00</strong>.</p>
+                            <p style="color: black;padding-bottom:5px;">4.  <strong style="font-weight: 700;"> last date to pay fee: 27-11-2024</strong>.</p>
+                            <p style="color: black;padding-bottom:5px;">5. The application fee is <strong style="font-weight: 700;"> ₹200 per subject</strong>. The total fee will be displayed automatically.</p>
+                            <p style="color: black;padding-bottom:5px;">6. The Improvement/Supplementary Examination will commence on <strong style="font-weight: 700;"> 30 November 2024</strong> .</p>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-lg-4 col-12">
+                        <div class="" style="padding: 20px;">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Reg No</td>
+                                        <td>:</td>
+                                        <td>{{reg_no}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Student Name</td>
+                                        <td>:</td>
+                                        <td>{{name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Course</td>
+                                        <td>:</td>
+                                        <td>{{program}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Semester</td>
+                                        <td>:</td>
+                                        <td>{{sem}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batch</td>
+                                        <td>:</td>
+                                        <td>{{batch}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-12">
+                        <table class="table">
+                            <thead>
+                                <th>Sl.No</th>
+                                <th>Subject</th>
+                                <th>Exam Type</th>
+                                <th>Apply</th>
+                            </thead>
+                            <tbody>                            
+                                {% for i in sub_data %}
+                                <tr class="check_items_row">
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{i.subject}}</td>
+                                    <td style="{% if i.exam_type == 'Supplementary' %} color: red;{% endif %}"> {{i.exam_type}}</td>
+                                    <td style="width:20px; text-align: center;">
+                                        <input class="check check_item" type="checkbox" value="{{i.pk}}" name="pk_item">
+                                        
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="card-title">
+                                            <h2 style="padding-bottom:5px;color: black;text-align: end;">Total Fee: ₹<span id="total_fee">00.00</span></h2>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div style="text-align: center;">
+                            <a title="Apply Now" style="padding: 10px;background: green;border-radius: 5px;color: #F9F9F9;" data-id="" href="{% url 'web:apply_selected_subject'%}?hallticket={{hall_ticket}}" data-text="Are you sure to apply these selected items." data-title="Are you sure?" class="action-button redirect selected-items-button">
+                                Apply Now
+                            </a>
+                        </div>
+                    </div>
+                   
+                    
+                    
+                </div>
+             </section>
+        </section>
+      
+{% endblock %}
+
+{% block static %}
+    <script>
+       $('.check_item').on('change',function(){
+            var total_fee = 0;
+            $('.check_item').each(function(){
+                if ($(this).is(':checked')) {
+                    total_fee += 200;
+                }
+            });
+            $('#total_fee').text(total_fee);
+        });
+    
+    </script>
+{% endblock %}

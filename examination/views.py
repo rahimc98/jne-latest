@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .create_pdf import PDFView
-from . models import ExamStudent, GradingSystem, Student
+from django.db.models import Sum
+from . models import ExamApply, ExamStudent, GradingSystem, Student
 
 # Create your views here.
 class Halticket(PDFView):
@@ -230,4 +231,45 @@ class GradeCard(PDFView):
         top_students = sorted(student_scores, key=lambda x: x["total_mark"], reverse=True)[:3]
         print('top_students=',top_students)
         context["items"] = items
+        return context
+    
+
+class ExamApplyPdfView(PDFView):
+    template_name = "web/exam_apply_pdf.html"
+    pdfkit_options = {
+        "page-height": 297,
+        "page-width": 210,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        # Fetch the student object
+        student = get_object_or_404(Student, pk=self.kwargs['pk'])
+
+        exam_applies = ExamApply.objects.filter(student__student=student).select_related('subject')
+        dic_data = [
+            {
+                "subject": exam.subject.name,
+                "code": exam.subject.course_code,
+                "exam_type": exam.exam_type,
+                "amount": exam.amount,
+            }
+            for exam in exam_applies
+        ]
+        total_amt = exam_applies.aggregate(Sum('amount'))['amount__sum'] or 0
+
+        context["total_amt"] = total_amt 
+        context["dic_data"] = dic_data
+
+        # Prepare response data
+        context["name"] = student.name
+        context["reg_no"] = student.reg_no
+        context["program"] = student.course.name
+        context["sem"] = student.get_exam_student().exam.batch.name
+        
         return context

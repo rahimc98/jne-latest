@@ -73,7 +73,14 @@
                         <li><a href="{% url 'web:news' %}">NEWS</a></li>
                         <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
                         <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
+                        <li class="dropdown-menu">
+                            <button class="menu-btn">Exam <i class="fa-solid fa-caret-down"></i></button>
+                            <div class="menu-content">
+                                <a class="links-hidden" href="{% url 'web:exam_result' %}">Result</a>
+                                <a class="links-hidden" href="{% url 'web:student_login' %}">Apply</a>
+                            </div>
                         </li>
+
                         <li class="dropdown-menu">
                             <button class="menu-btn">Rank List <i class="fa-solid fa-caret-down"></i></button>
                             <div class="menu-content">
@@ -121,7 +128,25 @@
                 <li><a href="{% url 'web:news' %}">NEWS</a></li>
                 <li><a href="{% url 'web:contact' %}">CONTACT US</a></li>
                 <li><a href="{% url 'web:techies_park' %}">TECHIES PARK</a></li>
-                <li><a href="{% url 'web:exam_result' %}">RESULTS</a></li>
+                <li class="accordionCustom">
+                    <div class="accordionSingle">
+                        <div class="accordion">
+                            <div class="accordionTop">
+                                <div class="accordionTop">
+                                    <h4 >Exam <i class="fa-solid fa-caret-down"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel accordion-content">
+                            <div>
+                                <a class="links-hidden" href="{% url 'web:exam_result' %}">Result</a>
+                                <a class="links-hidden" href="{% url 'web:student_login' %}">Apply</a>
+                                
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 <li class="accordionCustom">
                     <div class="accordionSingle">
                         <div class="accordion">

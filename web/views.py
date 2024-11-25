@@ -6,7 +6,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from examination.models import Course, GradingSystem, Student
+from examination.models import Course, ExamApply, ExamStudent, ExamStudentMark, GradingSystem, Student, Subject
 from web.functions import generate_form_errors
 
 from .forms import ContactForm, JobApplyForm
@@ -394,6 +394,15 @@ def exam_result(request):
 
     return render(request, "web/exam_result.html", context)
 
+def student_login(request):
+
+    context = {
+        "title": "Apply Login",
+        "is_apply_login": True,
+    }
+
+    return render(request, "web/apply_login.html", context)
+
 def rank_list(request):
     type = request.GET.get("type")
 
@@ -447,10 +456,50 @@ def rank_list(request):
         'students':top_students,
 
     }
-
     return render(request, "web/rank_list.html", context)
 
-
+def exam_apply(request):
+    hall_ticket = request.GET.get("hall_ticket")
+    student = Student.objects.get(reg_no=hall_ticket)
+    name = student.name
+    reg_no = student.reg_no
+    program = student.course.name
+    exam_student = student.get_exam_student()
+    batch = exam_student.exam.batch
+    sem = exam_student.exam.batch.name
+    marks = exam_student.get_exam_marks()
+    sub_data = []
+    for mark in marks:
+        if mark.te_mark == 'Ab':
+            te_mark = 0
+        elif mark.te_mark == 'C':
+            te_mark = 0
+        else:
+            te_mark = int(mark.te_mark)
+        status = 'Pass' if te_mark >= 32 else 'Fail'
+        if status == 'Pass':
+            exam_type = 'Improvement'
+        else:
+            exam_type = 'Supplementary'
+        data = {
+            "subject": mark.subject.name,
+            'code': mark.subject.course_code,
+            'exam_type': exam_type,
+            'pk': mark.subject.pk,
+        }
+        sub_data.append(data)
+    context = {
+        "title": "Exam Apply",
+        "is_exam_apply": True,
+        "name": name,
+        "reg_no": reg_no,
+        "program": program,
+        "sem": sem,
+        "batch": batch,
+        "sub_data": sub_data,
+        'hall_ticket':hall_ticket
+    }
+    return render(request, "web/exam_apply.html", context)
 
 
 def find_result(request):
@@ -489,3 +538,39 @@ def find_result(request):
     except ObjectDoesNotExist:
         response_data["status"] = "false"
     return JsonResponse(response_data)
+
+
+def apply_selected_subject(request):
+    pks = request.GET.get('pk')
+    hallticket = request.GET.get('hallticket')
+    student = ExamStudent.objects.get(student__reg_no=hallticket)
+    
+    if pks:
+        pks = pks[:-1]
+        pks = pks.split(',')
+        for pk in pks:
+            subject = Subject.objects.get(pk=pk)
+            mark = ExamStudentMark.objects.filter(student=student,subject=subject).last()
+            if mark.te_mark == 'Ab':
+                te_mark = 0
+            elif mark.te_mark == 'C':
+                te_mark = 0
+            else:
+                te_mark = int(mark.te_mark)
+            status = 'Pass' if te_mark >= 32 else 'Fail'
+            if status == 'Pass':
+                exam_type = 'Improvement'
+            else:
+                exam_type = 'Supplementary'
+            if not  ExamApply.objects.filter(student=student,subject=subject,exam_type=exam_type).exists():
+                data = ExamApply.objects.create(student=student,subject=subject,exam_type=exam_type)
+                print('data=',data)
+            print('already exists=',pk)
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Appplied.",
+            "message" : "Exam Successfully Applied.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('examination:exam_apply' , kwargs={'pk':student.student.pk})
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/javascript')

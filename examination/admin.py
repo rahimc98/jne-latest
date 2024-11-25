@@ -104,3 +104,8 @@ class ExamStudentAdmin(BaseAdmin):
             actions.pop('export_to_halticket', None)
             actions.pop('export_to_gradecard', None)
         return actions
+
+@admin.register(ExamApply)
+class ExamApplyAdmin(BaseAdmin):
+    list_filter = ("is_active",'exam_type','subject','subject__batch')
+    list_display = ("id","student",'subject','exam_type')
