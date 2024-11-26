@@ -88,6 +88,7 @@ class ExamStudentMarkAdmin(BaseAdmin):
     list_filter = ("is_active",'subject__batch','subject')
     list_display = ("id","student",'subject','te_mark','ce_mark')
     list_per_page = 500
+    list_editable = ('subject',)
 
 @admin.register(ExamStudent)
 class ExamStudentAdmin(BaseAdmin):

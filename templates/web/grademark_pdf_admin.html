@@ -22,7 +22,7 @@
             padding: 0 !important;
             margin: 0 !important;
             border: 1px dotted;
-            background-image: url("{% static 'web/pdf/grade_card_full.png'%}");
+            background-image: url("{% static 'web/pdf/GRAD_CARD_FULL_NEW.png'%}");
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
@@ -192,7 +192,7 @@
                     <th>{{item.overall_grade}}</th>
                 </tr>
                 {% if item.is_women_college %}
-                <tr>
+                <!-- <tr>
                     <th >Total No. of Working Days</th>
                     <th>{{item.no_days}}</th>
                     <th >No. of Days Present</th>
@@ -204,7 +204,7 @@
                     <th style="min-width: 120px;"></th>
                     <th style="height: 50px !important;">Signature of Parent</th>
                     <th style="min-width: 120px;"></th>
-                </tr>
+                </tr> -->
                 {% endif %}
             </thead>
         </table>
