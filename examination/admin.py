@@ -35,6 +35,12 @@ def export_to_exam_applied(modeladmin, request, queryset):
     messages.success(request, f"{len(selected_ids)} objects selected.")
     return redirect('examination:exam_applied')
 
+def export_to_exam_applied_batch_based(modeladmin, request, queryset):
+    selected_ids = list(queryset.values_list('id', flat=True))
+    request.session['selected_ids'] = selected_ids
+    messages.success(request, f"{len(selected_ids)} objects selected.")
+    return redirect('examination:exam_applied_batch_based')
+
 class BaseAdmin(ImportExportModelAdmin):
     list_display = ("__str__","is_active")
     list_filter = ("is_active",)
@@ -63,6 +69,15 @@ class GradingSystemAdmin(BaseAdmin):
 class BatchAdmin(BaseAdmin):
     list_filter = ("is_active",'course','course__type')
     list_display = ("__str__","course",'name')
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if request.user.is_superuser:
+            actions['export_to_exam_applied_batch_based'] = (export_to_exam_applied_batch_based, 'export_to_exam_applied_batch_based', 'Export to Exam Applied List')
+        else:
+            # Remove actions for non-superusers
+            actions.pop('export_to_exam_applied_batch_based', None)
+        return actions
 
 @admin.register(Course)
 class CourseAdmin(BaseAdmin):
@@ -94,7 +109,8 @@ class ExamStudentMarkAdmin(BaseAdmin):
     list_filter = ("is_active",'subject__batch','subject')
     list_display = ("id","student",'subject','te_mark','ce_mark')
     list_per_page = 500
-    list_editable = ('subject',)
+    search_fields = ("student__student__reg_no","student__student__name")
+    list_editable = ('subject','ce_mark','te_mark')
 
 @admin.register(ExamStudent)
 class ExamStudentAdmin(BaseAdmin):

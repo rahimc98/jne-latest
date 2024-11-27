@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title> Grade Card</title>
+
+    <style>
+        @page { size: A4 portrait; }
+        body{
+            padding: 0px !important;
+            margin: 0px !important;
+            
+        }
+        .card {
+            width: 1399px;
+			height: 989px;
+            max-width: 100%;
+            min-height: 100%;
+            position: relative;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px dotted;
+        }
+       
+        
+        .table{
+            position: absolute;
+            top: 15%;
+            left: 5%;
+            /* right: 5%; */
+            /* text-align: center; */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            width: 90% !important;
+        }
+
+        th, td {
+            border: 2px solid #c9c3c3;
+            padding: 8.5px;
+            text-align: center;
+            /* background: #E1EAF1; */
+        }
+        th {
+            /* background-color: #D7D7D7; */
+            font-weight: 700;
+        }
+        .text-left{
+            text-align: left;
+        }
+        .batch{
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 70%;
+        }
+        .course{
+            position: absolute;
+            top: 7%;
+            left: 5%;
+            width: 70%;
+        }
+        .college{
+            position: absolute;
+            top: 4%;
+            left: 5%;
+            width: 70%;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% for data in dic_data %}
+    <div class="card">
+        <div class="college">College : {{data.college}}</div>
+        <div class="course"> Course : {{data.course}}</div>
+        <div class="batch"> Batch : {{data.batch}}</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sl.No</th>
+                    <th>Reg No</th>
+                    <th >Student Name</th>
+                    {% for s in data.subjects %}
+                    <th style="writing-mode: vertical-lr !important;">{{s}}</th>
+                    {% endfor %}
+                    <th>Amount</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data.dic_list %}
+                <tr class="row">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.reg_no}}</td>
+                    <td style="text-align: left;">{{i.name}}</td>
+                    {% for d in i.sub_data %}
+                    <td {% if  d.val %} class="{{d.pk}}" {% endif %}>{{d.val}}</td>
+                    {% endfor %}
+                    
+                    <td>{{i.total}}</td>
+                    <td>{{i.remark}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3"><b>Total</b></td>
+                    {% for i in subject_summary %}
+                    <td >{{i.count}}</td>
+                    {% endfor %}
+                    <td>{{total_sum}}<b></b></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

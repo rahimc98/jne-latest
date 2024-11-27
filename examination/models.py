@@ -48,6 +48,8 @@ class Batch(models.Model):
     def get_examinations(self):
         return Examination.objects.filter(is_active=True)
     
+    def get_exam(self):
+        return Examination.objects.filter(is_active=True,batch=self).last()
 
 
 class Examination(models.Model):

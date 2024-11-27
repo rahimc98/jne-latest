@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from .create_pdf import PDFView
 from django.db.models import Sum
-from . models import ExamApply, ExamStudent, GradingSystem, Student
-
+from . models import Batch, ExamApply, ExamStudent, GradingSystem, Student
+from django.views.generic import TemplateView
 # Create your views here.
 class Halticket(PDFView):
     template_name = "web/halticket_pdf.html"
@@ -307,4 +307,80 @@ class ExamApplied(PDFView):
         context['college'] = instance.student.student.course.college
         context['course'] = instance.student.student.course.name
         context['sem'] = instance.student.student.get_exam_student().exam.batch.name
+        return 
+    
+
+class ExamAppliedBatchBased(PDFView):
+    template_name = "web/exam_applyed_batch_based.html"
+    pdfkit_options = {
+        "page-height": 210,
+        "page-width": 297,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        selected_ids = self.request.session.get('selected_ids', [])
+        batchs = Batch.objects.filter(id__in=selected_ids,is_active=True)
+        
+        dic_data = []
+        total_sum = 0
+        for batch in batchs:
+            subjects = batch.get_subjects()
+            students = ExamStudent.objects.filter(exam=batch.get_exam())
+            dic_list = []
+            subject_counts = {} 
+            for student in students:
+                sub_data = []
+                total = 0
+                exam_applications = ExamApply.objects.filter(student=student, subject__in=subjects)
+                for subject in subjects:
+                    amt = 0
+                    val = ''
+                    inst = exam_applications.filter(subject=subject).last()
+                    if inst:
+                        if inst.exam_type == 'Improvement':
+                            val = 'IMP'
+                        else:
+                            val = 'SUP'
+                        amt = inst.amount
+                        subject_counts[subject.pk] = subject_counts.get(subject.pk, 0) + 1
+                    total += amt
+                    sb_data ={
+                        'val':val,
+                        'pk':subject.pk
+                    }
+                    sub_data.append(sb_data)
+                
+
+                st_data = {
+                    'reg_no':student.student.reg_no,
+                    'name': student.student.name,
+                    'sub_data':sub_data,
+                    'total':total
+                }
+                dic_list.append(st_data)
+                total_sum += total
+
+            list_data = {
+                'batch':batch.name,
+                'course':batch.course.name,
+                'college':batch.course.college.name,
+                'dic_list': dic_list,
+                'subjects':subjects
+            }
+
+            dic_data.append(list_data)
+            # print(dic_data)
+            subject_summary = [
+                {'count': subject_counts.get(subject.pk, 0)}
+                for subject in subjects
+            ]
+        context["dic_data"] = dic_data
+        context['total_sum'] = total_sum
+        context['subject_summary'] = subject_summary
         return context
