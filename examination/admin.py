@@ -29,6 +29,12 @@ def export_to_gradecard(modeladmin, request, queryset):
     return redirect('examination:gradecard')
 
 
+def export_to_exam_applied(modeladmin, request, queryset):
+    selected_ids = list(queryset.values_list('id', flat=True))
+    request.session['selected_ids'] = selected_ids
+    messages.success(request, f"{len(selected_ids)} objects selected.")
+    return redirect('examination:exam_applied')
+
 class BaseAdmin(ImportExportModelAdmin):
     list_display = ("__str__","is_active")
     list_filter = ("is_active",)
@@ -108,5 +114,22 @@ class ExamStudentAdmin(BaseAdmin):
 
 @admin.register(ExamApply)
 class ExamApplyAdmin(BaseAdmin):
-    list_filter = ("is_active",'exam_type','subject','subject__batch')
-    list_display = ("id","student",'subject','exam_type')
+    list_filter = ("is_active",'exam_type','subject__batch','subject')
+    list_display = ("get_student_reg_no","get_student_name",'subject','exam_type','amount')
+
+    def get_student_name(self, obj):
+        return obj.student.student.name if obj.student and obj.student.student else None
+    def get_student_reg_no(self, obj):
+        return obj.student.student.reg_no if obj.student and obj.student.student else None
+    get_student_reg_no.short_description = "Register Number"
+    get_student_name.short_description = "Student"
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if request.user.is_superuser:
+            actions['export_to_exam_applied'] = (export_to_exam_applied, 'export_to_exam_applied', 'Export to Exam Applied List')
+        else:
+            # Remove actions for non-superusers
+            actions.pop('export_to_exam_applied', None)
+        return actions
+

@@ -273,3 +273,38 @@ class ExamApplyPdfView(PDFView):
         context["sem"] = student.get_exam_student().exam.batch.name
         
         return context
+    
+class ExamApplied(PDFView):
+    template_name = "web/exam_applyed_pdf.html"
+    pdfkit_options = {
+        "page-height": 297,
+        "page-width": 210,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        selected_ids = self.request.session.get('selected_ids', [])
+        students = ExamApply.objects.filter(id__in=selected_ids,is_active=True)
+        instance = students.first()
+        items = []
+        for student in students:
+            data = {
+                'reg_no':student.student.student.reg_no,
+                'name':student.student.student.name,
+                'subject':student.subject.name,
+                'exam_type':student.exam_type,
+                'amount':student.amount,
+                'remark':''
+            }
+        
+            items.append(data)
+        context["dic_data"] = items
+        context['college'] = instance.student.student.course.college
+        context['course'] = instance.student.student.course.name
+        context['sem'] = instance.student.student.get_exam_student().exam.batch.name
+        return context

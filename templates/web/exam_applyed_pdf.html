@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title> Grade Card</title>
+
+    <style>
+        @page { size: A4 landscape; }
+        body{
+            padding: 0px !important;
+            margin: 0px !important;
+            
+        }
+        .card {
+            width: 992px;
+			height: 1404px;
+            max-width: 100%;
+            min-height: 100%;
+            position: relative;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px dotted;
+            background-image: url("{% static 'web/pdf/exam_apply.png'%}");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+       
+        .exam{
+            position: absolute;
+            top: 24.5%;
+            left: 5%;
+            right: 5%;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .reg_no{
+            position: absolute;
+            top: 30%;
+            left: 8%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .name{
+            position: absolute;
+            top: 32%;
+            left: 8%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .program{
+            position: absolute;
+            top: 34%;
+            left: 8%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        .sem{
+            position: absolute;
+            top: 36%;
+            left: 8%;
+            font-size: 15px;
+            font-weight: 600;
+            width: 60%;
+        }
+        
+        .table{
+            position: absolute;
+            top: 38%;
+            left: 6%;
+            /* right: 5%; */
+            /* text-align: center; */
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            width: 90% !important;
+        }
+
+        th, td {
+            border: 2px solid #c9c3c3;
+            padding: 8.5px;
+            text-align: center;
+            /* background: #E1EAF1; */
+        }
+        th {
+            /* background-color: #D7D7D7; */
+            font-weight: 700;
+        }
+        .text-left{
+            text-align: left;
+        }
+        .sighn{
+            position: absolute;
+            top: 82.5%;
+            left: 70%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="exam">Exam Application List</div>
+        <div class="reg_no">College : {{college}}</div>
+        <div class="name">Course : {{course}}</div>
+        <div class="program">Semester : {{sem}}</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sl.No</th>
+                    <th>Reg No</th>
+                    <th>Student Name</th>
+                    <th >Subject</th>
+                    <th  >Exam Type</th>
+                    <th >Amount</th>
+                    <th >Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in dic_data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.reg_no}}</td>
+                    <td style="text-align: left;">{{i.name}}</td>
+                    <td class="text-left" style="padding-right: 0;">{{i.subject}}</td>
+                    <td {% if i.exam_type == 'Supplementary' %} style="color: red;" {% endif %} >{{i.exam_type}}</td>
+                    <td>{{i.amount}}</td>
+                    <td>{{i.remark}}</td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+        
+    </div>
+
+</body>
+
+</html>
