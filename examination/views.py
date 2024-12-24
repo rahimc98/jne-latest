@@ -795,6 +795,7 @@ class ExamStudentMarkListView( mixins.HybridListView):
     exclude = ("is_active",)
     table_class = tables.ExamStudentMarkTable
     filterset_class = ExamStudentMarkFilter
+    search_fields = ('student__student__reg_no','student__student__name')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = self.model._meta.verbose_name_plural.title()

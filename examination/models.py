@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from core.functions import generate_fields
 
 class College(models.Model):
     name = models.CharField(max_length=200)
@@ -10,6 +11,8 @@ class College(models.Model):
     def __str__(self):
         return self.name
 
+    def get_fields(self):
+        return generate_fields(self)
 
     @staticmethod
     def get_list_url():
@@ -52,7 +55,9 @@ class Course(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:course_delete", kwargs={"pk": self.pk})
 
-
+    def get_fields(self):
+        return generate_fields(self)
+    
 class Batch(models.Model):
     course = models.ForeignKey(Course,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -88,6 +93,8 @@ class Batch(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:batch_delete", kwargs={"pk": self.pk})
 
+    def get_fields(self):
+        return generate_fields(self)
 
 class Examination(models.Model):
     batch = models.ForeignKey(Batch,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -114,6 +121,9 @@ class Examination(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:examination_delete", kwargs={"pk": self.pk})  
 
+    def get_fields(self):
+        return generate_fields(self)
+    
 class Student(models.Model):
     course = models.ForeignKey(Course,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     reg_no = models.CharField('Register Number',max_length=200)
@@ -148,6 +158,8 @@ class Student(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:student_delete", kwargs={"pk": self.pk})
     
+    def get_fields(self):
+        return generate_fields(self)
 
 class Subject(models.Model):
     batch = models.ForeignKey(Batch,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -177,7 +189,9 @@ class Subject(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:subject_delete", kwargs={"pk": self.pk})
     
-
+    def get_fields(self):
+        return generate_fields(self)
+    
 class ExamStudent(models.Model):
     student = models.ForeignKey(Student,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     exam = models.ForeignKey(Examination,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -208,6 +222,8 @@ class ExamStudent(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:examstudent_delete", kwargs={"pk": self.pk})
     
+    def get_fields(self):
+        return generate_fields(self)
 
 class ExamStudentMark(models.Model):
     student = models.ForeignKey(ExamStudent,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -222,7 +238,8 @@ class ExamStudentMark(models.Model):
     def __str__(self):
         return f'{self.student} - {self.subject} (TE: {self.te_mark}, CE: {self.ce_mark})'
     
-
+    def get_fields(self):
+        return generate_fields(self)
 
     @staticmethod
     def get_list_url():
@@ -237,6 +254,9 @@ class ExamStudentMark(models.Model):
     def get_delete_url(self):
         return reverse_lazy("examination:examstudentmark_delete", kwargs={"pk": self.pk})
 
+    def get_fields(self):
+        return generate_fields(self)
+    
 class GradingSystem(models.Model):
     COMMENT_STATUS = (
         ("Outstanding", "Outstanding"),
@@ -258,6 +278,9 @@ class GradingSystem(models.Model):
     def __str__(self):
         return f"{self.grade}"
     
+    def get_fields(self):
+        return generate_fields(self)
+    
 
 class ExamApply(models.Model):
     student = models.ForeignKey(ExamStudent,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -272,3 +295,5 @@ class ExamApply(models.Model):
     def __str__(self):
         return f'{self.student} - {self.subject} - {self.exam_type}'
     
+    def get_fields(self):
+        return generate_fields(self)
