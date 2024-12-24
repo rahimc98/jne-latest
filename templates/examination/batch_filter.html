@@ -1,0 +1,100 @@
+{% extends 'app/base.html' %}
+{% load static i18n crispy_forms_tags %}
+{% block title %}{{title}}: {{app_settings.site_title}}{% endblock %}
+
+
+
+{% block content %}
+
+<div class="side-app main-container edit_page mt-5">
+
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header border-bottom-0">
+                    <h5 class="mb-0">{{title}}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <form class="{% if form_class %} {{ form_class }} {% else %}form-horizontal {% endif %}" method="post" autocomplete="off" enctype="multipart/form-data" action="">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                                <div class="row my-2">
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary save-btn me-2">{% translate "Filter" %}</button>
+                                            <button type="button" onclick="history.back()"
+                                                class="border btn btn-outline-info">{% translate "Cancel" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+{{form.media}}
+<script>
+    var get_course_url = "{% url 'examination:get_college_based_course' %}";
+    var get_batch_url = "{% url 'examination:get_course_based_batch' %}";
+    var courseSelect = $("#id_course");
+    var collegeSelect = $("#id_college");
+
+    function updateSelectOptions(selectId, data, valueKey, textKey) {
+        const select = $(selectId);
+        select.empty().append('<option value="" selected="selected">---------</option>');
+        if (data) {
+            const options = data.map(item => `<option value="${item[valueKey]}">${item[textKey]}</option>`);
+            select.append(options.join(''));
+        }
+    }
+
+    function makeAjaxCall(get_url,data,successCallback) {
+        
+        $.ajax({
+            url: get_url,
+            data: data,
+            dataType: 'json',
+            success: successCallback
+        });
+    }
+
+    collegeSelect.change(function () {
+        let college_id = collegeSelect.val();
+        let data = { college_id: college_id };
+
+        makeAjaxCall(get_course_url,data, function (data) {
+            updateSelectOptions("#id_course", data.courses, "id", "name");
+        });
+    });
+    courseSelect.change(function () {
+        let course_id = courseSelect.val();
+        let data = { course_id: course_id };
+
+        makeAjaxCall(get_batch_url,data, function (data) {
+            updateSelectOptions("#id_batch", data.batches, "id", "name");
+        });
+    });
+    
+
+</script>
+<script>
+    // $(document).ready(function () {
+       
+    //     $(".save-btn").click(function () {
+    //         var form = $(this).closest("form");
+    //         form.submit();
+    //     })
+    // });
+</script>
+{% endblock javascript %}

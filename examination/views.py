@@ -1,8 +1,51 @@
-from django.shortcuts import get_object_or_404, render
-from .create_pdf import PDFView
-from django.db.models import Sum
-from . models import Batch, ExamApply, ExamStudent, GradingSystem, Student
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django_tables2 import columns
 from django.views.generic import TemplateView
+from django.db.models import Sum
+from django.views import View
+
+from core import mixins
+from core.base import BaseTable
+from examination.filter import ExamStudentMarkFilter
+from .forms import BatchFilterForm
+from .create_pdf import PDFView
+from . models import Batch, College, Course, ExamApply, ExamStudent, ExamStudentMark, Examination, GradingSystem, Student, Subject
+from . import tables
+
+class BaseModelView:
+    model = None 
+    table_class = None
+    exclude = ("is_active",)
+    filterset_fields = []
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        context["is_master"] = True
+        return context
+    
+
+def create_dynamic_table(model_class):
+    excluded_fields = ["is_active",'id']
+
+    class DynamicTable(BaseTable):
+        action = columns.TemplateColumn(template_name="app/partials/table_actions_normal.html", orderable=False)
+
+        class Meta:
+            model = model_class
+            fields = [field.name for field in model_class._meta.fields if field.name not in excluded_fields]
+            attrs = {"class": "table key-buttons border-bottom table-striped"}
+            exclude = excluded_fields
+
+    return DynamicTable
+
+
 # Create your views here.
 class Halticket(PDFView):
     template_name = "web/halticket_pdf.html"
@@ -384,3 +427,554 @@ class ExamAppliedBatchBased(PDFView):
         context['total_sum'] = total_sum
         context['subject_summary'] = subject_summary
         return context
+
+
+class BatchBasedMarkListPrint(PDFView):
+    template_name = "web/batch_based_marklist_print.html"
+    pdfkit_options = {
+        "page-height": 210,
+        "page-width": 297,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        batch = Batch.objects.get(pk=self.kwargs['pk'])
+        subjects = batch.get_subjects()
+        students = ExamStudent.objects.filter(exam__batch=batch)
+        items = []
+        fail_count = 0
+        pass_count = 0
+        for student in students:
+            marks =student.get_exam_marks()
+            mark_data = []
+
+            for mark in marks:
+                te_mark = 0
+                ce_mark = 0
+                total_mark = 0
+
+                if mark.te_mark == 'Ab':
+                    te_mark = 0
+                elif mark.te_mark == 'C':
+                    te_mark = 0
+                else:
+                    te_mark = int(mark.te_mark)
+                    ce_mark = int(mark.ce_mark)
+                total_mark = te_mark + ce_mark
+                credit = mark.subject.credit_score
+                grade_point = total_mark/10
+                credit_point = round(credit*grade_point,2)
+                status = 'Pass' if te_mark >= 32 else 'Fail'
+                if status == 'Fail':
+                    credit_point = '-'
+                    grade_point = '-'
+                    total_mark = te_mark
+                mark_data.append({
+                    'ce_mark':ce_mark,
+                    'te_mark':te_mark,
+                    "total_mark": total_mark,
+                    "credit":credit,
+                    'grade_point':grade_point,
+                    'credit_point': credit_point,
+                    'stutus':status
+                })
+            total_credit = sum(mark['credit'] for mark in mark_data)
+            total_mark = sum(mark['total_mark'] for mark in mark_data)
+            is_ok =True
+            overall_grade = '-'
+            sgpa = '-'
+            total_credit_point = '-'
+            for i in mark_data:
+                if i['stutus'] == 'Fail':
+                    fail_count += 1
+                    is_ok = False
+            if is_ok :
+                pass_count +=1
+                total_credit_point = sum(mark['credit_point'] for mark in mark_data)
+                sgpa = round(total_credit_point / total_credit, 2) if total_credit else 0
+                overall_grade = GradingSystem.objects.filter(
+                    grade_range_from__lte=sgpa,
+                    grade_range_to__gte=sgpa
+                ).first().grade
+                total_credit_point = round(total_credit_point, 2)
+            items.append({
+                "student": student.student.name,
+                "reg_no": student.student.reg_no,
+                'total_mark':total_mark,
+                'total_credit_point':total_credit_point,
+                'sgpa':sgpa,
+                'overall_grade':overall_grade,
+                "subjects_data": mark_data
+            })
+        
+        context["is_marklist"] = True
+
+        context['is_batch_based_mark_list'] = True
+        context["items"] = items
+        context["subjects"] = subjects
+        context["batch"] = batch
+        context["title"] = f"Batch Based Mark List - {batch.course.name} - {batch.name}"
+        
+        return context
+
+
+class CollegeListView(BaseModelView, mixins.HybridListView):
+    model = College
+    table_class = create_dynamic_table(College)
+    filterset_fields = {"name": ["icontains"]}
+
+
+class CollegeDetailView(BaseModelView, mixins.HybridDetailView):
+    model = College
+
+
+class CollegeCreateView(BaseModelView, mixins.HybridCreateView):
+    model = College
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New College"
+        return context
+
+
+class CollegeUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = College
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} College"
+        return context
+
+
+class CollegeDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = College
+
+class CourseListView(BaseModelView, mixins.HybridListView):
+    model = Course
+    table_class = create_dynamic_table(Course)
+    filterset_fields = { "college": ["exact"],}
+
+
+class CourseDetailView(BaseModelView, mixins.HybridDetailView):
+    model = Course
+
+
+class CourseCreateView(BaseModelView, mixins.HybridCreateView):
+    model = Course
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Course"
+        return context
+
+
+class CourseUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = Course
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Course"
+        return context
+
+
+class CourseDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Course
+
+
+class BatchListView(BaseModelView, mixins.HybridListView):
+    model = Batch
+    table_class = create_dynamic_table(Batch)
+    filterset_fields = {'course__college': ["exact"],"course": ["exact"]}
+
+
+class BatchDetailView(BaseModelView, mixins.HybridDetailView):
+    model = Batch
+
+
+class BatchCreateView(BaseModelView, mixins.HybridCreateView):
+    model = Batch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Batch"
+        return context
+
+
+class BatchUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = Batch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Batch"
+        return context
+
+
+class BatchDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Batch
+
+
+class ExaminationListView(BaseModelView, mixins.HybridListView):
+    model = Examination
+    table_class = create_dynamic_table(Examination)
+    filterset_fields = {"name": ["icontains"]}
+
+
+class ExaminationDetailView(BaseModelView, mixins.HybridDetailView):
+    model = Examination
+
+
+class ExaminationCreateView(BaseModelView, mixins.HybridCreateView):
+    model = Examination
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Examination"
+        return context
+
+
+class ExaminationUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = Examination
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Examination"
+        return context
+
+
+class ExaminationDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Examination
+
+
+
+class StudentListView( mixins.HybridListView):
+    model = Student
+    exclude = ("is_active",)
+    table_class = create_dynamic_table(Student)
+    filterset_fields = {"name": ["icontains"],"reg_no": ["icontains"],"course": ["exact"]}
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        return context
+
+class StudentDetailView(BaseModelView, mixins.HybridDetailView):
+    model = Student
+
+
+class StudentCreateView(mixins.HybridCreateView):
+    model = Student
+    exclude = ("is_active",)
+    def get_success_url(self):
+        return self.object.get_list_url()
+
+    def form_valid(self, form): 
+        response = super().form_valid(form)
+        return response
+
+    def get_success_message(self, cleaned_data):
+        instance = self.object
+        success_message = f"{self.model.__name__} '{instance}' was Created successfully. "
+        success_message += f"<a href='{instance.get_absolute_url()}'>View {self.model.__name__}</a>."
+        return success_message
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Student"
+        context['is_student'] = True
+        return context
+
+
+class StudentUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = Student
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Student"
+        return context
+
+
+class StudentDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Student
+
+
+
+class SubjectListView(BaseModelView, mixins.HybridListView):
+    model = Subject
+    table_class = create_dynamic_table(Subject)
+    filterset_fields = {"name": ["icontains"]}
+
+
+class SubjectDetailView(BaseModelView, mixins.HybridDetailView):
+    model = Subject
+
+
+class SubjectCreateView(BaseModelView, mixins.HybridCreateView):
+    model = Subject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Subject"
+        return context
+
+
+class SubjectUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = Subject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Subject"
+        return context
+
+
+class SubjectDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Subject
+
+
+class ExamStudentListView( mixins.HybridListView):
+    model = ExamStudent
+    exclude = ("is_active",)
+    table_class = create_dynamic_table(ExamStudent)
+    filterset_fields = {"student__name": ["icontains"],"student__reg_no": ["icontains"],"exam__batch": ["exact"]}
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        return context
+
+class ExamStudentDetailView(BaseModelView, mixins.HybridDetailView):
+    model = ExamStudent
+
+
+class ExamStudentCreateView(mixins.HybridCreateView):
+    model = ExamStudent
+    exclude = ("is_active",)
+    def get_success_url(self):
+        return self.object.get_list_url()
+
+    def form_valid(self, form): 
+        response = super().form_valid(form)
+        return response
+
+    def get_success_message(self, cleaned_data):
+        instance = self.object
+        success_message = f"{self.model.__name__} '{instance}' was Created successfully. "
+        success_message += f"<a href='{instance.get_absolute_url()}'>View {self.model.__name__}</a>."
+        return success_message
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New ExamStudent"
+        context['is_examstudent'] = True
+        return context
+
+
+class ExamStudentUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = ExamStudent
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} ExamStudent"
+        return context
+
+
+class ExamStudentDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = ExamStudent
+
+
+class ExamStudentMarkListView( mixins.HybridListView):
+    model = ExamStudentMark
+    exclude = ("is_active",)
+    table_class = tables.ExamStudentMarkTable
+    filterset_class = ExamStudentMarkFilter
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        context['is_exam'] = True
+        return context
+
+
+class ExamStudentMarkDetailView(BaseModelView, mixins.HybridDetailView):
+    model = ExamStudentMark
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        context['is_exam'] = True
+        return context
+
+
+class ExamStudentMarkCreateView(mixins.HybridCreateView):
+    model = ExamStudentMark
+    exclude = ("is_active",)
+    def get_success_url(self):
+        return self.object.get_list_url()
+
+    def form_valid(self, form): 
+        response = super().form_valid(form)
+        return response
+
+    def get_success_message(self, cleaned_data):
+        instance = self.object
+        success_message = f"{self.model.__name__} '{instance}' was Created successfully. "
+        success_message += f"<a href='{instance.get_absolute_url()}'>View {self.model.__name__}</a>."
+        return success_message
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New ExamStudentMark"
+        context['is_examstudentMark'] = True
+        context['is_exam'] = True
+        return context
+
+
+class ExamStudentMarkUpdateView(BaseModelView, mixins.HybridUpdateView):
+    model = ExamStudentMark
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} ExamStudentMark"
+        context['is_exam'] = True
+        return context
+
+
+class ExamStudentMarkDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = ExamStudentMark
+
+
+class BatchBasedMarkListView( mixins.HybridListView):
+    model = ExamStudentMark
+    table_class = tables.ExamStudentMarkTable
+    filterset_fields = {"subject": ["exact"],}
+    template_name = "examination/batch_based_mark_list.html"
+
+    def get_queryset(self):
+        qs = super().get_queryset().filter(is_active=True,subject__batch=self.kwargs['pk'])
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        batch = Batch.objects.get(pk=self.kwargs['pk'])
+        subjects = batch.get_subjects()
+        students = ExamStudent.objects.filter(exam__batch=batch)
+        items = []
+        fail_count = 0
+        pass_count = 0
+        for student in students:
+            marks =student.get_exam_marks()
+            mark_data = []
+
+            for mark in marks:
+                te_mark = 0
+                ce_mark = 0
+                total_mark = 0
+
+                if mark.te_mark == 'Ab':
+                    te_mark = 0
+                elif mark.te_mark == 'C':
+                    te_mark = 0
+                else:
+                    te_mark = int(mark.te_mark)
+                    ce_mark = int(mark.ce_mark)
+                total_mark = te_mark + ce_mark
+                credit = mark.subject.credit_score
+                grade_point = total_mark/10
+                credit_point = round(credit*grade_point,2)
+                status = 'Pass' if te_mark >= 32 else 'Fail'
+                if status == 'Fail':
+                    credit_point = '-'
+                    grade_point = '-'
+                    total_mark = te_mark
+                mark_data.append({
+                    'ce_mark':ce_mark,
+                    'te_mark':te_mark,
+                    "total_mark": total_mark,
+                    "credit":credit,
+                    'grade_point':grade_point,
+                    'credit_point': credit_point,
+                    'stutus':status
+                })
+            total_credit = sum(mark['credit'] for mark in mark_data)
+            total_mark = sum(mark['total_mark'] for mark in mark_data)
+            is_ok =True
+            overall_grade = '-'
+            sgpa = '-'
+            total_credit_point = '-'
+            for i in mark_data:
+                if i['stutus'] == 'Fail':
+                    fail_count += 1
+                    is_ok = False
+            if is_ok :
+                pass_count +=1
+                total_credit_point = sum(mark['credit_point'] for mark in mark_data)
+                sgpa = round(total_credit_point / total_credit, 2) if total_credit else 0
+                overall_grade = GradingSystem.objects.filter(
+                    grade_range_from__lte=sgpa,
+                    grade_range_to__gte=sgpa
+                ).first().grade
+                total_credit_point = round(total_credit_point, 2)
+            items.append({
+                "student": student.student.name,
+                "reg_no": student.student.reg_no,
+                'total_mark':total_mark,
+                'total_credit_point':total_credit_point,
+                'sgpa':sgpa,
+                'overall_grade':overall_grade,
+                "subjects_data": mark_data
+            })
+        
+        print('pass_count=',pass_count)
+        context["is_marklist"] = True
+
+        context['is_batch_based_mark_list'] = True
+        context["items"] = items
+        context["subjects"] = subjects
+        context["batch"] = batch
+        context["title"] = f"Batch Based Mark List - {batch.course.name} - {batch.name}"
+        
+        return context
+
+class GetCourseView(View):
+    def get(self, request, *args, **kwargs):
+        college_id = request.GET.get("college_id")
+        queryset = Course.objects.filter(is_active=True)
+        if college_id:
+            queryset = queryset.filter(college_id=college_id)
+        courses = list(queryset.values("id", "name"))
+        return JsonResponse({"courses": courses})
+    
+class GetBatchView(View):
+    def get(self, request, *args, **kwargs):
+        course_id = request.GET.get("course_id")
+        queryset = Batch.objects.filter(is_active=True)
+        if course_id:
+            queryset = queryset.filter(course_id=course_id)
+        batches = [{'id': x.id, 'name': x.__str__()} for x in queryset]
+        return JsonResponse({"batches": batches})
+    
+
+def get_batch_filter(request):
+    if request.method == 'POST':
+        page_type = request.GET.get('page_type')
+        batch = request.POST.get('batch')
+        if page_type == 'batch_mark_list':
+            return redirect(reverse('examination:batch_based_mark_list', args=[batch]))
+    context ={
+        'form': BatchFilterForm,
+        'title': 'Filter Form',
+        'is_marklist':True
+    }
+    return render(request, 'examination/batch_filter.html',context)

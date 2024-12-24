@@ -1,0 +1,92 @@
+{% load static extras i18n %}
+<!--app-sidebar-->
+<div class="sticky">
+    <aside class="app-sidebar">
+        <div class="app-sidebar__logo">
+            <a class="header-brand" href="/">
+                <img src="{{app_settings.logo}}" class="header-brand-img desktop-lgo" alt="">
+                <img src="{{app_settings.logo}}" class="header-brand-img dark-logo" alt="">
+                <img src="{{app_settings.favicon}}" class="header-brand-img mobile-logo" alt="">
+                <img src="{{app_settings.favicon}}" class="header-brand-img darkmobile-logo" alt="">
+            </a>
+        </div>
+        <div class="app-sidebar3">
+            <div class="main-menu">
+               
+
+                <ul class="side-menu">
+
+                    <li class="slide">
+                        <a class="side-menu__item {% if is_dashboard %} active {% endif %}" data-bs-toggle="slide" href="{% url 'core:home' %}">
+                            <i class="feather feather-airplay sidemenu_icon"></i>
+                            <span class="side-menu__label">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="slide has-sub {% if is_student %}active is-expanded {% endif %}">
+                        <a class="side-menu__item {% if is_student %}active {% endif %}" data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="fa fa-graduation-cap sidemenu_icon"></i>
+                                <span class="side-menu__label">Student</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+
+                        <ul class="slide-menu " >
+                            <li><a href="{% url 'examination:student_list' %}" class="slide-item  {% if is_student %}active is-expanded {% endif %}">Students</a></li>  
+                            <li><a href="{% url 'examination:examstudent_list' %}" class="slide-item  {% if is_examstudent %}active is-expanded {% endif %}">ExamStudents</a></li> 
+                            
+                        </ul>
+                    </li>
+                    <li class="slide has-sub {% if is_exam %}active is-expanded {% endif %}">
+                        <a class="side-menu__item {% if is_exam %}active {% endif %}" data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="fa fa-spinner sidemenu_icon"></i>
+                                <span class="side-menu__label">Examination</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+
+                        <ul class="slide-menu" >
+                            <li><a href="{% url 'examination:examination_list' %}" class="slide-item  {% if is_examination %}active is-expanded {% endif %}">Examinations</a></li>  
+                            <li><a href="{% url 'examination:examstudentmark_list' %}" class="slide-item  {% if is_examstudentmark %}active is-expanded {% endif %}">ExamStudentMarks</a></li>  
+                        </ul>
+                    </li>
+                    <li class="slide has-sub {% if is_marklist %}active is-expanded {% endif %}">
+                        <a class="side-menu__item {% if is_marklist %}active {% endif %}" data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="fa fa-table sidemenu_icon"></i>
+                                <span class="side-menu__label">Mark List</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+                        <ul class="slide-menu " >
+                            <li><a href="{% url 'examination:get_batch_filter' %}?page_type=batch_mark_list" class="slide-item  {% if is_batch_based_mark_list %}active is-expanded {% endif %}">Batch Mark List</a></li>  
+                           
+                        </ul>
+                        
+                    </li>
+                    <li class="slide has-sub {% if is_master %}active is-expanded {% endif %}">
+                        <a class="side-menu__item {% if is_master %}active {% endif %}" data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="fa fa fa-cogs sidemenu_icon"></i>
+                                <span class="side-menu__label">Masters</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+
+                        <ul class="slide-menu " >
+                            <li><a href="{% url 'examination:college_list' %}" class="slide-item  {% if is_college %}active is-expanded {% endif %}">Colleges</a></li>  
+                            <li><a href="{% url 'examination:course_list' %}" class="slide-item  {% if is_course %}active is-expanded {% endif %}">Courses</a></li>  
+                            <li><a href="{% url 'examination:batch_list' %}" class="slide-item  {% if is_batch %}active is-expanded {% endif %}">Batchs</a></li>  
+                            <li><a href="{% url 'examination:subject_list' %}" class="slide-item  {% if is_subject %}active is-expanded {% endif %}">Subjects</a></li>  
+                        </ul>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item {% if is_user %} active {% endif %}" data-bs-toggle="slide" href="{% url 'accounts:user_list' %}">
+                            <i class="fa fa fa-users sidemenu_icon"></i>
+                            <span class="side-menu__label">Users</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="slide-right" id="slide-right">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>

@@ -1,13 +1,14 @@
 from pathlib import Path
 
 from decouple import config
+from django.utils.translation import gettext_lazy as _
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = "django-insecure-9#)5l9s#x$a_9s=%mv_v5g&v+o7bq*hri$5t)=j2x)pea!nxnd"
-
-DEBUG = True
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["jamianadwiyya.in", "*"]
 
@@ -17,14 +18,24 @@ INSTALLED_APPS = [
     "admin_interface",
     "colorfield",
     "import_export",
+    "compressor",
+    "crispy_bootstrap5",
+    "crispy_forms",
+    "django_filters",
+    "django_tables2",
+    "registration",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
+    # "django.contrib.sessions",
+    "user_sessions",
+    "django.contrib.humanize",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "web",
-    'examination'
+    'examination',
+    'core',
+    'accounts',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -75,20 +86,45 @@ DATABASES = {
 
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # other finders..
+    "compressor.finders.CompressorFinder",
+)
+
+
+# Django Compressor Settings
+COMPRESS_ENABLED = False
+COMPRESS_CSS_HASHING_METHOD = "content"
+COMPRESS_FILTERS = {"css": ["compressor.filters.css_default.CssAbsoluteFilter", "compressor.filters.cssmin.rCSSMinFilter"], "js": ["compressor.filters.jsmin.JSMinFilter"]}
+
+AUTH_USER_MODEL = "accounts.User"
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019", "admin.E410"]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+SESSION_ENGINE = "user_sessions.backends.db"
+SESSION_CACHE_ALIAS = "default"
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Kolkata"
@@ -135,3 +171,36 @@ STATIC_ROOT = BASE_DIR / "assets"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+SEND_ACTIVATION_EMAIL = False
+REGISTRATION_EMAIL_SUBJECT_PREFIX = ""
+
+REGISTRATION_OPEN = True
+LOGIN_URL = "/accounts/login/"
+LOGOUT_URL = "/accounts/logout/"
+LOGIN_REDIRECT_URL = "/"
+
+
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SITE_ID = 1
+
+APP_SETTINGS = {
+    "logo": "/static/app/config/logo.png",
+    "logo_mini": "/static/app/config/logo_mini.png",
+    "favicon": "/static/app/config/favicon.png",
+    "site_name": "JNE-APP",
+    "site_title": "JNE-APP | Efficiency amplified, productivity perfected.",
+    "site_description": "Efficiency amplified, productivity perfected.",
+    "site_keywords": "Efficiency amplified, productivity perfected.",
+    "background_image": "/static/app/config/background.jpg",
+}

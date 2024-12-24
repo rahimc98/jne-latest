@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %}
+{% load static i18n crispy_forms_tags django_tables2 extras %}
+{% block title %}Home: {{app_settings.site_title}}{% endblock %}
+
+{% block content %}
+
+<div class="side-app main-container">
+
+    <div class="page-header d-xl-flex">
+        <div class="page-leftheader">
+            <div class="page-title">{% translate "Main Dashboard" %}</div>
+        </div>
+    </div>
+    
+</div>
+
+
+{% endblock content %}
+
+{% block js_plugins %}
+<script src="{% static 'app/plugins/apexchart/apexcharts.js' %}"></script>
+<script src="{% static 'app/plugins/apexchart/apexcharts.js' %}"></script>
+<script src="{% static 'app/plugins/chart/chart.min.js' %}"></script>
+
+
+<script src="{% static 'app/js/index5.js' %}"></script>
+<script src="{% static 'app/js/themeColors.js' %}"></script>
+
+{% endblock %}

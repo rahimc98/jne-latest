@@ -11,6 +11,20 @@ class College(models.Model):
         return self.name
 
 
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:college_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:college_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:college_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:college_delete", kwargs={"pk": self.pk})
+
+
 class Course(models.Model):
     college = models.ForeignKey(College,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -25,8 +39,18 @@ class Course(models.Model):
     def __str__(self):
         return f'{self.code}'
     
-    
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:course_list")
 
+    def get_absolute_url(self):
+        return reverse_lazy("examination:course_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:course_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:course_delete", kwargs={"pk": self.pk})
 
 
 class Batch(models.Model):
@@ -51,6 +75,19 @@ class Batch(models.Model):
     def get_exam(self):
         return Examination.objects.filter(is_active=True,batch=self).last()
 
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:batch_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:batch_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:batch_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:batch_delete", kwargs={"pk": self.pk})
+
 
 class Examination(models.Model):
     batch = models.ForeignKey(Batch,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -63,7 +100,19 @@ class Examination(models.Model):
 
     def __str__(self):
         return f'{self.name}'
-    
+
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:examination_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:examination_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:examination_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:examination_delete", kwargs={"pk": self.pk})  
 
 class Student(models.Model):
     course = models.ForeignKey(Course,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -84,8 +133,20 @@ class Student(models.Model):
     
     def get_print_grade_card(self):
         return reverse_lazy("examination:grademark", kwargs={"pk": self.pk})
-    
 
+    
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:student_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:student_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:student_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:student_delete", kwargs={"pk": self.pk})
     
 
 class Subject(models.Model):
@@ -101,7 +162,20 @@ class Subject(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}-{self.batch}'
+
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:subject_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:subject_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:subject_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:subject_delete", kwargs={"pk": self.pk})
     
 
 class ExamStudent(models.Model):
@@ -116,10 +190,23 @@ class ExamStudent(models.Model):
         verbose_name_plural = _("Exam Students")
 
     def __str__(self):
-        return f'{self.exam} - {self.student.reg_no}'
+        return f'{self.student} - {self.student.reg_no}'
     
     def get_exam_marks(self):
         return ExamStudentMark.objects.filter(student=self)
+    
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:examstudent_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:examstudent_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:examstudent_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:examstudent_delete", kwargs={"pk": self.pk})
     
 
 class ExamStudentMark(models.Model):
@@ -135,6 +222,20 @@ class ExamStudentMark(models.Model):
     def __str__(self):
         return f'{self.student} - {self.subject} (TE: {self.te_mark}, CE: {self.ce_mark})'
     
+
+
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:examstudentmark_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:examstudentmark_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:examstudentmark_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:examstudentmark_delete", kwargs={"pk": self.pk})
 
 class GradingSystem(models.Model):
     COMMENT_STATUS = (

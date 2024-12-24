@@ -1,0 +1,125 @@
+{% extends 'app/base.html' %}
+{% load static i18n crispy_forms_tags django_tables2 %}
+{% block title %}{{title|title}} : {{app_settings.site_title}}{% endblock %}
+
+{% block content %}
+
+<div class="side-app main-container">
+
+    <!--Page header-->
+    <div class="page-header d-flex">
+        <div class="page-leftheader">
+            <div class="page-title text-capitalize">{{title|title}}</div>
+        </div>
+        <div class="page-rightheader ms-md-auto">
+          <div class="btn-list">
+            <a href="{% url 'examination:batch_based_mark_list_print' batch.pk %}" class="btn btn-sm btn-white" title="Print"> <i
+              class="feather feather-printer"></i> </a>
+            <a href="{% export_url 'xlsx' %}" class="btn btn-sm btn-white" data-bs-placement="top"
+                    data-bs-toggle="tooltip" title="Export"> <i class="feather feather-download-cloud"></i> </a>
+          </div>  
+        </div>
+
+    </div>
+    <!--End Page header-->
+    {% include 'app/partials/messages.html' %}
+    <div class="row row-sm">
+        <div class="col-lg-12">
+
+            <div class="card custom-card">
+                <div class="card-body p-0">
+                    <div class="table-container table-responsive">
+                        <table class="table table-hover table-bordered text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">#</th>
+                                    <th rowspan="2">Student</th>
+                                    <th rowspan="2">REG.NO</th>
+                                    {% for s in subjects %}
+                                    <th colspan="2" class="text-center">{{ s.name|truncatechars:15}}</th>
+                                    {% endfor %}
+                                    <th rowspan="2">Total</th>
+                                    <th rowspan="2">SGPA</th>
+                                    <th rowspan="2">Grade</th>
+                                </tr>
+                                <tr>
+                                    {% for s in subjects %}
+                                    <th class="text-center">TE</th>
+                                    <th class="text-center">CE</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loop through students and their marks -->
+                                {% for i in items %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.student }}</td>
+                                    <td>{{ i.reg_no }}</td>
+                                    {% for s in i.subjects_data %}
+                                    <td class="text-center">{% if s.stutus == 'Fail' %}<span class="text-danger">{{ s.te_mark }}</span>{% else %}{{ s.te_mark }}{% endif %}</td>
+                                    <td class="text-center">{{ s.ce_mark }}</td>
+                                    {% endfor %}
+                                    <td class="text-center">{{ i.total_mark }}</td>
+                                    <td class="text-center">{{ i.sgpa }}</td>
+                                    <td class="text-center">{{ i.overall_grade }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        
+        <div class="col-md-12 mb-3">
+            <div class="card custom-card h-100">
+                <div class="card-header  justify-content-between"> 
+                    <h4 class="card-title">Subject Wise Status</h4> 
+                </div>
+                <div class="card-body">
+                    <div class="chart-wrapper">
+                      <div id="chartbar-statistics"></div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'app/partials/filter.html' %}
+{% include 'app/partials/help.html' %}
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'app/plugins/apexchart/apexcharts.js' %}"></script>
+<script>
+    var subjects = [
+        {% for s in subjects %}
+            "{{ s.name|truncatechars:25 }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    var data1 = [{ name: "Passed", data: [44, 42, 57, 86, 58, 55, 70, 44,50] }, { name: "Failed", data: [40, 38, 47, 86, 51, 55, 65, 39,60] }]
+    // var data2 = { series: [80,20 ], labels: ["Passed", "Failed"] }
+    // var options2 = {
+    // series: data2.series, labels: data2.labels, chart: { height: 300, type: "donut", toolbar: { show: !1 } }, dataLabels: {enabled: false}, legend: { show: false, offsetY: 8, fontWeight: "normal", fontSize: "14px", markers: { width: 12, height: 12, strokeWidth: 0, strokeColor: "#fff", fillColors: void 0, radius: 4, customHTML: void 0, onClick: void 0, offsetX: 0, offsetY: 0 },}, stroke: { show: !0, curve: "smooth", lineCap: "round", colors: "#fff", width: 0, dashArray: 0 },
+    // plotOptions: { pie: { expandOnClick: !1, donut: { size: "80%", background: "transparent", labels: { show:true, name: { show: true, fontSize: "20px", offsetY: -13 }, value: { show: true, fontSize: "30px", fontWeight: 500, color: void 0, offsetY: 8, formatter: function (o) { return o  } }, total: { show: true, showAlways:false, label: "Total", fontSize: "18px", fontWeight: 400 } } } } }, labels: ["Male","Female"],colors: ["rgba(25, 135, 84)", "rgba(220, 53, 69)"]};  
+    // document.querySelector("#status").innerHTML = " "; var chart2 = new ApexCharts(document.querySelector("#status"), options2); function analysis() { chart2.updateOptions({ colors: ["rgba(" + myVarVal + ", 1)", "rgba(254, 127, 0, 1)", "#0dcd94"] }) } chart2.render();
+
+  var options1 = {
+    series: data1, chart: { type: "bar", height: 400, toolbar: { show: !1 } }, grid: { borderColor: "#f1f1f1", strokeDashArray: 3 }, colors: ["rgb(51, 102, 255)", "#e4e7ed"], plotOptions: { bar: { columnWidth: "50%", borderRadius: 5 } },
+    dataLabels: { enabled: !1 }, stroke: { show: !0, width: 2 }, legend: { show: !1, position: "top" }, yaxis: {
+      title: { style: { color: "#adb5be", fontSize: "13px", fontWeight: 600, cssClass: "apexcharts-yaxis-label" } },
+      labels: { formatter: function (o) { return o.toFixed(0) + "" } }
+    }, xaxis: {
+      type: "week", categories: subjects, axisBorder: { show: !0, color: "rgba(119, 119, 142, 0.05)", offsetX: 0, offsetY: 0 }, axisTicks: { show: !0, borderType: "solid", color: "rgba(119, 119, 142, 0.05)", width: 6, offsetX: 0, offsetY: 0 },
+      labels: { rotate: -90 }
+    }
+  }; document.getElementById("chartbar-statistics").innerHTML = "";
+  var chart1 = new ApexCharts(document.querySelector("#chartbar-statistics"), options1); function chartbarstatistics() { chart1.updateOptions({ colors: ["rgba(" + myVarVal + ", 1)", "rgba(" + myVarVal + ", 0.2)"] }) } chart1.render();
+
+</script>
+{% endblock %}
