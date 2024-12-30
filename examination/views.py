@@ -901,7 +901,7 @@ class BatchBasedMarkListView( mixins.HybridListView):
                     total_mark = te_mark
                 mark_data.append({
                     'ce_mark':ce_mark,
-                    'te_mark':te_mark,
+                    'te_mark':int(te_mark),
                     "total_mark": total_mark,
                     "credit":credit,
                     'grade_point':grade_point,
