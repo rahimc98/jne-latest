@@ -72,7 +72,7 @@ class Batch(models.Model):
        return f'{self.course.code} - {self.code}'
     
     def get_subjects(self):
-        return Subject.objects.filter(is_active=True,batch=self)
+        return Subject.objects.filter(is_active=True,batch=self).order_by('id')
     
     def get_examinations(self):
         return Examination.objects.filter(is_active=True)
@@ -207,7 +207,7 @@ class ExamStudent(models.Model):
         return f'{self.student} - {self.student.reg_no}'
     
     def get_exam_marks(self):
-        return ExamStudentMark.objects.filter(student=self)
+        return ExamStudentMark.objects.filter(student=self).order_by('subject')
     
     @staticmethod
     def get_list_url():
