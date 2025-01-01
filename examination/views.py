@@ -1,4 +1,5 @@
 
+from collections import Counter
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -865,10 +866,10 @@ class BatchBasedMarkListView( mixins.HybridListView):
         items = []
         fail_count = 0
         pass_count = 0
+        marks = []
         for student in students:
             marks =student.get_exam_marks()
             mark_data = []
-
             for mark in marks:
                 te_mark = 0
                 ce_mark = 0
@@ -890,6 +891,7 @@ class BatchBasedMarkListView( mixins.HybridListView):
                     credit_point = '-'
                     grade_point = '-'
                     total_mark = te_mark
+                
                 mark_data.append({
                     'ce_mark':ce_mark,
                     'te_mark':int(te_mark),
@@ -899,6 +901,7 @@ class BatchBasedMarkListView( mixins.HybridListView):
                     'credit_point': credit_point,
                     'stutus':status
                 })
+                
             total_credit = sum(mark['credit'] for mark in mark_data)
             total_mark = sum(mark['total_mark'] for mark in mark_data)
             is_ok =True
@@ -916,6 +919,7 @@ class BatchBasedMarkListView( mixins.HybridListView):
                     grade_range_to__gte=sgpa
                 ).first().grade
                 total_credit_point = round(total_credit_point, 2)
+            
             items.append({
                 "student": student.student.name,
                 "reg_no": student.student.reg_no,
@@ -925,14 +929,25 @@ class BatchBasedMarkListView( mixins.HybridListView):
                 'overall_grade':overall_grade,
                 "subjects_data": mark_data
             })
-        
-
-        
+        for item in items:
+            if item['overall_grade'] == '-':
+                fail_count += 1
+            else :
+                pass_count += 1
+        grade_count = Counter(item['overall_grade'] for item in items)
+        grade_list = [grade for grade, count in grade_count.items()]
+        count_list = [count for grade, count in grade_count.items()]
+        total_marks_list = [item['total_mark'] for item in items]
+        studens_list = [item['student'] for item in items]
         context["is_marklist"] = True
         context['is_batch_based_mark_list'] = True
         context["items"] = sorted(items, key=lambda x: x['sgpa'] if x['sgpa'] != '-' else 0, reverse=True)
         context["subjects"] = subjects
         context["batch"] = batch
+        context["total_marks_list"] = total_marks_list
+        context["students"] = studens_list
+        context["grade_list"] = grade_list
+        context["count_list"] = count_list
         context["pass_count"] = pass_count
         context["fail_count"] = fail_count
         context["title"] = f"Batch Based Mark List - {batch.course.name} - {batch.name}"

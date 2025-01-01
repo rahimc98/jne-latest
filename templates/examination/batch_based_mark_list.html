@@ -73,55 +73,203 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         
-        <div class="col-md-12 mb-3">
-            <div class="card custom-card h-100">
-                <div class="card-header  justify-content-between"> 
-                    <h4 class="card-title">Subject Wise Status</h4> 
+        <div class="col-md-6 ">
+            <div class="card mb-0 custom-card h-100">
+                <div class="card-header">
+                    <h3 class="card-title">Grade Distribution</h3>
                 </div>
-                <div class="card-body">
-                    <div class="chart-wrapper">
-                      <div id="chartbar-statistics"></div>
-                    </div>
-                  </div>
+                <div id="chart"></div>
             </div>
         </div>
+        <div class="col-md-6 ">
+          <div class="card mb-0 custom-card h-100">
+            <div class="card-header">
+                <h3 class="card-title">Result Status</h3>
+            </div>
+            <div id="result-chart"></div>
+        </div>
+        </div>
+        
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-0 custom-card h-100">
+                <div class="card-header">
+                    <h3 class="card-title">Total Marks of Students</h3>
+                </div>
+                <div id="mark_chart"></div>
+            </div>
+      </div>
     </div>
 </div>
+{% include 'app/partials/apexchart.html' %}
 {% include 'app/partials/filter.html' %}
 {% include 'app/partials/help.html' %}
 
 {% endblock content %}
 
 {% block javascript %}
-<script src="{% static 'app/plugins/apexchart/apexcharts.js' %}"></script>
 <script>
-    var pass_count = '{{pass_count}}';
-    console.log('pass_count',pass_count);
-    var subjects = [
-        {% for s in subjects %}
-            "{{ s.name|truncatechars:25 }}"{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-    var data1 = [{ name: "Passed", data: [44, 42, 57, 86, 58, 55, 70, 44,50] }, { name: "Failed", data: [40, 38, 47, 86, 51, 55, 65, 39,60] }]
-    // var data2 = { series: [80,20 ], labels: ["Passed", "Failed"] }
-    // var options2 = {
-    // series: data2.series, labels: data2.labels, chart: { height: 300, type: "donut", toolbar: { show: !1 } }, dataLabels: {enabled: false}, legend: { show: false, offsetY: 8, fontWeight: "normal", fontSize: "14px", markers: { width: 12, height: 12, strokeWidth: 0, strokeColor: "#fff", fillColors: void 0, radius: 4, customHTML: void 0, onClick: void 0, offsetX: 0, offsetY: 0 },}, stroke: { show: !0, curve: "smooth", lineCap: "round", colors: "#fff", width: 0, dashArray: 0 },
-    // plotOptions: { pie: { expandOnClick: !1, donut: { size: "80%", background: "transparent", labels: { show:true, name: { show: true, fontSize: "20px", offsetY: -13 }, value: { show: true, fontSize: "30px", fontWeight: 500, color: void 0, offsetY: 8, formatter: function (o) { return o  } }, total: { show: true, showAlways:false, label: "Total", fontSize: "18px", fontWeight: 400 } } } } }, labels: ["Male","Female"],colors: ["rgba(25, 135, 84)", "rgba(220, 53, 69)"]};  
-    // document.querySelector("#status").innerHTML = " "; var chart2 = new ApexCharts(document.querySelector("#status"), options2); function analysis() { chart2.updateOptions({ colors: ["rgba(" + myVarVal + ", 1)", "rgba(254, 127, 0, 1)", "#0dcd94"] }) } chart2.render();
+  var options = {
+      series: {{count_list|safe}},
+      chart: {
+      width: '400px',
+      height: '400px',
+      type: 'pie',
+    },
+    labels: {{grade_list|safe}},
+    theme: {
+      monochrome: {
+        enabled: true,
+      },
+    },
+    plotOptions: {
+      pie: {
+        dataLabels: {
+          offset: -5,
+        },
+      },
+    },
+    grid: {
+      padding: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+    },
+    dataLabels: {
+      formatter(val, opts) {
+        const name = opts.w.globals.labels[opts.seriesIndex]
+        return [name, val.toFixed(1) + '%']
+      },
+    },
+    legend: {
+      show: false,
+    },
+  };
 
-  var options1 = {
-    series: data1, chart: { type: "bar", height: 400, toolbar: { show: !1 } }, grid: { borderColor: "#f1f1f1", strokeDashArray: 3 }, colors: ["rgb(51, 102, 255)", "#e4e7ed"], plotOptions: { bar: { columnWidth: "50%", borderRadius: 5 } },
-    dataLabels: { enabled: !1 }, stroke: { show: !0, width: 2 }, legend: { show: !1, position: "top" }, yaxis: {
-      title: { style: { color: "#adb5be", fontSize: "13px", fontWeight: 600, cssClass: "apexcharts-yaxis-label" } },
-      labels: { formatter: function (o) { return o.toFixed(0) + "" } }
-    }, xaxis: {
-      type: "week", categories: subjects, axisBorder: { show: !0, color: "rgba(119, 119, 142, 0.05)", offsetX: 0, offsetY: 0 }, axisTicks: { show: !0, borderType: "solid", color: "rgba(119, 119, 142, 0.05)", width: 6, offsetX: 0, offsetY: 0 },
-      labels: { rotate: -90 }
-    }
-  }; document.getElementById("chartbar-statistics").innerHTML = "";
-  var chart1 = new ApexCharts(document.querySelector("#chartbar-statistics"), options1); function chartbarstatistics() { chart1.updateOptions({ colors: ["rgba(" + myVarVal + ", 1)", "rgba(" + myVarVal + ", 0.2)"] }) } chart1.render();
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
 
+</script>
+<script>
+  var options = {
+          series: [ {{fail_count}},{{pass_count}}],
+          chart: {
+          width: 400,
+          height: 400,
+          type: 'donut',
+          dropShadow: {
+            enabled: true,
+            color: '#111',
+            top: -1,
+            left: 3,
+            blur: 3,
+            opacity: 0.5
+          }
+        },
+        stroke: {
+          width: 0,
+        },
+        grid: {
+          padding: {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+          },
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                  showAlways: true,
+                  show: true
+                }
+              }
+            }
+          }
+        },
+        labels: ["Failed","Passed", ],
+        colors: ['#FF0000', '#28a745'],
+        dataLabels: {
+          dropShadow: {
+            blur: 3,
+            opacity: 1
+          }
+        },
+        
+        states: {
+          hover: {
+            filter: 'none'
+          }
+        },
+        theme: {
+          palette: 'palette1'
+        },
+        // title: {
+        //   text: "Favourite Movie Type"
+        // },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 300
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#result-chart"), options);
+        chart.render();
+</script>
+<script>
+    var options = {
+          series: [{
+          data: {{total_marks_list|safe}}
+        }],
+          chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        // colors: colors,
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          categories: {{students|safe}},
+          labels: {
+            style: {
+            //   colors: colors,
+              fontSize: '12px'
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#mark_chart"), options);
+        chart.render();
 </script>
 {% endblock %}
