@@ -447,75 +447,66 @@ class BatchBasedMarkListPrint(PDFView):
         subjects = batch.get_subjects()
         students = ExamStudent.objects.filter(exam__batch=batch)
         items = []
-        fail_count = 0
-        pass_count = 0
         for student in students:
-            marks =student.get_exam_marks()
+            marks = student.get_exam_marks()
             mark_data = []
+            total_credit = 0
+            total_credit_point = 0
+            total_mark = 0
+            is_pass = True
 
             for mark in marks:
-                te_mark = 0
-                ce_mark = 0
-                total_mark = 0
-
-                if mark.te_mark == 'Ab':
-                    te_mark = 0
-                elif mark.te_mark == 'C':
-                    te_mark = 0
-                else:
-                    te_mark = int(mark.te_mark)
-                    ce_mark = int(mark.ce_mark)
-                total_mark = te_mark + ce_mark
+                te_mark = 0 if mark.te_mark in ['Ab', 'C'] else int(mark.te_mark)
+                ce_mark = int(mark.ce_mark) if mark.te_mark not in ['Ab', 'C'] else 0
+                total_subject_mark = te_mark + ce_mark
                 credit = mark.subject.credit_score
-                grade_point = total_mark/10
-                credit_point = round(credit*grade_point,2)
+                grade_point = total_subject_mark / 10
+                credit_point = round(credit * grade_point, 2) if te_mark >= 32 else '-'
                 status = 'Pass' if te_mark >= 32 else 'Fail'
+
                 if status == 'Fail':
+                    is_pass = False
                     credit_point = '-'
                     grade_point = '-'
-                    total_mark = te_mark
+
                 mark_data.append({
-                    'ce_mark':ce_mark,
-                    'te_mark':te_mark,
-                    "total_mark": total_mark,
-                    "credit":credit,
-                    'grade_point':grade_point,
+                    'ce_mark': ce_mark,
+                    'te_mark': te_mark,
+                    'total_mark': total_subject_mark,
+                    'credit': credit,
+                    'grade_point': grade_point,
                     'credit_point': credit_point,
-                    'stutus':status
+                    'status': status
                 })
-            total_credit = sum(mark['credit'] for mark in mark_data)
-            total_mark = sum(mark['total_mark'] for mark in mark_data)
-            is_ok =True
+
+                total_credit += credit
+                total_mark += total_subject_mark
+                if credit_point != '-':
+                    total_credit_point += credit_point
+
+            sgpa = round(total_credit_point / total_credit, 2) if total_credit and is_pass else '-'
             overall_grade = '-'
-            sgpa = '-'
-            total_credit_point = '-'
-            for i in mark_data:
-                if i['stutus'] == 'Fail':
-                    fail_count += 1
-                    is_ok = False
-            if is_ok :
-                pass_count +=1
-                total_credit_point = sum(mark['credit_point'] for mark in mark_data)
-                sgpa = round(total_credit_point / total_credit, 2) if total_credit else 0
+
+            if sgpa != '-':
                 overall_grade = GradingSystem.objects.filter(
                     grade_range_from__lte=sgpa,
                     grade_range_to__gte=sgpa
                 ).first().grade
-                total_credit_point = round(total_credit_point, 2)
+
             items.append({
                 "student": student.student.name,
                 "reg_no": student.student.reg_no,
-                'total_mark':total_mark,
-                'total_credit_point':total_credit_point,
-                'sgpa':sgpa,
-                'overall_grade':overall_grade,
-                "subjects_data": mark_data
+                'total_mark': total_mark,
+                'total_credit_point': total_credit_point if sgpa != '-' else '-',
+                'sgpa': sgpa,
+                'overall_grade': overall_grade,
+                "subjects_data": mark_data,
             })
         
         context["is_marklist"] = True
 
         context['is_batch_based_mark_list'] = True
-        context["items"] = items
+        context["items"] = sorted(items, key=lambda x: x['sgpa'] if x['sgpa'] != '-' else 0, reverse=True)
         context["subjects"] = subjects
         context["batch"] = batch
         context["title"] = f"Batch Based Mark List - {batch.course.name} - {batch.name}"
@@ -916,10 +907,8 @@ class BatchBasedMarkListView( mixins.HybridListView):
             total_credit_point = '-'
             for i in mark_data:
                 if i['stutus'] == 'Fail':
-                    fail_count += 1
                     is_ok = False
             if is_ok :
-                pass_count +=1
                 total_credit_point = sum(mark['credit_point'] for mark in mark_data)
                 sgpa = round(total_credit_point / total_credit, 2) if total_credit else 0
                 overall_grade = GradingSystem.objects.filter(
@@ -937,13 +926,15 @@ class BatchBasedMarkListView( mixins.HybridListView):
                 "subjects_data": mark_data
             })
         
-        print('pass_count=',pass_count)
-        context["is_marklist"] = True
 
+        
+        context["is_marklist"] = True
         context['is_batch_based_mark_list'] = True
-        context["items"] = items
+        context["items"] = sorted(items, key=lambda x: x['sgpa'] if x['sgpa'] != '-' else 0, reverse=True)
         context["subjects"] = subjects
         context["batch"] = batch
+        context["pass_count"] = pass_count
+        context["fail_count"] = fail_count
         context["title"] = f"Batch Based Mark List - {batch.course.name} - {batch.name}"
         
         return context

@@ -32,7 +32,7 @@
                         <table class="table table-hover table-bordered text-nowrap">
                             <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
+                                    <th rowspan="2">Rank</th>
                                     <th rowspan="2">Student</th>
                                     <th rowspan="2">REG.NO</th>
                                     {% for s in subjects %}
@@ -97,6 +97,8 @@
 {% block javascript %}
 <script src="{% static 'app/plugins/apexchart/apexcharts.js' %}"></script>
 <script>
+    var pass_count = '{{pass_count}}';
+    console.log('pass_count',pass_count);
     var subjects = [
         {% for s in subjects %}
             "{{ s.name|truncatechars:25 }}"{% if not forloop.last %},{% endif %}
