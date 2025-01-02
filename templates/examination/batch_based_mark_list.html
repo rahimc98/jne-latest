@@ -104,6 +104,7 @@
       </div>
     </div>
 </div>
+{% include 'app/partials/data_table.html' %}
 {% include 'app/partials/apexchart.html' %}
 {% include 'app/partials/filter.html' %}
 {% include 'app/partials/help.html' %}
@@ -120,11 +121,8 @@
       type: 'pie',
     },
     labels: {{grade_list|safe}},
-    theme: {
-      monochrome: {
-        enabled: true,
-      },
-    },
+    colors: ['#808080', '#00FF00','#800080','#FFC0CB','#0000FF','#00FFFF','#FF0000','#FFA500'],
+    
     plotOptions: {
       pie: {
         dataLabels: {

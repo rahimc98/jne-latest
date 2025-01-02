@@ -295,7 +295,7 @@ class ExamApplyPdfView(PDFView):
         # Fetch the student object
         student = get_object_or_404(Student, pk=self.kwargs['pk'])
 
-        exam_applies = ExamApply.objects.filter(student__student=student).select_related('subject')
+        exam_applies = ExamApply.objects.filter(student__student=student, is_active=True).select_related('subject')
         dic_data = [
             {
                 "subject": exam.subject.name,
@@ -375,13 +375,13 @@ class ExamAppliedBatchBased(PDFView):
         total_sum = 0
         for batch in batchs:
             subjects = batch.get_subjects()
-            students = ExamStudent.objects.filter(exam=batch.get_exam())
+            students = ExamStudent.objects.filter(exam=batch.get_exam(),is_active=True,student__is_active=True).select_related('student')
             dic_list = []
             subject_counts = {} 
             for student in students:
                 sub_data = []
                 total = 0
-                exam_applications = ExamApply.objects.filter(student=student, subject__in=subjects)
+                exam_applications = ExamApply.objects.filter(student=student, subject__in=subjects, is_active=True)
                 for subject in subjects:
                     amt = 0
                     val = ''
@@ -446,7 +446,7 @@ class BatchBasedMarkListPrint(PDFView):
         context = super().get_context_data(**kwargs)
         batch = Batch.objects.get(pk=self.kwargs['pk'])
         subjects = batch.get_subjects()
-        students = ExamStudent.objects.filter(exam__batch=batch)
+        students = ExamStudent.objects.filter(exam__batch=batch,is_active=True,student__is_active=True)
         items = []
         for student in students:
             marks = student.get_exam_marks()
@@ -862,7 +862,7 @@ class BatchBasedMarkListView( mixins.HybridListView):
         context = super().get_context_data(**kwargs)
         batch = Batch.objects.get(pk=self.kwargs['pk'])
         subjects = batch.get_subjects()
-        students = ExamStudent.objects.filter(exam__batch=batch)
+        students = ExamStudent.objects.filter(exam__batch=batch,is_active=True,student__is_active=True)
         items = []
         fail_count = 0
         pass_count = 0

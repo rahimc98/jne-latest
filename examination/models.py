@@ -151,6 +151,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = _("Student")
         verbose_name_plural = _("Students")
+        ordering = ['id']
 
     def __str__(self):
         return self.name
