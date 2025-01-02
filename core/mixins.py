@@ -122,7 +122,7 @@ class HybridListView(CustomLoginRequiredMixin, ExportMixin, SingleTableMixin, Fi
     table_pagination = {"per_page": 50}
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(is_active=True)
         search_fields = getattr(self, "search_fields", None)
         if search_fields:
             query = self.request.GET.get("q")

@@ -26,6 +26,11 @@ class College(models.Model):
 
     def get_delete_url(self):
         return reverse_lazy("examination:college_delete", kwargs={"pk": self.pk})
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+        
 
 
 class Course(models.Model):
@@ -57,6 +62,10 @@ class Course(models.Model):
 
     def get_fields(self):
         return generate_fields(self)
+
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
     
 class Batch(models.Model):
     course = models.ForeignKey(Course,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -95,6 +104,10 @@ class Batch(models.Model):
 
     def get_fields(self):
         return generate_fields(self)
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
 
 class Examination(models.Model):
     batch = models.ForeignKey(Batch,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -123,6 +136,10 @@ class Examination(models.Model):
 
     def get_fields(self):
         return generate_fields(self)
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
     
 class Student(models.Model):
     course = models.ForeignKey(Course,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -160,6 +177,10 @@ class Student(models.Model):
     
     def get_fields(self):
         return generate_fields(self)
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
 
 class Subject(models.Model):
     batch = models.ForeignKey(Batch,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -192,6 +213,9 @@ class Subject(models.Model):
     def get_fields(self):
         return generate_fields(self)
     
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
 class ExamStudent(models.Model):
     student = models.ForeignKey(Student,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
     exam = models.ForeignKey(Examination,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -224,6 +248,10 @@ class ExamStudent(models.Model):
     
     def get_fields(self):
         return generate_fields(self)
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
 
 class ExamStudentMark(models.Model):
     student = models.ForeignKey(ExamStudent,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -257,6 +285,10 @@ class ExamStudentMark(models.Model):
     def get_fields(self):
         return generate_fields(self)
     
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+    
 class GradingSystem(models.Model):
     COMMENT_STATUS = (
         ("Outstanding", "Outstanding"),
@@ -281,6 +313,10 @@ class GradingSystem(models.Model):
     def get_fields(self):
         return generate_fields(self)
     
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+    
 
 class ExamApply(models.Model):
     student = models.ForeignKey(ExamStudent,limit_choices_to={"is_active": True}, on_delete=models.CASCADE)
@@ -297,3 +333,7 @@ class ExamApply(models.Model):
     
     def get_fields(self):
         return generate_fields(self)
+    
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
