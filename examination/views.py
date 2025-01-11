@@ -13,9 +13,17 @@ from core.base import BaseTable
 from examination.filter import ExamStudentMarkFilter
 from .forms import BatchFilterForm
 from .create_pdf import PDFView
-from . models import Batch, College, Course, ExamApply, ExamStudent, ExamStudentMark, Examination, GradingSystem, Student, Subject
+from . models import Batch, Certificate, College, Course, ExamApply, ExamStudent, ExamStudentMark, Examination, GradingSystem, Student, Subject
 from . import tables
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+from django.forms.models import model_to_dict
 
+import qrcode
+from io import BytesIO
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+from PIL import Image
 class BaseModelView:
     model = None 
     table_class = None
@@ -274,6 +282,50 @@ class GradeCard(PDFView):
         # print('student_scores=',student_scores)
         top_students = sorted(student_scores, key=lambda x: x["total_mark"], reverse=True)[:3]
         print('top_students=',top_students)
+        context["items"] = items
+        return context
+    
+class CertificatePDF(PDFView):
+    template_name = "web/certificate_pdf.html"
+    pdfkit_options = {
+        "page-height": 297,
+        "page-width": 210,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        
+        selected_ids = self.request.session.get('selected_ids', [])
+        certificats = Certificate.objects.filter(id__in=selected_ids, is_active=True)
+        
+        items = []
+        for certificate in certificats:
+            # Generate the QR codehttps://www.jamianadwiyya.in/
+            qr_code_data = f"https://www.jamianadwiyya.in/examination/certificate/{certificate.id}/verification/"
+            # print('qr_code_data=',qr_code_data)
+            img = qrcode.make(qr_code_data)
+            
+            # Save the QR code image to a BytesIO object
+            img_io = BytesIO()
+            img.save(img_io, format='PNG')  # Save as PNG into the BytesIO buffer
+            img_io.seek(0)  # Rewind the buffer to the start
+            
+            # Now you can save the image to the filesystem or cloud storage
+            fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+            qr_code_image = fs.save(f'qr_codes/{certificate.id}.png', img_io)
+            qr_code_url = fs.url(qr_code_image)
+            # Add the image URL to the context
+            data = {
+                "data": certificate,
+                "qr_code_url": qr_code_url,  # Pass the image URL
+            }
+            items.append(data)
+        
         context["items"] = items
         return context
     
@@ -985,3 +1037,18 @@ def get_batch_filter(request):
         'is_marklist':True
     }
     return render(request, 'examination/batch_filter.html',context)
+
+
+class CertificateListView(BaseModelView, mixins.HybridListView):
+    model = Certificate
+    table_class = tables.CertificateTable
+    filterset_class = {"gender": ["exact"]}
+
+def certificate_detailView(request, pk):
+    data = Certificate.objects.get(pk=pk)
+    context = {
+        "data": data,
+        "title": "Certificate-Detail",
+        'is_certificate':True
+    }
+    return render(request, 'examination/certificate_detail.html',context)

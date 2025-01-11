@@ -41,6 +41,12 @@ def export_to_exam_applied_batch_based(modeladmin, request, queryset):
     messages.success(request, f"{len(selected_ids)} objects selected.")
     return redirect('examination:exam_applied_batch_based')
 
+def export_to_certificate(modeladmin, request, queryset):
+    selected_ids = list(queryset.values_list('id', flat=True))
+    request.session['selected_ids'] = selected_ids
+    messages.success(request, f"{len(selected_ids)} objects selected.")
+    return redirect('examination:CertificatePDF')
+
 class BaseAdmin(ImportExportModelAdmin):
     list_display = ("__str__","is_active")
     list_filter = ("is_active",)
@@ -58,6 +64,21 @@ class BaseAdmin(ImportExportModelAdmin):
 @admin.register(College)
 class CollegeAdmin(BaseAdmin):
     pass
+
+@admin.register(Certificate)
+class CertificateAdmin(BaseAdmin):
+    list_display = ('id',"__str__",'reg_no_en','gender',"is_active")
+    list_filter = ('gender',"is_active",)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if request.user.is_superuser:
+            actions['export_to_certificate'] = (export_to_certificate, 'export_to_certificate', 'Export to Certificate')
+        else:
+            # Remove actions for non-superusers
+            actions.pop('export_to_exam_applied_batch_based', None)
+        return actions
+
 
 @admin.register(GradingSystem)
 class GradingSystemAdmin(BaseAdmin):

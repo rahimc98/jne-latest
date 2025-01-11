@@ -338,3 +338,33 @@ class ExamApply(models.Model):
     def delete(self, *args, **kwargs):
         self.is_active = False
         self.save()
+
+
+
+class Certificate(models.Model):
+    name_ar = models.CharField(max_length=200)
+    dob_ar = models.CharField(max_length=200)
+    ay_ar = models.CharField(max_length=200)
+    eh_ar = models.CharField(max_length=200)
+    reg_no_ar = models.CharField(max_length=200)
+    gd_ar = models.CharField(max_length=200)
+    senet_ar = models.CharField(max_length=200)
+    name_en = models.CharField(max_length=200)
+    dob_en = models.CharField(max_length=200)
+    ay_en = models.CharField(max_length=200)
+    eh_en = models.CharField(max_length=200)
+    reg_no_en = models.CharField(max_length=200)
+    gd_en = models.CharField(max_length=200)
+    senet_en = models.CharField(max_length=200)
+    vrfcn_no = models.CharField(max_length=200)
+    crtfct_no = models.CharField(max_length=200)
+    gender = models.CharField(max_length=10,choices=(('male', 'Male'), ('female', 'Female')))
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name_en
+    
+    def get_web_url(self):
+        return reverse_lazy("examination:certificate_detail", kwargs={"pk": self.pk})
+    
+    

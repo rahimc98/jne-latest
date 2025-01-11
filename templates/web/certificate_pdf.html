@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		<meta charset="utf-8" />
+		<title>{{title}}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<!-- <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet"> -->
+		<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+        <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+        <!-- <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Naskh+Arabic:wght@400..700&display=swap" rel="stylesheet"> -->
+        <link href="https://fonts.cdnfonts.com/css/arial" rel="stylesheet">
+        <style type="text/css">
+			@page {
+				size: 297mm 210mm;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				/* font-family: 'Open Sans', sans-serif; */
+                font-family: 'Arial', sans-serif;
+				padding: 0;
+				margin: 0;
+				font-size: 22px;
+				font-weight: 700;
+				color: black;
+				box-sizing: border-box;
+			}
+
+			p {
+				padding: 0;
+				margin: 0;
+			}
+
+			.card-male {
+				/* background-image: url("{% static 'web/images/certificate_male.png'%}"); */
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center;
+				width: 992px;
+			    height: 1403px;
+				max-width: 100%;
+				min-height: 100%;
+				position: relative;
+				/* border: 1px dotted; */
+			}
+            .qr_code {
+                position: absolute;
+                top: 1%;
+                left: 1%;
+                width: 100px;
+                height: 100px;
+                /* border: 1px dotted; */
+            }
+
+            .text-block {
+                position: absolute;
+                text-align: center;
+                font-weight: 700;
+                word-wrap: normal;
+            }
+            .text-ar {
+                font-size: 24px;
+                font-family: 'Arial', sans-serif;
+            }
+
+            .text-en {
+                font-size: 25px;
+                font-family: 'Arial', sans-serif;
+            }
+
+            .highlight {
+                color: red;
+            }
+			.name_ar {
+				position: absolute;
+				top: 27.2%;
+				left: 18%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 30px;
+				word-wrap: normal;
+                width: 600px;
+			}
+            
+            .dob_ar {
+				position: absolute;
+				top: 30%;
+				left: 60%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 30px;
+				word-wrap: normal;
+                width: 200px;
+			}
+            .ay_ar{
+                position: absolute;
+				top: 33%;
+				left: 15%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 30px;
+				word-wrap: normal;
+                width: 200px;
+            }
+            .reg_no_ar{
+                position: absolute;
+				top: 35.5%;
+				left: 13%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 25px;
+				word-wrap: normal;
+                width: 200px;
+            }
+            .eh_ar{ 
+                position: absolute; 
+                top: 35.5%;
+                left: 44.3%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 26px;
+                word-wrap: normal;
+                width: 200px;
+			}
+            .gd_ar{ 
+                position: absolute; 
+                top: 41%;
+                left: 70%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 30px;
+                word-wrap: normal;
+                width: 200px;
+			}
+            .senet_ar{
+                position: absolute;
+                top: 43.7%;
+                left: 52%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 30px;
+                word-wrap: normal;
+                width: 200px;   
+            }
+            .name_en {
+				position: absolute;
+				top: 54%;
+				left: 40%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 25px;
+				word-wrap: normal;
+                width: 500px;
+
+			}
+            .dob_en {
+				position: absolute;
+				top: 56%;
+				left: 33%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 24px;
+				word-wrap: normal;
+                width: 200px;
+			}
+			.ay_en {
+				position: absolute;
+				top: 60%;
+				left: 68%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 24px;
+				word-wrap: normal;
+                width: 200px;
+			}
+            .eh_en {
+				position: absolute;
+				top: 62.5%;
+				left: 55%;
+                text-align: center;
+                font-family: 'Arial', sans-serif;
+                font-weight: 700;
+                font-size: 24px;
+				word-wrap: normal;
+                width: 200px;
+			}
+			.reg_no_en {
+				position: absolute;
+				top: 64.5%;
+				left: 19%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 24px;
+				word-wrap: normal;
+                width: 200px;
+			}
+            .gd_en {
+				position: absolute;
+				top: 64.5%;
+				left: 64%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 24px;
+				word-wrap: normal;
+                width: 200px;
+			}
+            .senet_en {
+				position: absolute;
+				top: 72%;
+				left: 70%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 25px;
+				word-wrap: normal;
+                width: 200px;
+			}
+            .vrfcn_no {
+				position: absolute;
+				top: 95.2%;
+				left: 19%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 20px;
+				word-wrap: normal;
+                width: 200px;
+                color: red;
+			}
+            .crtfct_no {
+				position: absolute;
+				top: 95.2%;
+				left: 70.5%;
+                text-align: center;
+                font-weight: 700;
+                font-size: 20px;
+				word-wrap: normal;
+                width: 200px;
+                color: red;
+			}
+			
+		</style>
+	</head>
+	<body>
+		{% for item in items %}
+		<div class="card-male ">
+            <p class="qr_code" id="qr-code-{{ forloop.counter }}">
+                <img src="{{item.qr_code_url}}" alt="" width="100px" height="100px">
+            </p>
+			<p class="name_ar">{{item.data.name_ar}}</p>
+			<p class="dob_ar">{{item.data.dob_ar}}</p>
+			<p class="ay_ar">{{item.data.ay_ar}}</p>
+			<p class="reg_no_ar">{{item.data.reg_no_ar}}</p>
+			<p class="eh_ar">{{item.data.eh_ar}}</p>
+			<p class="gd_ar">{{item.data.gd_ar}}</p>
+			<p class="senet_ar">{{item.data.senet_ar}}</p>
+
+            <p class="name_en">{{item.data.name_en}}</p>
+			<p class="dob_en">{{item.data.dob_en}}</p>
+			<p class="ay_en">{{item.data.ay_en}}</p>
+			<p class="eh_en">{{item.data.eh_en}}</p>
+			<p class="reg_no_en">{{item.data.reg_no_en}}</p>
+			<p class="gd_en">{{item.data.gd_en}}</p>
+			<p class="senet_en">{{item.data.senet_en}}</p>
+
+			<p class="vrfcn_no">{{item.data.vrfcn_no}}</p>
+			<p class="crtfct_no">{{item.data.crtfct_no}}</p>
+
+		</div>
+		{% endfor %}
+	</body>
+    
+</html>

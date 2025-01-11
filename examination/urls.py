@@ -62,8 +62,12 @@ urlpatterns = [
 
     path("halticket", views.Halticket.as_view(), name="halticket"), 
     path("GradeCard", views.GradeCard.as_view(), name="gradecard"),
+    path("CertificatePDF", views.CertificatePDF.as_view(), name="CertificatePDF"),
     path("exam_applied", views.ExamApplied.as_view(), name="exam_applied"),
     path("exam_applied_batch_based", views.ExamAppliedBatchBased.as_view(), name="exam_applied_batch_based"),
     path("grademark/<str:pk>/", views.GradeMarkPdfView.as_view(), name="grademark"),
     path("exam_appy/<str:pk>/", views.ExamApplyPdfView.as_view(), name="exam_apply"),
+    #certificate
+    path("certificate/list/", views.CertificateListView.as_view(), name="certificate_list"),
+    path("certificate/<str:pk>/verification/", views.certificate_detailView, name="certificate_detail"),
 ]

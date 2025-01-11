@@ -1,8 +1,15 @@
 from core.base import BaseTable
 from django_tables2 import columns
 
-from .models import ExamStudentMark
+from .models import Certificate, ExamStudentMark
 
+
+class  CertificateTable(BaseTable):
+    
+    class Meta:
+        model = Certificate
+        fields = ('reg_no_en',"name_en", "dob_en",'vrfcn_no','gender')
+        attrs = {"class": "table border-0 table-hover table-striped "}
 
 class  ExamStudentMarkTable(BaseTable):
     subject  = columns.TemplateColumn("""{{ record.subject.name }}""", orderable=False)
