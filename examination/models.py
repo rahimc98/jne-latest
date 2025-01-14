@@ -367,4 +367,21 @@ class Certificate(models.Model):
     def get_web_url(self):
         return reverse_lazy("examination:certificate_detail", kwargs={"pk": self.pk})
     
+    @staticmethod
+    def get_list_url():
+        return reverse_lazy("examination:certificate_list")
+
+    def get_absolute_url(self):
+        return reverse_lazy("examination:certificate_view", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse_lazy("examination:certificate_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("examination:certificate_delete", kwargs={"pk": self.pk})
+
+    def get_fields(self):
+        return generate_fields(self)
     
+    def get_print_certificate(self):
+        return reverse_lazy("examination:certificate_student_pdf", kwargs={"pk": self.pk})

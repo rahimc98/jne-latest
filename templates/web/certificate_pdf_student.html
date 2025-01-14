@@ -28,10 +28,8 @@
 				padding: 0;
 				margin: 0;
 			}
-
-			.card-male {
-				/* background-image: url("{% static 'web/images/certificate_male.png'%}"); */
-				background-repeat: no-repeat;
+            .card {
+                background-repeat: no-repeat;
 				background-size: contain;
 				background-position: center;
 				width: 992px;
@@ -39,17 +37,14 @@
 				max-width: 100%;
 				min-height: 100%;
 				position: relative;
-				/* border: 1px dotted; */
-			}
-            .qr_code {
-                position: absolute;
-                top: 1%;
-                left: 1%;
-                width: 100px;
-                height: 100px;
-                /* border: 1px dotted; */
             }
-
+			.male {
+				background-image: url("{% static 'web/images/certificate_male.png'%}");
+			}
+            .female {
+				background-image: url("{% static 'web/images/certificate_female.png'%}");
+			}
+            
             .text-block {
                 position: absolute;
                 text-align: center;
@@ -71,7 +66,7 @@
             }
 			.name_ar {
 				position: absolute;
-				top: 26.5%;
+				top: 27%;
 				left: 24.1%;
                 text-align: end;
                 font-weight: 700;
@@ -83,7 +78,7 @@
             
             .dob_ar {
 				position: absolute;
-				top: 29.5%;
+				top: 30%;
 				left: 60.2%;
                 text-align: center;
                 font-weight: 700;
@@ -93,7 +88,7 @@
 			}
             .ay_ar{
                 position: absolute;
-				top: 32.8%;
+				top: 33%;
 				left: 12.8%;
                 text-align: center;
                 font-weight: 700;
@@ -113,11 +108,11 @@
             }
             .eh_ar{ 
                 position: absolute; 
-                top: 35.3%;
-                left: 43.4%;
+                top: 35.5%;
+                left: 42.2%;
                 text-align: center;
                 font-weight: 700;
-                font-size: 26px;
+                font-size: 28px;
                 word-wrap: normal;
                 width: 200px;
 			}
@@ -143,8 +138,8 @@
             }
             .name_en {
 				position: absolute;
-				top: 54.5%;
-				left: 39.2%;
+				top: 54%;
+				left: 39.4%;
                 text-align: left;
                 font-weight: 700;
                 font-size: 24px;
@@ -155,7 +150,7 @@
 			}
             .dob_en {
 				position: absolute;
-				top: 56.7%;
+				top: 56%;
 				left: 30%;
                 text-align: center;
                 font-weight: 700;
@@ -166,7 +161,7 @@
 			}
 			.ay_en {
 				position: absolute;
-				top: 61.1%;
+				top: 60.2%;
 				left: 70%;
                 text-align: center;
                 font-weight: 700;
@@ -177,7 +172,7 @@
 			}
             .eh_en {
 				position: absolute;
-				top: 63.2%;
+				top: 62.4%;
 				left: 55%;
                 text-align: center;
                 font-family: 'Arial', sans-serif;
@@ -189,7 +184,7 @@
 			}
 			.reg_no_en {
 				position: absolute;
-				top: 65.5%;
+				top: 64.7%;
 				left: 19%;
                 text-align: center;
                 font-weight: 700;
@@ -200,7 +195,7 @@
 			}
             .gd_en {
 				position: absolute;
-				top: 65.5%;
+				top: 64.7%;
 				left: 65%;
                 text-align: center;
                 font-weight: 700;
@@ -211,7 +206,7 @@
 			}
             .senet_en {
 				position: absolute;
-				top: 73.2%;
+				top: 72.3%;
 				left: 70%;
                 text-align: center;
                 font-weight: 700;
@@ -221,8 +216,8 @@
 			}
             .vrfcn_no {
 				position: absolute;
-				top: 97.2%;
-				left: 19%;
+				top: 95.4%;
+				left: 19.3%;
                 text-align: center;
                 font-family: 'CMU Typewriter Text', sans-serif;
                 font-weight: 700;
@@ -233,8 +228,8 @@
 			}
             .crtfct_no {
 				position: absolute;
-				top: 97.2%;
-				left: 72.1%;
+				top: 95.4%;
+				left: 70.5%;
                 font-family: 'CMU Typewriter Text', sans-serif;
                 text-align: center;
                 font-weight: 700;
@@ -247,32 +242,27 @@
 		</style>
 	</head>
 	<body>
-		{% for item in items %}
-		<div class="card-male ">
-            <p class="qr_code" id="qr-code-{{ forloop.counter }}">
-                <img src="{{item.qr_code_url}}" alt="" width="100px" height="100px">
-            </p>
-			<p class="name_ar">{{item.data.name_ar}}</p>
-			<p class="dob_ar">{{item.data.dob_ar}}</p>
-			<p class="ay_ar">{{item.data.ay_ar}}</p>
-			<p class="reg_no_ar">{{item.data.reg_no_ar}}</p>
-			<p class="eh_ar">{{item.data.eh_ar}}</p>
-			<p class="gd_ar">{{item.data.gd_ar}}</p>
-			<p class="senet_ar">{{item.data.senet_ar}}</p>
+		
+		<div class="{% if data.gender == 'male' %} male {% else %} female {% endif %} card ">
+           
+			<p class="name_ar">{{data.name_ar}}</p>
+			<p class="dob_ar">{{data.dob_ar}}</p>
+			<p class="ay_ar">{{data.ay_ar}}</p>
+			<p class="reg_no_ar">{{data.reg_no_ar}}</p>
+			<p class="eh_ar">{{data.eh_ar}}</p>
+			<p class="gd_ar">{{data.gd_ar}}</p>
+			<p class="senet_ar">{{data.senet_ar}}</p>
 
-            <p class="name_en">{{item.data.name_en}}</p>
-			<p class="dob_en">{{item.data.dob_en}}</p>
-			<p class="ay_en">{{item.data.ay_en}}</p>
-			<p class="eh_en">{{item.data.eh_en}}</p>
-			<p class="reg_no_en">{{item.data.reg_no_en}}</p>
-			<p class="gd_en">{{item.data.gd_en}}</p>
-			<p class="senet_en">{{item.data.senet_en}}</p>
-
-			<p class="vrfcn_no">{{item.data.vrfcn_no}}</p>
-			<p class="crtfct_no">{{item.data.crtfct_no}}</p>
-
+            <p class="name_en">{{data.name_en}}</p>
+			<p class="dob_en">{{data.dob_en}}</p>
+			<p class="ay_en">{{data.ay_en}}</p>
+			<p class="eh_en">{{data.eh_en}}</p>
+			<p class="reg_no_en">{{data.reg_no_en}}</p>
+			<p class="gd_en">{{data.gd_en}}</p>
+			<p class="senet_en">{{data.senet_en}}</p>
+			<p class="vrfcn_no">{{data.vrfcn_no}}</p>
+			<p class="crtfct_no">{{data.crtfct_no}}</p>
 		</div>
-		{% endfor %}
 	</body>
     
 </html>

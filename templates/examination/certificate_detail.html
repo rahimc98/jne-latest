@@ -6,72 +6,121 @@
     <title>{{title}}</title>
 </head>
 <style>
-    body {
-  font-family: 'Roboto';
-  margin: 0;
-  padding: 0;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-@keyframes confetti-slow {
-  0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
-  
-  100% { transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg); }
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: #0d0d0d;  */
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
-@keyframes confetti-medium {
-  0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
-  
-  100% { transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg); }
-}
-
-@keyframes confetti-fast {
-  0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
-  
-  100% { transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg); }
-}
-
+/* Conteneur toujours centré */
 .container {
-  width: 100vw;
-  height: 100vh;
-  background: #ffffff;
-  border:1px solid white;
-  display:fixed;
-  top:0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.confetti-container {
-  perspective: 700px;
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+/* Carte au centre */
+.card {
+    /* background: #0d0d0d; */
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    /* animation: zoomIn 0.8s ease-out forwards;
+    transform: scale(0); */
+    width: 90%; /* Responsive pour s'adapter aux petits écrans */
+     /* Taille maximale pour les grands écrans */
 }
 
-.confetti {
-  position: absolute;
-  z-index: 1;
-  top: -10px;
-  border-radius: 0%;
-
-  &--animation-slow {
-    animation: confetti-slow 2.25s linear 1 forwards;
-  }
-  
-  &--animation-medium {
-    animation: confetti-medium 1.75s linear 1 forwards;
-  }
-  
-  &--animation-fast {
-    animation: confetti-fast 1.25s linear 1 forwards;
-  }
+.card h1 {
+    font-size: 2rem; /* Taille adaptative */
+    margin-bottom: 10px;
+    color: #000;
 }
 
+.card p {
+    font-size: 1.1rem; /* Taille adaptative */
+    margin-bottom: 20px;
+    color: #000;
+}
 
+.redirect-buttons .button {
+    display: inline-block;
+    background: #00C09D;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background 0.3s, transform 0.2s;
+    font-size: 1rem; /* Taille adaptative */
+}
 
+.redirect-buttons .button:hover {
+    background: #00C09D;
+    transform: scale(1.1);
+}
 
+/* Effet néon */
+.neon {
+    border: 2px solid #00C09D;
+    /* box-shadow: 0 0 20px #00C09D, 0 0 40px #00C09D, 0 0 60px #00C09D; */
+    color: #fff;
+}
 
+/* Animation de zoom */
+@keyframes zoomIn {ff007a
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive pour les très petits écrans */
+@media (max-width: 600px) {
+    .card {
+        padding: 20px;
+        max-width: 400px;
+    }
+    .checkmark-circle .background{
+      width: 100px;
+      height: 100px;
+    }
+    .container{
+      top: 20%;
+      left: 5%;
+      transform: translate(-5%, -5%); 
+    }
+    .card h1 {
+        font-size: 1.5rem;
+    }
+
+    .card p {
+        font-size: 1rem;
+    }
+
+    .redirect-buttons .button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
 /* Checkmark */
 .checkmark-circle {
   width: 150px;
@@ -199,92 +248,91 @@
   }
 }
 
-
-
-.submit-btn {
-    height: 45px;
-    width: 200px;
-    font-size: 15px;
-    background-color: #00c09d;
-    border: 1px solid #00ab8c;
-    color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px 0 rgba(87,71,81,.2);
-    cursor: pointer;
-    transition: all 2s ease-out;
-    transition: all .2s ease-out;
-}
-
-.submit-btn:hover {
-    background-color: #2ca893;
-    transition: all .2s ease-out;
-}
 </style>
 <body>
-    <div class="js-container container" style="top:0px !important;"></div>
-
-  <div style="text-align:center;margin-top:30px;position:  fixed;width:100%;height:100%;top:0px;left:0px;">
-    <div class="checkmark-circle">
-      <div class="background"></div>
-      <div class="checkmark draw"></div>
+  <div class="container">
+    <div class="card neon">
+      <div class="checkmark-circle" >
+        <div class="background"></div>
+        <div class="checkmark draw "></div>
+      </div>
+        <!-- <h1 style="padding-bottom: 🎉10px;">Congratulations </h1> -->
+        <p style="padding-top: 10px;">This certificate has been verified with Verification Number: <b>{{data.vrfcn_no}}</b>.
+          The recipient, <b>{{data.name_en}}</b>, has successfully completed the <strong>Bachelor of Arts in Fadheela from Jamia Nadwiyya, Edavanna </strong>, in the year <b>{{data.ay_en}}</b>.
+          The Senate of Jamia Nadwiyya has conferred upon them the honorary title of <b>{% if data.gender == "male" %}SWALAHI{% else %}SWALAHIYYA{% endif %}</b></p>
+        <div class="redirect-buttons">
+            <a href="/" class="button">Home</a>
+            <!-- <a href="/examination/certificate/{{data.id}}/pdf/" class="button">Download</a> -->
+        </div>
     </div>
-    <h1>Congratulations!</h1>
-    <p>You are all set. Well done!</p>
-    <button class="submit-btn" type="submit" onclick="alert('🥺🥺🥺🥺🥺\n Oh no you didn\'t!!!!!!!');">Continue</button>
-  </div>  
+</div>
+<canvas id="confetti"></canvas>
+  
 
 </body>
 <script>
-    var Confettiful = function (el) {
-  this.el = el;
-  this.containerEl = null;
+  document.addEventListener("DOMContentLoaded", () => {
+    const confettiCanvas = document.getElementById("confetti");
+    const ctx = confettiCanvas.getContext("2d");
 
-  this.confettiFrequency = 3;
-  this.confettiColors = ['#EF2964', '#00C09D', '#2D87B0', '#48485E', '#EFFF1D'];
-  this.confettiAnimations = ['slow', 'medium', 'fast'];
+    // Configuration du canvas pour occuper tout l'écran
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
 
-  this._setupElements();
-  this._renderConfetti();
-};
+    // Paramètres des confettis
+    const confettis = [];
+    const colors = ["#FF007A", "#7A00FF", "#00FF7A", "#FFD700", "#00D4FF"];
 
-Confettiful.prototype._setupElements = function () {
-  var containerEl = document.createElement('div');
-  var elPosition = this.el.style.position;
+    // Fonction pour générer un confetti
+    function createConfetti() {
+        const confetti = {
+            x: Math.random() * confettiCanvas.width,
+            y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+            size: Math.random() * 10 + 5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedX: Math.random() * 3 - 1.5,
+            speedY: Math.random() * 5 + 2,
+            rotation: Math.random() * 360
+        };
+        confettis.push(confetti);
+    }
 
-  if (elPosition !== 'relative' && elPosition !== 'absolute') {
-    this.el.style.position = 'relative';
-  }
+    // Générer des confettis une fois
+    for (let i = 0; i < 200; i++) {
+        createConfetti();
+    }
 
-  containerEl.classList.add('confetti-container');
-  this.el.appendChild(containerEl);
-  this.containerEl = containerEl;
-};
+    // Fonction pour animer les confettis
+    function animateConfetti() {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        confettis.forEach((confetti, index) => {
+            confetti.x += confetti.speedX;
+            confetti.y += confetti.speedY;
+            confetti.rotation += confetti.speedX;
 
-Confettiful.prototype._renderConfetti = function () {
-  var _this = this;
+            // Dessiner le confetti
+            ctx.save();
+            ctx.translate(confetti.x, confetti.y);
+            ctx.rotate((confetti.rotation * Math.PI) / 180);
+            ctx.fillStyle = confetti.color;
+            ctx.fillRect(-confetti.size / 2, -confetti.size / 2, confetti.size, confetti.size);
+            ctx.restore();
 
-  this.confettiInterval = setInterval(function () {
-    var confettiEl = document.createElement('div');
-    var confettiSize = Math.floor(Math.random() * 3 + 7) + 'px';
-    var confettiBackground = _this.confettiColors[Math.floor(Math.random() * _this.confettiColors.length)];
-    var confettiLeft = Math.floor(Math.random() * _this.el.offsetWidth) + 'px';
-    var confettiAnimation = _this.confettiAnimations[Math.floor(Math.random() * _this.confettiAnimations.length)];
+            // Supprimer les confettis qui sortent de l'écran
+            if (confetti.y > confettiCanvas.height) {
+                confettis.splice(index, 1);
+            }
+        });
 
-    confettiEl.classList.add('confetti', 'confetti--animation-' + confettiAnimation);
-    confettiEl.style.left = confettiLeft;
-    confettiEl.style.width = confettiSize;
-    confettiEl.style.height = confettiSize;
-    confettiEl.style.backgroundColor = confettiBackground;
+        if (confettis.length > 0) {
+            requestAnimationFrame(animateConfetti);
+        }
+    }
 
-    confettiEl.removeTimeout = setTimeout(function () {
-      confettiEl.parentNode.removeChild(confettiEl);
-    }, 3000);
-
-    _this.containerEl.appendChild(confettiEl);
-  }, 25);
-};
-
-window.confettiful = new Confettiful(document.querySelector('.js-container'));
-
+    // Lancer l'animation après 800ms (fin du zoom)
+    setTimeout(() => {
+        animateConfetti();
+    }, 800);
+});
 </script>
 </html>

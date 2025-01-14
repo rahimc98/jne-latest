@@ -63,11 +63,16 @@ urlpatterns = [
     path("halticket", views.Halticket.as_view(), name="halticket"), 
     path("GradeCard", views.GradeCard.as_view(), name="gradecard"),
     path("CertificatePDF", views.CertificatePDF.as_view(), name="CertificatePDF"),
+    path("certificate/<str:pk>/pdf/", views.CertificateStudentPDF.as_view(), name="certificate_student_pdf"),
     path("exam_applied", views.ExamApplied.as_view(), name="exam_applied"),
     path("exam_applied_batch_based", views.ExamAppliedBatchBased.as_view(), name="exam_applied_batch_based"),
     path("grademark/<str:pk>/", views.GradeMarkPdfView.as_view(), name="grademark"),
     path("exam_appy/<str:pk>/", views.ExamApplyPdfView.as_view(), name="exam_apply"),
     #certificate
     path("certificate/list/", views.CertificateListView.as_view(), name="certificate_list"),
+    path("new/certificate/", views.CertificateCreateView.as_view(), name="certificate_create"),
+    path("certificate/<str:pk>/view/", views.CertificateDetailView.as_view(), name="certificate_view"),
+    path("certificate/<str:pk>/update/", views.CertificateUpdateView.as_view(), name="certificate_update"),
+    path("certificate/<str:pk>/delete/", views.CertificateDeleteView.as_view(), name="certificate_delete"),   
     path("certificate/<str:pk>/verification/", views.certificate_detailView, name="certificate_detail"),
 ]

@@ -329,6 +329,25 @@ class CertificatePDF(PDFView):
         context["items"] = items
         return context
     
+class CertificateStudentPDF(PDFView):
+    template_name = "web/certificate_pdf_student.html"
+    pdfkit_options = {
+        "page-height": 297,
+        "page-width": 210,
+        "encoding": "UTF-8",
+        "margin-top": "0",
+        "margin-bottom": "0",
+        "margin-left": "0",
+        "margin-right": "0",
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        certificate = Certificate.objects.get(id=self.kwargs['pk'], is_active=True)
+        context["data"] = certificate
+        context["title"] = "Certificate"
+        return context
+    
 
 class ExamApplyPdfView(PDFView):
     template_name = "web/exam_apply_pdf.html"
@@ -1039,16 +1058,78 @@ def get_batch_filter(request):
     return render(request, 'examination/batch_filter.html',context)
 
 
-class CertificateListView(BaseModelView, mixins.HybridListView):
+class CertificateListView( mixins.HybridListView):
     model = Certificate
     table_class = tables.CertificateTable
-    filterset_class = {"gender": ["exact"]}
+    filterset_fields = {"gender": ["exact"]}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.model._meta.verbose_name_plural.title()
+        context["can_add"] = mixins.check_access(self.request, self.permissions)
+        context["new_link"] = reverse_lazy(f"examination:{self.model.__name__.lower()}_create")
+        context[f"is_{self.model.__name__.lower()}"] = True
+        context['is_certificate'] = True
+        return context
 
 def certificate_detailView(request, pk):
     data = Certificate.objects.get(pk=pk)
+    is_male = True
+    if data.gender == 'Female':
+        is_male = False
     context = {
         "data": data,
+        'is_male':is_male,
         "title": "Certificate-Detail",
         'is_certificate':True
     }
     return render(request, 'examination/certificate_detail.html',context)
+
+
+class CertificateDetailView( mixins.HybridDetailView):
+    model = Certificate
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"{self.object}"
+        context['is_certificate'] = True
+        return context
+
+
+
+class CertificateCreateView(mixins.HybridCreateView):
+    model = Certificate
+    exclude = ("is_active",)
+    def get_success_url(self):
+        return self.object.get_list_url()
+
+    def form_valid(self, form): 
+        response = super().form_valid(form)
+        return response
+
+    def get_success_message(self, cleaned_data):
+        instance = self.object
+        success_message = f"{self.model.__name__} '{instance}' was Created successfully. "
+        success_message += f"<a href='{instance.get_absolute_url()}'>View {self.model.__name__}</a>."
+        return success_message
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "New Certificate"
+        context['is_certificate'] = True
+        return context
+
+
+class CertificateUpdateView( mixins.HybridUpdateView):
+    model = Certificate
+    exclude = ("is_active",)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Update {self.object} Certificate"
+        context['is_certificate'] = True
+        return context
+
+
+class CertificateDeleteView(BaseModelView, mixins.HybridDeleteView):
+    model = Certificate

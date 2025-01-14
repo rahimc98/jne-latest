@@ -74,6 +74,12 @@
                         </ul>
                     </li>
                     <li class="slide">
+                        <a class="side-menu__item {% if is_certificate %} active {% endif %}" data-bs-toggle="slide" href="{% url 'examination:certificate_list' %}">
+                            <i class="fa fa-certificate sidemenu_icon"></i>
+                            <span class="side-menu__label">Certificates</span>
+                        </a>
+                    </li>
+                    <li class="slide">
                         <a class="side-menu__item {% if is_user %} active {% endif %}" data-bs-toggle="slide" href="{% url 'accounts:user_list' %}">
                             <i class="fa fa fa-users sidemenu_icon"></i>
                             <span class="side-menu__label">Users</span>
